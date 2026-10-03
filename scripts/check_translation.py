@@ -25,6 +25,18 @@ class Case:
     latin_names: tuple[str, ...] = ()
 
 
+# Match complete numeric values: 8 must not match 18, nor 十点 match 二十点.
+ZH_DIGITS = "零〇一二两三四五六七八九十百千0123456789"
+
+
+def chinese_hour(hour: str) -> str:
+    return rf"(?<![{ZH_DIGITS}]){hour}点(?![{ZH_DIGITS}半刻])"
+
+
+def english_hour(word: str, number: int) -> str:
+    return rf"(?<![\w.])(?:{word}\b|{number}(?:[:.]00)?(?!\d|[:.]\d))"
+
+
 CASES = [
     Case("英文单词 you 保留原文并译为中文", "you", "en", ("你",)),
     Case("英文音乐标记保留原文并译为中文", "Music", "en", ("音乐",)),
@@ -32,7 +44,7 @@ CASES = [
     Case(
         "日语单句会议保留三点且不补时段",
         "次の会議は三時に始まります。", "ja",
-        ("会议", "三点", "开始"), ("meeting", r"three|3(?:[:.]00)?(?=\s|$)", "start|begin"),
+        ("会议", chinese_hour("三"), "开始"), ("meeting", english_hour("three", 3), "start|begin"),
         ambiguous_time=True,
     ),
     Case(
@@ -43,21 +55,21 @@ CASES = [
     Case(
         "日语两句会议和电脑要求均译为中英且不补时段",
         "次の会議は三時に始まります。パソコンを持ってきてください。", "ja",
-        ("会议", "三点", "开始", "带", "电脑"),
-        ("meeting", r"three|3(?:[:.]00)?(?=\s|$)", "start|begin", "bring", "computer|laptop"),
+        ("会议", chinese_hour("三"), "开始", "带", "电脑"),
+        ("meeting", english_hour("three", 3), "start|begin", "bring", "computer|laptop"),
         ambiguous_time=True,
     ),
     Case(
         "日语明确下午的会议保留下午三点和电脑要求",
         "会議は午後三時に始まります。パソコンを持ってきてください。", "ja",
-        ("会议", "下午三点", "开始", "带", "电脑"),
-        ("meeting", r"three|3(?:[:.]00)?(?=\s|$)", r"afternoon|p\.?m", "bring", "computer|laptop"),
+        ("会议", "下午" + chinese_hour("三"), "开始", "带", "电脑"),
+        ("meeting", english_hour("three", 3), r"afternoon|p\.?m", "bring", "computer|laptop"),
     ),
     Case(
         "日语明确明天上午的约定保留日期时段和地点",
         "明日の午前八時に駅で会いましょう。", "ja",
-        ("明天", "上午八点|早上八点", "站", "见|会面"),
-        ("tomorrow", r"eight|8(?:[:.]00)?(?=\s|$)", r"morning|a\.?m", "station", "meet"),
+        ("明天", "(?:上午|早上)" + chinese_hour("八"), "站", "见|会面"),
+        ("tomorrow", english_hour("eight", 8), r"morning|a\.?m", "station", "meet"),
     ),
     Case(
         "日语两句否定保留没有会议和计划未定",
@@ -68,19 +80,20 @@ CASES = [
     Case(
         "英文两句保留原文并完整译成中文且不补时段",
         "The next meeting starts at three o'clock. Please bring your laptop.", "en",
-        ("会议", "三点", "开始", "带", "电脑"), ambiguous_time=True,
+        ("会议", chinese_hour("三"), "开始", "带", "电脑"), ambiguous_time=True,
     ),
     Case(
         "日语商店开门和现金要求均保留且不补时段",
         "店は十時に開きます。現金を持ってきてください。", "ja",
-        ("店", "十点", "开", "现金", "带"),
-        ("store|shop", "ten|10", "open", "cash", "bring"), ambiguous_time=True,
+        ("店", chinese_hour("十"), "开", "现金", "带"),
+        ("store|shop", english_hour("ten", 10), "open", "cash", "bring"), ambiguous_time=True,
     ),
     Case(
         "日语音乐会时间和两张票均保留且不补时段",
         "コンサートは八時に始まります。チケットは二枚あります。", "ja",
-        ("音乐会|演唱会", "八点", "开始", "两张|二张"),
-        ("concert", "eight|8", "start|begin", "two|2", "ticket"), ambiguous_time=True,
+        ("音乐会|演唱会", chinese_hour("八"), "开始", rf"(?<![{ZH_DIGITS}])(?:两|二)张", "票"),
+        ("concert", english_hour("eight", 8), "start|begin", r"\b(?:two|2)\b", "ticket"),
+        ambiguous_time=True,
     ),
     Case(
         "日语技术名称保留拉丁专名且保留未使用的否定",
@@ -92,7 +105,7 @@ CASES = [
     Case(
         "日语原文加中文模式也完整翻译两句且不补时段",
         "次の会議は三時に始まります。パソコンを持ってきてください。", "ja",
-        ("会议", "三点", "开始", "带", "电脑"),
+        ("会议", chinese_hour("三"), "开始", "带", "电脑"),
         ambiguous_time=True, display="source-zh",
     ),
 ]
