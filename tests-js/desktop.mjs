@@ -23,7 +23,7 @@ try {
         { kind: 'asr', repo: 'mlx-community/whisper-large-v3-turbo-4bit', ready: true, bytes: 863288426 },
         { kind: 'translation', repo: 'mlx-community/Qwen2.5-3B-Instruct-4bit', ready: true, bytes: 1803886264 },
       ],
-      preferences: { language: 'en', display: 'zh-en', partials: true, fontSize: 26 }, logs: '', error: '',
+      preferences: { translate: true, language: 'en', display: 'zh-en', partials: true, fontSize: 26 }, logs: '', error: '',
     };
     window.fixture.selection = Object.fromEntries(window.fixture.models.map(model => [model.kind, model.repo]));
     window.fixture.catalog = [
@@ -53,6 +53,14 @@ try {
   await page.waitForFunction(() => window.fixture.preferences.language === 'ja' && window.fixture.preferences.fontSize === 32);
   assert.deepEqual(await page.evaluate(() => window.calls.filter(call => call[0] === 'preferences').map(call => call[1])), [{ language: 'ja' }, { fontSize: 32 }]);
   assert.equal(await page.locator('#previewZh').evaluate(el => el.style.fontSize), '32px');
+  await page.locator('#translate').uncheck();
+  await page.waitForFunction(()=>window.fixture.preferences.translate === false);
+  assert.equal(await page.locator('#display').isDisabled(),true);
+  assert.equal(await page.locator('#previewEn').isVisible(),false);
+  assert.equal(await page.locator('#previewZh').textContent(),'世界は広い。ゆっくり耳を傾けよう。');
+  await page.locator('#translate').check();
+  await page.waitForFunction(()=>window.fixture.preferences.translate === true);
+  assert.equal(await page.locator('#display').isEnabled(),true);
   await page.locator('#serviceAction').click();
   await page.waitForFunction(() => document.querySelector('#serviceTitle').textContent === '正在预热模型');
   await page.locator('#serviceAction').click();

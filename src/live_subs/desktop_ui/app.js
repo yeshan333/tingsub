@@ -31,6 +31,7 @@ const words = {
     english: "英语",
     japanese: "日语",
     automatic: "自动识别",
+    enableTranslation: "启用翻译", translationHint: "关闭后只显示识别原文，跳过字幕翻译",
     displayLanguage: "字幕语言",
     displayHint: "翻译与原声识别均在本机完成",
     bilingual: "中文 + English",
@@ -137,6 +138,7 @@ const words = {
     english: "English",
     japanese: "Japanese",
     automatic: "Auto-detect",
+    enableTranslation: "Enable translation", translationHint: "Turn off to show recognized speech without translation",
     displayLanguage: "Caption languages",
     displayHint: "Speech recognition and translation both run on your Mac",
     bilingual: "中文 + English",
@@ -281,15 +283,18 @@ function updatePreview() {
   $("previewEn").style.fontSize = `${Math.round(size * 0.6)}px`;
   const japanese = $("language").value === "ja";
   const original = $("display").value === "source-zh";
+  const translate = $("translate").checked;
+  $("display").disabled = !translate;
+  $("previewEn").hidden = !translate;
   const source = japanese
     ? "世界は広い。ゆっくり耳を傾けよう。"
     : "There's a whole world out there. Take it in.";
-  $("previewZh").textContent = "世界很大，慢慢听。";
+  $("previewZh").textContent = translate ? "世界很大，慢慢听。" : source;
   $("previewEn").textContent = original
     ? source
     : "There's a whole world out there. Take it in.";
   document.querySelector(".preview-tag").textContent =
-    `${japanese ? "JA" : "EN"} → ${original ? "中 / 原" : "中 / EN"}`;
+    translate ? `${japanese ? "JA" : "EN"} → ${original ? "中 / 原" : "中 / EN"}` : japanese ? "JA" : "EN";
 }
 function render(data) {
   snapshot = data;
@@ -330,7 +335,7 @@ function render(data) {
   $("modelsDot").hidden = allModels;
   for (const [key, value] of Object.entries(data.preferences)) {
     if (dirty.has(key) || document.activeElement === $(key)) continue;
-    if (key === "partials") $(key).checked = value;
+    if ((key === "partials" || key === "translate")) $(key).checked = value;
     else $(key).value = value;
   }
   updatePreview();
@@ -444,12 +449,12 @@ async function action(method, ...args) {
     if (snapshot) render(snapshot);
   }
 }
-for (const key of ["language", "display", "partials", "fontSize"]) {
+for (const key of ["language", "display", "translate", "partials", "fontSize"]) {
   $(key).addEventListener("input", updatePreview);
   $(key).addEventListener("change", () => {
     if (!api) return;
     const value =
-      key === "partials"
+      (key === "partials" || key === "translate")
         ? $(key).checked
         : key === "fontSize"
           ? Number($(key).value)
