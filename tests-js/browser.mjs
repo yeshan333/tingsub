@@ -15,6 +15,7 @@ try {
   await popup.goto(`chrome-extension://${id}/popup.html`);
   await popup.locator('h1').waitFor();
   assert.equal(await popup.locator('#display').inputValue(), 'zh-en');
+  assert.equal(await popup.locator('#translate').isChecked(),true);
   await popup.locator('#language').selectOption('ja');
   assert.equal(await worker.evaluate(async () => (await chrome.storage.local.get('language')).language), 'ja');
   await popup.screenshot({ path: '.local/popup.png' });
@@ -43,7 +44,7 @@ try {
   await popup.locator('#token').fill('ui-test-pairing');
   await popup.locator('#token').blur();
   await popup.waitForFunction(() => document.querySelector('#fontSize').value === '30');
-  assert.deepEqual(await worker.evaluate(() => globalThis.preferenceMigrations), [{ language: 'ja', display: 'zh-en', partials: true, fontSize: 26 }]);
+  assert.deepEqual(await worker.evaluate(() => globalThis.preferenceMigrations), [{ language: 'ja', display: 'zh-en', translate: true, partials: true, fontSize: 26 }]);
   assert.equal(await popup.locator('#display').inputValue(), 'source-zh');
   assert.equal(await popup.locator('#partials').isChecked(), false);
   await popup.locator('#language').selectOption('ja');
@@ -52,6 +53,12 @@ try {
   await popup.waitForFunction(async () => !(await chrome.storage.local.get('pendingPreferences')).pendingPreferences);
   assert.deepEqual(await worker.evaluate(() => globalThis.preferencePatches), [{ language: 'ja' }]);
 
+
+  await popup.locator('#translate').uncheck();
+  await popup.waitForFunction(async ()=>(await chrome.storage.local.get('translate')).translate === false);
+  assert.equal(await popup.locator('#display').isDisabled(),true);
+  await popup.reload();
+  assert.equal(await popup.locator('#translate').isChecked(),false,'旧服务未返回新字段时也应保留用户开关');
 
   // The renderer is exercised with explicit protocol fixtures, not claimed as ASR output.
   const page = await context.newPage();
@@ -77,6 +84,31 @@ try {
   assert.equal(await page.locator('.zh').textContent(), '今天我们来聊一聊新技术。');
   assert.equal(await page.locator('.second').textContent(), 'Today we will talk about new technology.');
   await page.screenshot({ path: '.local/overlay.png' });
+
+  // Same-language text is displayed once; Chinese is not duplicated while English is pending.
+  await send({type:'reset'});
+  await send({type:'translation_progress',id:1,source:'保留中文原句。',language:'zh',display:'zh-en',zh:'保留中文原句。',en:'',final:true});
+  assert.equal(await page.locator('.second').isVisible(),false);
+  assert.equal(await page.locator('.note').textContent(),'正在翻译英文…');
+  await send({type:'translation',id:1,source:'保留中文原句。',language:'zh',display:'zh-en',zh:'保留中文原句。',en:'Keep the original Chinese.',final:true});
+  assert.equal(await page.locator('.second').isVisible(),true);
+  await send({type:'reset'});
+  await send({type:'translation',id:1,source:'原文就是中文。',language:'zh',display:'source-zh',zh:'原文就是中文。',en:'',final:true});
+  assert.equal(await page.locator('.zh').textContent(),'原文就是中文。');
+  assert.equal(await page.locator('.second').isVisible(),false);
+  await send({type:'reset'});
+  await send({type:'translation',id:1,source:'今日は新しい技術について話します。',language:'ja',display:'zh-en',zh:'今天我们来聊一聊新技术。',en:'Today we will talk about new technology.',final:true});
+
+  await send({type:'reset'});
+  await send({type:'transcript',id:1,source:'原文草稿',translate:false,final:false});
+  assert.equal(await page.locator('.zh').textContent(),'原文草稿');
+  assert.equal(await page.locator('.second').isVisible(),false);
+  await send({type:'translation',id:1,source:'Keep the original words.',translate:false,final:true,translation_ms:0});
+  assert.equal(await page.locator('.zh').textContent(),'Keep the original words.');
+  assert.equal(await page.locator('.note').textContent(),'');
+  assert.equal(await page.locator('.second').isVisible(),false);
+  await send({type:'reset'});
+  await send({type:'translation',id:1,source:'今日は新しい技術について話します。',language:'ja',display:'zh-en',zh:'今天我们来聊一聊新技术。',en:'Today we will talk about new technology.',final:true});
 
   const stableRow = await page.locator('.row').elementHandle();
   await send({ type: 'transcript', id: 2, source: '<img src=x onerror="window.pwned=true">', final: true });

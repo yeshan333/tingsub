@@ -105,7 +105,7 @@
     const ordered = [...captions.values()].sort((a, b) => a.id - b.id);
     const latest = ordered.at(-1);
     // Keep the translated sentence readable while the next ASR draft is forming.
-    const caption = latest?.zh || latest?.error ? latest : ordered.findLast(item => item.zh) || latest;
+    const caption = latest?.translate === false || latest?.zh || latest?.error ? latest : ordered.findLast(item => item.zh) || latest;
     box.classList.toggle('idle', !caption);
     if (!caption) {
       if (!rows.querySelector('.empty')) {
@@ -125,18 +125,22 @@
     if (row.dataset.id !== String(caption.id)) { row.querySelectorAll('.zh,.second').forEach(el => { el.scrollTop = 0; }); box.classList.remove('expanded'); shadow.querySelector('.expand').setAttribute('aria-expanded', 'false'); shadow.querySelector('.expand').textContent = '展开长句'; }
     row.dataset.id = caption.id;
     const zh = row.querySelector('.zh'), second = row.querySelector('.second'), note = row.querySelector('.note');
-    const text = caption.display === 'source-zh' ? caption.source : caption.en || caption.source;
-    if (zh.textContent !== (caption.zh || '')) zh.textContent = caption.zh || '';
+    const sourceOnly = caption.translate === false;
+    const sameChinese = caption.language === 'zh' && Boolean(caption.zh);
+    const text = sourceOnly ? '' : caption.display === 'source-zh' ? (sameChinese ? '' : caption.source) : caption.en || (sameChinese ? '' : caption.source);
+    second.hidden = sourceOnly || (!text && Boolean(caption.zh));
+    const primary = sourceOnly ? caption.source || '' : caption.zh || '';
+    if (zh.textContent !== primary) zh.textContent = primary;
     if (second.textContent !== (text || '')) second.textContent = text || '';
     note.classList.toggle('error', Boolean(caption.error));
-    note.textContent = caption.error ? `翻译失败：${caption.error}` : !caption.zh ? caption.final ? '正在翻译…' : '识别中…' : '';
+    note.textContent = caption.error ? `翻译失败：${caption.error}` : sourceOnly ? caption.final ? '' : '识别中…' : !caption.zh ? caption.final ? '正在翻译…' : '识别中…' : sameChinese && caption.display !== 'source-zh' && !caption.en && caption.type !== 'translation' ? '正在翻译英文…' : '';
     draft.textContent = latest !== caption && latest.source ? '识别中 · ' + latest.source : '';
     schedulePosition();
   }
   function receive(event) {
     if (event.metrics) {
       const c = event.metrics.counts || {};
-      stats.textContent = `已译 ${c.translated || 0} · 低置信度 ${c.low_confidence || 0} · 重复异常 ${c.repetition || 0} · 无人声/空结果 ${(c.silence || 0) + (c.empty || 0)} · 过期 ${c.dropped || 0}`;
+      stats.textContent = `仅识别 ${c.transcribed || 0} · 已译 ${c.translated || 0} · 低置信度 ${c.low_confidence || 0} · 重复异常 ${c.repetition || 0} · 无人声/空结果 ${(c.silence || 0) + (c.empty || 0)} · 过期 ${c.dropped || 0}`;
     }
     if (event.type === 'notice') { state.textContent = event.message; return; }
     if (event.type === 'reset') {
@@ -187,7 +191,7 @@
     if (event.type === 'translation') {
       const lag = Math.max(0, Date.now() - event.speech_end_ms);
       const first = caption.firstZh === undefined ? '' : `本段首字 ${(caption.firstText / 1000).toFixed(1)}s · 首中 ${(caption.firstZh / 1000).toFixed(1)}s · `;
-      state.textContent = `${first}句尾 ${(lag / 1000).toFixed(1)}s · 识别 ${event.asr_ms}ms · 翻译 ${event.translation_ms}ms`;
+      state.textContent = event.translate === false ? `仅识别 · 识别 ${event.asr_ms}ms` : `${first}句尾 ${(lag / 1000).toFixed(1)}s · 识别 ${event.asr_ms}ms · 翻译 ${event.translation_ms}ms`;
     }
     mount(); render();
   }
