@@ -22,7 +22,8 @@ TingSub is an early-stage Chrome extension and local MLX service for Apple Silic
 ## What it does
 
 - English / Japanese input, including automatic language detection per segment.
-- Optional recognition drafts, early Chinese output, then complete bilingual captions.
+- Optional recognition drafts, early Chinese output, then complete bilingual captions. Turn translation off to show recognized speech only.
+- Desktop model selection, download progress, official/community/custom download sources, and Finder shortcuts for models and logs.
 - Bounded queues and visible overload/rejection counts, so slow inference cannot silently accumulate an endless backlog.
 - Per-segment first-text, first-Chinese and speech-end latency; a local pairing code protects the inference connection.
 - One active tab at a time, without microphone access.
@@ -33,9 +34,19 @@ The desktop UI supports English and Simplified Chinese. The extension UI and mos
 
 The standalone App/DMG includes its runtime and browser extension: no Python or uv installation needed. Choose and download models, then pair Chrome in the [desktop guide](docs/en/desktop.md). Current builds are not Apple-notarized; maintainers can follow the [distribution guide](docs/en/distribution.md).
 
-For development, run from source:
+### Product screenshots
 
-A quiet workspace for caption preferences, model preparation, service control and browser pairing. English/Chinese UI, dark/light appearance, system WebKit, and the same local MLX inference.
+**Caption workspace** — preview the caption style, choose languages, enable or disable translation, and control the local service.
+
+![TingSub caption workspace in English with bilingual sample text](docs/assets/screenshots/captions-en.png)
+
+**Local models** — browse speech and translation models, choose a download source, see the storage path, and open the model folder in Finder. You can browse while the service runs; stop it before applying a different pair.
+
+![TingSub local model selection, download source and model storage shortcut](docs/assets/screenshots/models-en.png)
+
+These screenshots render the current desktop interface with example model availability and sample captions, not a live transcription or performance result. To refresh them from a development checkout: `node scripts/capture-desktop.mjs` (requires uv, npm dependencies and Playwright Chromium).
+
+For development, run from source:
 
 ```sh
 uv run --frozen --extra desktop tingsub gui

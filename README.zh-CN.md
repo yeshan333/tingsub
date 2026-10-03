@@ -22,7 +22,8 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 ## 功能
 
 - 英语／日语输入，支持逐片段自动识别语言。
-- 可选识别草稿，中文先显示，再补齐双语字幕。
+- 可选识别草稿，中文先显示，再补齐双语字幕；也可关闭翻译，只显示识别原文。
+- 桌面选择模型、查看下载进度，支持官方／社区镜像／自定义下载源，一键定位模型和日志。
 - 有界队列及可见的过载、拒绝计数，避免推理变慢时不断累积延迟。
 - 显示本段首字、首个中文、句尾延迟；通过本机配对码认证推理连接。
 - 一次处理一个标签页，不使用麦克风。
@@ -33,9 +34,19 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 
 独立 App/DMG 内置运行环境和浏览器插件，无需安装 Python 或 uv。首次打开后在界面中选择、下载模型并配对 Chrome，见[桌面指南](docs/zh-CN/desktop.md)。当前构建尚未 Apple 公证；维护者构建方式见[分发指南](docs/zh-CN/distribution.md)。
 
-下面是开发者从源码启动的方式：
+### 产品截图
 
-深色工作空间、字幕样式预览、模型准备、服务启停和浏览器配对，支持中英文及深浅外观。使用系统 WebKit，继续沿用本地 MLX 推理。
+**字幕工作台**：预览字幕样式、选择语言、控制是否翻译，以及启动或停止本地服务。
+
+![TingSub 中文字幕工作台，展示双语示例文字和字幕偏好](docs/assets/screenshots/captions-zh-CN.png)
+
+**本地模型**：浏览识别和翻译模型、选择下载源、查看保存路径，并在 Finder 中打开模型目录。服务运行时也能浏览，停止后再应用新模型。
+
+![TingSub 本地模型页面，展示模型选择、下载源和模型目录入口](docs/assets/screenshots/models-zh-CN.png)
+
+截图来自当前桌面界面，模型就绪状态和字幕文字用于展示，不代表真实转录或性能结果。在开发环境运行 `node scripts/capture-desktop.mjs` 可重新生成；需要 uv、npm 依赖及 Playwright Chromium。
+
+下面是开发者从源码启动的方式：
 
 ```sh
 uv run --frozen --extra desktop tingsub gui
