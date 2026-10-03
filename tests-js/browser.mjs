@@ -65,10 +65,11 @@ try {
   await send({ type: 'reset', fontSize: 26 });
   await send({ type: 'state', state: 'running', message: '渲染测试 · 协议数据' });
   await send({ type: 'transcript', id: 1, source: '今日は新しい技術について話します。', language: 'ja', final: false, display: 'zh-en' });
-  assert.match(await page.locator('.row .note').textContent(), /识别草稿/);
+  assert.match(await page.locator('.row .note').textContent(), /识别中/);
   await send({ type: 'translation_progress', id: 1, zh: '今天我们来聊一聊新技术。', en: '', final: true, speech_start_ms: Date.now() - 3200 });
   assert.equal(await page.locator('.zh').textContent(), '今天我们来聊一聊新技术。');
-  assert.match(await page.locator('.row .note').textContent(), /中文先行/);
+  assert.equal(await page.locator('.row .note').textContent(), '');
+  assert.equal(await page.locator('.diagnostics').isVisible(), false);
   assert.match(await page.locator('.state').textContent(), /首个中文/);
   await send({ type: 'translation', id: 1, source: '今日は新しい技術について話します。', zh: '今天我们来聊一聊新技术。', en: 'Today we will talk about new technology.', final: true, display: 'zh-en', speech_end_ms: Date.now() - 900, asr_ms: 320, translation_ms: 260 });
   await send({ type: 'transcript', id: 1, source: 'obsolete draft', final: false });
@@ -77,11 +78,16 @@ try {
   assert.equal(await page.locator('.second').textContent(), 'Today we will talk about new technology.');
   await page.screenshot({ path: '.local/overlay.png' });
 
+  const stableRow = await page.locator('.row').elementHandle();
   await send({ type: 'transcript', id: 2, source: '<img src=x onerror="window.pwned=true">', final: true });
+  assert.equal(await page.locator('.zh').textContent(), '今天我们来聊一聊新技术。');
+  assert.match(await page.locator('.draft').textContent(), /<img/);
+  assert.equal(await stableRow.evaluate(el => el.isConnected), true);
   assert.equal(await page.locator('#tingqiao-local-captions img').count(), 0);
   assert.equal(await page.evaluate(() => Boolean(window.pwned)), false);
   await send({ type: 'transcript', id: 3, source: 'new sentence', final: true });
-  assert.equal(await page.locator('.row').count(), 2);
+  assert.equal(await page.locator('.row').count(), 1);
+  assert.equal(await page.locator('.second').textContent(), 'new sentence');
   await send({ type: 'translation', id: 1, zh: 'late old result', final: true });
   assert.equal(await page.locator('.row[data-id="1"]').count(), 0);
   await send({ type: 'error', id: 3, message: '本地模型失败' });
