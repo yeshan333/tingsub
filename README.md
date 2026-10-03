@@ -11,6 +11,8 @@
 
 # TingSub · 听桥
 
+[Product homepage](https://shansan.top/tingsub/en/) · [Website maintenance](docs/en/website.md)
+
 Turn English and Japanese browser audio into **Chinese + English live captions**, with speech recognition and translation running on your Mac. Choose **Chinese + original** to keep Japanese speech in Japanese.
 
 TingSub is an early-stage Chrome extension and local MLX service for Apple Silicon. It captures the tab you select, preserves audio playback, and displays draggable captions over the page, including YouTube fullscreen. It does not require existing YouTube captions.
