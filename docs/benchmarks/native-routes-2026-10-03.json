@@ -1,0 +1,5797 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-03",
+  "production_commit": "eda8e783f916c52239cfe6966439478045421b6f",
+  "hardware": {
+    "chip": "Apple M4 Pro",
+    "memory_gb": 48,
+    "platform": "macOS-27.0.1-arm64-arm-64bit"
+  },
+  "runtime_versions": {
+    "python": "3.12.11",
+    "mlx": "0.32.3",
+    "mlx-whisper": "0.4.3",
+    "mlx-lm": "0.32.0",
+    "numpy": "2.5.3",
+    "webrtcvad-wheels": "2.0.14.post1",
+    "httpx": "0.28.1",
+    "swift": "6.4 (swiftlang-6.4.0.34.1)",
+    "cargo": "1.88.0",
+    "llama_cpp_ggml": "0.25.3"
+  },
+  "provenance": {
+    "whisperkit": {
+      "source_commit": "f4e5d6be37ec820614fb0d72037e76c22d4c16f7",
+      "model_repo": "argmaxinc/whisperkit-coreml",
+      "model_revision": "0f63a7800b00dd0226abd051b906c246e1907482",
+      "model_variant": "openai_whisper-large-v3-v20240930_626MB",
+      "compute": "mel CPU/GPU; encoder and decoder CPU/NeuralEngine (library defaults; device utilization not profiled)"
+    },
+    "mlx_swift_lm": {
+      "source_commit": "55db72131169e2af11ba86eac202aeb654a7ab1a",
+      "model": {
+        "repo": "mlx-community/Qwen2.5-3B-Instruct-4bit",
+        "revision": "4f83f8f146fdf28b512a06562b671d7af4fab457"
+      }
+    },
+    "llama_cpp": {
+      "source_commit": "b92761a515ea31e852e7fbc1fad5f874b46f3718",
+      "model_repo": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+      "model_revision": "7dabda4d13d513e3e842b20f0d435c732f172cbe",
+      "model_file": "qwen2.5-3b-instruct-q4_k_m.gguf",
+      "sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
+    },
+    "whisper_cpp": {
+      "repo": "ggerganov/whisper.cpp",
+      "revision": "5359861c739e955e79d9a303bcbc70fb988958b1",
+      "whisper_cpp_version": "1.8.4",
+      "whisper_cpp_commit": "9386f239401074690479731c1e41683fbbeac557",
+      "ggml_version": "0.11.0",
+      "model_file": "ggml-large-v3-turbo-q5_0.bin",
+      "coreml_bundle": "ggml-large-v3-turbo-encoder.mlmodelc",
+      "coreml_allow_fallback": false,
+      "model_sha256": "394221709cd5ad1f40c46e6031ca61bce88931e6e088c188294c6d5a55ffa7e2"
+    },
+    "tokenizer": {
+      "repo": "openai/whisper-large-v3-turbo",
+      "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9"
+    }
+  },
+  "fixtures": [
+    {
+      "id": "en-natural-0",
+      "language": "en",
+      "kind": "human read speech",
+      "dataset": "hf-internal-testing/librispeech_asr_dummy",
+      "config": "clean",
+      "split": "validation",
+      "row": 0,
+      "revision": "5be91486e11a2d616f4ec5db8d3fd248585ac07a",
+      "download_sha256": "4e25e22555cd16e90edb0a3b49fdcf1fe652b2a1250ab643634db33895c75b41",
+      "pcm_file_sha256": "bf964d77ca0de8e384e98ddf741f630548e91f97201a4ad991522cd59366e533",
+      "duration_seconds": 5.855
+    },
+    {
+      "id": "en-natural-1",
+      "language": "en",
+      "kind": "human read speech",
+      "dataset": "hf-internal-testing/librispeech_asr_dummy",
+      "config": "clean",
+      "split": "validation",
+      "row": 1,
+      "revision": "5be91486e11a2d616f4ec5db8d3fd248585ac07a",
+      "download_sha256": "46a9d58622b4675b29564da2d9ba73e702241c5fa969f12c387cad4aa984276a",
+      "pcm_file_sha256": "6b52e5626968ee5d914a17b26f6091ed9280574be4ec06d0196dc7dba3639daa",
+      "duration_seconds": 4.815
+    },
+    {
+      "id": "en-natural-2",
+      "language": "en",
+      "kind": "human read speech",
+      "dataset": "hf-internal-testing/librispeech_asr_dummy",
+      "config": "clean",
+      "split": "validation",
+      "row": 2,
+      "revision": "5be91486e11a2d616f4ec5db8d3fd248585ac07a",
+      "download_sha256": "59bf7bb1129c11734a8dd362ad52b4e10ae31c03f0879fc92f7107ecd513513f",
+      "pcm_file_sha256": "95bb02555ac31323de4fc70cdb0c01f0a00638fe35b6f786544a7c39f505c506",
+      "duration_seconds": 12.485
+    },
+    {
+      "id": "ja-natural-0",
+      "language": "ja",
+      "kind": "human read speech",
+      "dataset": "japanese-asr/ja_asr.jsut_basic5000",
+      "config": "default",
+      "split": "test",
+      "row": 0,
+      "revision": "278db379fc96167ff2293d7abf9ab86976afcd78",
+      "download_sha256": "11f13d4b52cecdb330cb3d87026a23d2c62fb4c91b0bb9c197319dbdb4f678ed",
+      "pcm_file_sha256": "b5ed8cc2c3b56462410c4f7c509d7a992236a71075e42e01d32b90fabf9d7e89",
+      "duration_seconds": 3.19
+    },
+    {
+      "id": "ja-natural-1",
+      "language": "ja",
+      "kind": "human read speech",
+      "dataset": "japanese-asr/ja_asr.jsut_basic5000",
+      "config": "default",
+      "split": "test",
+      "row": 1,
+      "revision": "278db379fc96167ff2293d7abf9ab86976afcd78",
+      "download_sha256": "69faa5f58d67b2c487e223934e2fdc78a6d42b9b1ca208feac4d817e0a172b6d",
+      "pcm_file_sha256": "75db7f34091b5a684a44455c7fb45a35dd9916ad2a9fdd4904e98e35978bbffa",
+      "duration_seconds": 4.9
+    },
+    {
+      "id": "ja-natural-2",
+      "language": "ja",
+      "kind": "human read speech",
+      "dataset": "japanese-asr/ja_asr.jsut_basic5000",
+      "config": "default",
+      "split": "test",
+      "row": 2,
+      "revision": "278db379fc96167ff2293d7abf9ab86976afcd78",
+      "download_sha256": "1a71e3ac25f02530bafd15a93b165680d10c685e2022ea351bb99a5289f06305",
+      "pcm_file_sha256": "a99762ab0b39375def0483cfe9ce4b104b2d57babfe57e75bbc7be73135f1f9c",
+      "duration_seconds": 3.82
+    },
+    {
+      "id": "en-tts",
+      "language": "en",
+      "kind": "macOS TTS",
+      "voice": "Samantha",
+      "pcm_file_sha256": "e12ad701d17505e3728246a264f9a5f448fffcdbefde73fdc4965014e24bbb4a",
+      "duration_seconds": 3.820125
+    },
+    {
+      "id": "ja-tts",
+      "language": "ja",
+      "kind": "macOS TTS",
+      "voice": "Kyoko",
+      "pcm_file_sha256": "8b128426e2a0d4250b5c1c49abd815d58c45a821569eede51698fdd1e5c83a27",
+      "duration_seconds": 4.9718125
+    }
+  ],
+  "scope": "Component pilots with resident Swift and Rust workers. Python only orchestrates the comparison. Not a native production service or browser end-to-end benchmark.",
+  "notes": [
+    "No concurrent inference or native compilation during measured runs. Idle local native servers stayed loaded.",
+    "Same 8 recordings/references and fixed input languages; repeated samples are not independent speech.",
+    "Native timings include process IPC, WAV file IO for ASR, and loopback HTTP for Rust.",
+    "WhisperKit compressed Core ML weights, MLX 4-bit, and native GGML/GGUF weights are not identical.",
+    "Translation uses whole reference text, identical production prompt IDs, max 256 tokens, temperature 0, fresh KV per request for every backend. GGUF token IDs were verified against the MLX tokenizer.",
+    "Translation successes mean parseable JSON fields, NOT semantic accuracy. Original meeting smoke requirements were applied to saved outputs after inference. Semantic failures do not count as quality passes.",
+    "No general human translation score, browser timing, power, peak memory, or isolated Rust orchestration overhead measurement."
+  ],
+  "runs": [
+    {
+      "mode": "asr",
+      "route": "rust",
+      "repeats": 3,
+      "whole_utterance": false,
+      "max_seconds": 3,
+      "prompt_cache": "fresh per translation request, all backends",
+      "input_language": "fixed",
+      "browser_end_to_end": false,
+      "summary": {
+        "mlx/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.05714285714285714,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 490.52,
+            "p95": 497.21
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 24
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 492.47,
+            "p95": 505.26
+          }
+        },
+        "rust/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.07142857142857142,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 478.71,
+            "p95": 498.53
+          }
+        },
+        "rust/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 21,
+            "low_confidence": 3
+          },
+          "error_rate": 0.30434782608695654,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 486.11,
+            "p95": 503.3
+          }
+        }
+      },
+      "id": "phase2-rust-asr",
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 492.82,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.18,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 481.33,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 477.4,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 493.12,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.77,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 477.54,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 467.99,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 502.43,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.89,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.47,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 486.9,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.12,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 484.91,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 478.29,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 463.91,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 475.69,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 468.93,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 497.36,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.99,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 489.43,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 469.54,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 495.6,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 490.95,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 487.61,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.0,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 496.15,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.78,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 498.3,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 460.07,
+              "reason": "low_confidence",
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 490.52,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 486.13,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 476.7,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 466.42,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 498.0,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 491.43,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 483.94,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 479.32,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 480.94,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 474.99,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 492.65,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 493.06,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 485.85,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.96,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 493.8,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.88,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 485.46,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 490.1,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 472.89,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 497.03,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.69,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 491.63,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.95,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.94,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 493.3,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 496.6,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 497.33,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.03,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 499.0,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.72,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 497.69,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 502.36,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 500.41,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 492.47,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 503.3,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 473.19,
+              "reason": "low_confidence",
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 505.26,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.93,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 478.71,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 486.78,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 497.21,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 490.7,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 525.69,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 486.11,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 496.91,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 490.37,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 495.29,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 491.89,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 513.72,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.32,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 492.58,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.17,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 491.09,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 470.83,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 492.12,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.14,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.53,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 485.16,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.45,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 485.46,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 498.53,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 477.82,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 471.55,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 476.07,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 512.24,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 478.23,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 498.53,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 474.21,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 502.69,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.21,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 494.01,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.66,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 503.86,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.56,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 497.48,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 461.99,
+              "reason": "low_confidence",
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 492.74,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 481.75,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 479.43,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 474.51,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 493.36,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 491.25,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "rust",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 483.19,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 484.78,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "asr",
+      "route": "swift",
+      "repeats": 3,
+      "whole_utterance": false,
+      "max_seconds": 3,
+      "prompt_cache": "fresh per translation request, all backends",
+      "input_language": "fixed",
+      "browser_end_to_end": false,
+      "summary": {
+        "mlx/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.05714285714285714,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 487.91,
+            "p95": 508.65
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 24
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 489.52,
+            "p95": 517.55
+          }
+        },
+        "swift/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 30,
+            "empty": 3
+          },
+          "error_rate": 0.07142857142857142,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 691.3,
+            "p95": 716.3
+          }
+        },
+        "swift/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 15,
+            "empty": 9
+          },
+          "error_rate": 0.4673913043478261,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 662.55,
+            "p95": 769.23
+          }
+        }
+      },
+      "whisperkit_default_gates": true,
+      "id": "phase2-swift-asr-default-gates",
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 507.26,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.47,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 713.99,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 693.33,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 506.16,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.68,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 2,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 715.13,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 653.59,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 503.92,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 492.42,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.22,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 486.55,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.55,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 5,
+            "recognized": 4,
+            "empty": 1
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 712.56,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 684.1,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 619.51,
+              "reason": "empty",
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 690.86,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 670.15,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 512.94,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 480.77,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 752.62,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 658.14,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 506.51,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.53,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "empty": 2
+          },
+          "edits": 23,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 619.64,
+              "reason": "empty",
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 619.82,
+              "reason": "empty",
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 511.07,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.83,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "empty": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 767.97,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 618.91,
+              "reason": "empty",
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 504.51,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 485.08,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 705.68,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 660.13,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 508.98,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 488.41,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 713.19,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 707.21,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 717.83,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 691.3,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 507.0,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.53,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 2,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 713.62,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 650.29,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 508.65,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.32,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 5,
+            "recognized": 4,
+            "empty": 1
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 713.99,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 684.6,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 620.66,
+              "reason": "empty",
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 694.39,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 669.0,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 520.23,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.49,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.25,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 487.98,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.47,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 765.75,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 662.55,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 518.94,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.28,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "empty": 2
+          },
+          "edits": 23,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 617.62,
+              "reason": "empty",
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 618.84,
+              "reason": "empty",
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 512.17,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.4,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "empty": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 769.23,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 619.46,
+              "reason": "empty",
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 515.36,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.87,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 696.61,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 666.14,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 504.71,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 489.18,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 714.79,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 711.2,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 515.68,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 488.21,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 492.86,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.32,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 716.3,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 693.77,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 505.49,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.44,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 2,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 713.6,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 651.46,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 508.63,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.82,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.69,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 487.91,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.73,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 5,
+            "recognized": 4,
+            "empty": 1
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 712.7,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 682.95,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 619.65,
+              "reason": "empty",
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 692.37,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 670.41,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 509.55,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.17,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 751.82,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 658.22,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 517.55,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.4,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "empty": 2
+          },
+          "edits": 23,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 616.85,
+              "reason": "empty",
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 618.84,
+              "reason": "empty",
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 508.47,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.51,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "empty": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 771.5,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 619.82,
+              "reason": "empty",
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 501.1,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 487.61,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 699.37,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 661.04,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 509.79,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 489.52,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 718.74,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 708.79,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "asr",
+      "route": "swift",
+      "repeats": 3,
+      "whole_utterance": false,
+      "max_seconds": 3,
+      "prompt_cache": "fresh per translation request, all backends",
+      "input_language": "fixed",
+      "browser_end_to_end": false,
+      "whisperkit_default_gates": false,
+      "summary": {
+        "mlx/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.05714285714285714,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 489.72,
+            "p95": 507.4
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 24
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 492.62,
+            "p95": 512.82
+          }
+        },
+        "swift/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.07142857142857142,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 693.35,
+            "p95": 718.55
+          }
+        },
+        "swift/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 24
+          },
+          "error_rate": 0.45652173913043476,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 710.23,
+            "p95": 773.45
+          }
+        }
+      },
+      "id": "phase2-swift-asr-aligned",
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 506.47,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.6,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 718.39,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 697.8,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 506.83,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.44,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 2,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 717.93,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 653.96,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 504.57,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 490.17,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 490.62,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 490.26,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.27,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 718.55,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 687.99,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 639.42,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 696.29,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 672.39,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 506.27,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.15,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 761.73,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 663.25,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 508.74,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.43,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 752.15,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 704.18,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 511.26,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.65,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 19,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 777.29,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 663.45,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 507.11,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 483.05,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 705.4,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 664.54,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 508.91,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 491.83,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 715.46,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 710.23,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 718.53,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 693.35,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 507.4,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.09,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 2,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 713.68,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 653.08,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 503.51,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.14,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 734.5,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 684.2,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 637.41,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 693.2,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 670.33,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 506.24,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.99,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.65,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 487.8,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.87,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 755.17,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 662.86,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 509.84,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.2,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 748.02,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 701.99,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 506.53,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.18,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 19,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 773.45,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 662.02,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 512.62,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.91,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 699.69,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 661.33,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 511.85,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 482.58,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 716.35,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 709.75,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 504.46,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 489.85,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 489.72,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 490.18,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 716.59,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 694.04,
+              "reason": null,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 505.91,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.55,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 2,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 716.53,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 654.08,
+              "reason": null,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 506.48,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.77,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.01,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 484.56,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 490.71,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 712.91,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 689.03,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 639.13,
+              "reason": null,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 693.72,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 669.94,
+              "reason": null,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 512.82,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 476.93,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 756.11,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 661.22,
+              "reason": null,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 510.44,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.12,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 747.79,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 701.82,
+              "reason": null,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 513.33,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.17,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 19,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 772.07,
+              "reason": null,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 661.43,
+              "reason": null,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 502.16,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 484.75,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 700.11,
+              "reason": null,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 661.48,
+              "reason": null,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 510.06,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 492.62,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 715.22,
+              "reason": null,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 709.17,
+              "reason": null,
+              "audio_ms": 2340
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "asr",
+      "route": "swift",
+      "repeats": 2,
+      "whole_utterance": true,
+      "max_seconds": 3,
+      "prompt_cache": "fresh per translation request, all backends",
+      "input_language": "fixed",
+      "browser_end_to_end": false,
+      "whisperkit_default_gates": false,
+      "summary": {
+        "mlx/en": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.04285714285714286,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 510.58,
+            "p95": 533.5
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.043478260869565216,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 510.58,
+            "p95": 514.22
+          }
+        },
+        "swift/en": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.04285714285714286,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 739.61,
+            "p95": 905.88
+          }
+        },
+        "swift/ja": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.03260869565217391,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 775.16,
+            "p95": 805.72
+          }
+        }
+      },
+      "inference_and_content_checks_passed": true,
+      "id": "phase2-swift-asr-whole",
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 513.1,
+              "reason": null,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 764.75,
+              "reason": null,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 510.58,
+              "reason": null,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 715.85,
+              "reason": null,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 533.5,
+              "reason": null,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 902.6,
+              "reason": null,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 508.68,
+              "reason": null,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 761.99,
+              "reason": null,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 514.22,
+              "reason": null,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 805.72,
+              "reason": null,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 507.5,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 773.16,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 502.3,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 737.09,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 514.03,
+              "reason": null,
+              "audio_ms": 5972
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 803.6,
+              "reason": null,
+              "audio_ms": 5972
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 766.42,
+              "reason": null,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 519.05,
+              "reason": null,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 717.39,
+              "reason": null,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 505.79,
+              "reason": null,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 905.88,
+              "reason": null,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 529.15,
+              "reason": null,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 761.14,
+              "reason": null,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 506.21,
+              "reason": null,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 801.49,
+              "reason": null,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 514.03,
+              "reason": null,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 775.16,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 510.58,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 739.61,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 503.04,
+              "reason": null,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 803.73,
+              "reason": null,
+              "audio_ms": 5972
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 511.91,
+              "reason": null,
+              "audio_ms": 5972
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "translation",
+      "route": "rust",
+      "repeats": 3,
+      "whole_utterance": false,
+      "max_seconds": 3,
+      "prompt_cache": "fresh per translation request, all backends",
+      "input_language": "fixed",
+      "browser_end_to_end": false,
+      "summary": {
+        "mlx/en": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 319.76,
+          "p95_ms": 544.02,
+          "content_checked": 3,
+          "content_passed": 3
+        },
+        "mlx/ja": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 423.15,
+          "p95_ms": 535.37,
+          "content_checked": 3,
+          "content_passed": 0
+        },
+        "rust/en": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 360.34,
+          "p95_ms": 571.31,
+          "content_checked": 3,
+          "content_passed": 3
+        },
+        "rust/ja": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 552.96,
+          "p95_ms": 602.15,
+          "content_checked": 3,
+          "content_passed": 0
+        }
+      },
+      "content_scoring": "Post-run scoring of saved real outputs, reusing the existing meeting smoke-test requirements. Not human translation scoring.",
+      "id": "phase2-rust-translation",
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 376.92,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 404.82,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 317.82,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 360.31,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 544.02,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 570.11,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 386.99,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 419.28,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 526.9,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 563.73,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 423.15,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 602.15,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 292.95,
+          "content_issues": []
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 318.49,
+          "content_issues": []
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 534.82,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 565.41,
+          "content_issues": [
+            "invented_day_period"
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 403.44,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 370.65,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 360.34,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 319.76,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 560.97,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 543.1,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 420.21,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 394.82,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 563.59,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 506.52,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 470.66,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 418.74,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 318.73,
+          "content_issues": []
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 286.5,
+          "content_issues": []
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 552.96,
+          "content_issues": [
+            "invented_day_period"
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 524.5,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 357.79,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 391.23,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 311.42,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 359.07,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 541.98,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 571.31,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 386.55,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 418.02,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 518.64,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 572.57,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 422.13,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 475.47,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 292.75,
+          "content_issues": []
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 316.68,
+          "content_issues": []
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 535.37,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "rust",
+          "success": true,
+          "translation_ms": 569.52,
+          "content_issues": [
+            "invented_day_period"
+          ]
+        }
+      ],
+      "inference_and_content_checks_passed": false
+    },
+    {
+      "mode": "translation",
+      "route": "swift",
+      "repeats": 3,
+      "whole_utterance": false,
+      "max_seconds": 3,
+      "prompt_cache": "fresh per translation request, all backends",
+      "input_language": "fixed",
+      "browser_end_to_end": false,
+      "summary": {
+        "mlx/en": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 317.66,
+          "p95_ms": 542.72,
+          "content_checked": 3,
+          "content_passed": 3
+        },
+        "mlx/ja": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 423.19,
+          "p95_ms": 534.6,
+          "content_checked": 3,
+          "content_passed": 0
+        },
+        "swift/en": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 327.5,
+          "p95_ms": 550.21,
+          "content_checked": 3,
+          "content_passed": 3
+        },
+        "swift/ja": {
+          "attempts": 12,
+          "successes": 12,
+          "p50_ms": 493.68,
+          "p95_ms": 550.3,
+          "content_checked": 3,
+          "content_passed": 0
+        }
+      },
+      "content_scoring": "Post-run scoring of saved real outputs, reusing the existing meeting smoke-test requirements. Not human translation scoring.",
+      "id": "phase2-swift-translation",
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 412.29,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 374.3,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 316.18,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 327.5,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 542.06,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 548.96,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 387.28,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 397.51,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 514.29,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 530.67,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 423.19,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 493.68,
+          "content_issues": null
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 289.49,
+          "content_issues": []
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 300.6,
+          "content_issues": []
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 530.71,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 550.3,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 367.11,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 358.25,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 326.23,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 311.13,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 548.71,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 539.82,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 401.73,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 383.08,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 535.46,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 511.42,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 432.62,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 421.02,
+          "content_issues": null
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 299.32,
+          "content_issues": []
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 290.23,
+          "content_issues": []
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 546.48,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 534.6,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 362.01,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 372.83,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 317.66,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 326.88,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 542.72,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 550.21,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 386.17,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 401.56,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 509.49,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 533.03,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 418.81,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 435.67,
+          "content_issues": null
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 287.69,
+          "content_issues": []
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "language": "en",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 301.66,
+          "content_issues": []
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "mlx",
+          "success": true,
+          "translation_ms": 534.45,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "language": "ja",
+          "backend": "swift",
+          "success": true,
+          "translation_ms": 550.19,
+          "content_issues": [
+            "missing_chinese_time",
+            "missing_chinese_meeting"
+          ]
+        }
+      ],
+      "inference_and_content_checks_passed": false
+    }
+  ]
+}
