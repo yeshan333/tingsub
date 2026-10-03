@@ -45,9 +45,23 @@ def english_time(word: str, number: int) -> str:
 
 def english_period(word: str, number: int, period: str) -> str:
     day_word = "morning" if period == "am" else "afternoon"
-    # Bare 'am' is also an English verb; an abbreviation must follow the hour.
+    clock = english_hour(word, number) + r"(?:\s+o['’]clock)?"
+    # Bind both abbreviations and words to this clock expression; a period in
+    # another clause must not repair the wrong time of day in the checked fact.
     abbreviation = rf"{period[0]}\.?\s*m\.?(?![a-z])"
-    return rf"(?:\b{day_word}\b|{english_hour(word, number)}\s*{abbreviation})"
+    after = rf"{clock}\s*(?:{abbreviation}|(?:in\s+the\s+|this\s+|tomorrow\s+)?{day_word}\b)"
+    before = rf"\b{day_word}\s+at\s+{clock}"
+    return rf"(?:{after}|{before})"
+
+
+def chinese_api_non_use() -> str:
+    # Match the app/verb/API relationship in this authored case, not the noun
+    # phrase '没有使用价值' (no utility) or the API acting on the app.
+    app = r"(?:这个|该)?应用(?:程序)?"
+    api = r"OpenAI\s*(?:的\s*)?API(?:\s*接口)?"
+    active = rf"{app}\s*(?:没有|未|不)\s*(?:在\s*)?使用\s*{api}"
+    passive = rf"{api}\s*(?:没有|未)\s*被\s*{app}\s*使用"
+    return rf"(?:{active}|{passive})(?=\s*(?:[。！？，、；,.!?;]|$))"
 
 
 CASES = [
@@ -112,7 +126,7 @@ CASES = [
     Case(
         "日语技术名称保留拉丁专名且保留未使用的否定",
         "このアプリはOpenAIのAPIを使っていません。", "ja",
-        ("应用", "OpenAI", "API", "没有使用|未使用|不使用"),
+        (chinese_api_non_use(),),
         ("app", "OpenAI", "API", r"\b(?:not\s+(?:use|using)|doesn['’]t\s+use)\b"),
         latin_names=("OpenAI", "API"),
     ),

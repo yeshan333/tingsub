@@ -148,3 +148,52 @@ def test_reuse_warmup_fails_if_the_engine_does_not_populate_both_prompt_variants
 
     with pytest.raises(AssertionError, match="both prompt variants"):
         checks["prime_translation_caches"](MissingBilingualCache())
+
+
+@pytest.mark.parametrize(
+    "case,chinese,english",
+    [
+        (MEETING, "会议下午三点开始。请带电脑。",
+         "The meeting starts at three in the morning. Please bring your computer this afternoon."),
+        (MORNING, "明天上午八点在车站见。",
+         "Let's meet at the station at eight in the afternoon tomorrow. I leave in the morning."),
+    ],
+    ids=["unrelated-afternoon-does-not-fix-morning-meeting",
+         "unrelated-morning-does-not-fix-afternoon-meeting"],
+)
+def test_explicit_period_checker_rejects_the_right_period_on_an_unrelated_fact(
+    case, chinese, english,
+):
+    assert check_result(case, {"zh": chinese, "en": english})
+
+
+@pytest.mark.parametrize(
+    "english",
+    [
+        "The meeting starts at three o'clock in the afternoon. Please bring your computer.",
+        "The meeting starts this afternoon at three. Please bring your computer.",
+        "The meeting starts at three this afternoon. Please bring your computer.",
+    ],
+    ids=["period-after-clock", "period-before-clock", "this-afternoon-after-clock"],
+)
+def test_explicit_period_checker_accepts_the_afternoon_qualifying_three_oclock(english):
+    assert check_result(MEETING, {"zh": "会议下午三点开始。请带电脑。", "en": english}) == []
+
+
+@pytest.mark.parametrize(
+    "chinese,accepted",
+    [
+        ("这个应用没有使用OpenAI的API。", True),
+        ("这个应用程序未使用 OpenAI API。", True),
+        ("该应用不使用OpenAI的API。", True),
+        ("OpenAI的API没有被这个应用使用。", True),
+        ("这个应用的OpenAI API没有使用价值。", False),
+        ("OpenAI的API对这个应用没有使用价值。", False),
+        ("OpenAI的API没有使用这个应用。", False),
+    ],
+    ids=["active-no-use", "active-not-yet-use", "active-does-not-use", "passive-no-use",
+         "no-utility-is-not-no-use", "no-utility-for-app", "reversed-user-and-api"],
+)
+def test_chinese_checker_requires_the_app_not_using_the_api_rather_than_utility(chinese, accepted):
+    result = {"zh": chinese, "en": "This app does not use the OpenAI API."}
+    assert (check_result(TECHNICAL, result) == []) is accepted
