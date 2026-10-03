@@ -160,3 +160,27 @@ def test_interface_language_and_theme_persist_and_unlisted_resources_are_rejecte
         api.open_resource("https://untrusted.example")
     with pytest.raises(ValueError):
         api.save_interface({"locale": "en", "theme": "invalid"})
+
+
+def test_overlapping_window_shutdown_callbacks_terminate_owned_service_only_once(controller):
+    process = Mock()
+    process.poll.return_value = None
+    entered = threading.Event()
+    release = threading.Event()
+
+    def terminate():
+        entered.set()
+        assert release.wait(timeout=2)
+
+    process.terminate.side_effect = terminate
+    controller._process = process
+    first = threading.Thread(target=controller.close)
+    first.start()
+    assert entered.wait(timeout=1)
+    try:
+        controller.close()
+        process.terminate.assert_called_once()
+    finally:
+        release.set()
+        first.join(timeout=3)
+    assert not first.is_alive()

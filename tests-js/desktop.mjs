@@ -29,7 +29,7 @@ try {
     window.pywebview = { api: {
       snapshot: async () => structuredClone(window.fixture),
       get_interface: async () => ({ locale: 'zh-CN', theme: 'dark' }),
-      save_interface: async value => window.calls.push(['interface', value]),
+      save_interface: async value => { await new Promise(resolve => setTimeout(resolve, 150)); window.calls.push(['interface', value]); },
       save_preferences: async patch => { Object.assign(window.fixture.preferences, patch); window.calls.push(['preferences', patch]); },
       start_service: async () => { window.calls.push(['start']); window.fixture.state = 'starting'; window.fixture.owned = true; },
       stop_service: async () => { window.calls.push(['stop']); window.fixture.state = 'stopped'; window.fixture.owned = false; },
@@ -62,6 +62,8 @@ try {
   await page.locator('#theme').selectOption('light');
   await page.waitForFunction(() => document.documentElement.dataset.theme === 'light');
   assert.equal(await page.locator('h1').textContent(), 'Settings');
+  await page.waitForFunction(() => window.calls.filter(call => call[0] === 'interface').length === 2);
+  assert.deepEqual(await page.evaluate(() => window.calls.filter(call => call[0] === 'interface').at(-1)[1]), { locale: 'en', theme: 'light' });
   await page.locator('[data-page="captions"]').click();
   await page.screenshot({ path: '.local/desktop-light-en.png' });
   await page.setViewportSize({ width: 880, height: 660 });

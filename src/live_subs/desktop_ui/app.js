@@ -384,13 +384,18 @@ for (const key of ["language", "display", "partials", "fontSize"]) {
   });
 }
 for (const key of ["locale", "theme"])
-  $(key).addEventListener("change", async () => {
+  $(key).addEventListener("change", () => {
     locale = $("locale").value;
+    $("toast").hidden = true;
     applyTheme();
     translate();
-    if (api)
-      await action("save_interface", { locale, theme: $("theme").value });
+    const appearance = { locale, theme: $("theme").value };
+    if (api) queue = queue.then(async () => {
+      try { await api.save_interface(appearance); }
+      catch (exception) { error(t("operationError") + exception.message); }
+    });
   });
+
 document
   .querySelectorAll("[data-page]")
   .forEach((button) =>

@@ -178,6 +178,8 @@ class DesktopController:
             self._closing = True
             process = self._process
             stopping = self._stopping
+            if process is not None:
+                self._stopping = True
         if process is not None and not stopping:
             self._terminate(process)
         elif process is not None:
