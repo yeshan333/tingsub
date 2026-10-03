@@ -1,0 +1,18 @@
+name: Feature request / 功能建议
+description: Describe a user need and proposal / 描述用户需求及建议
+title: "[Feature] "
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: User problem / 用户问题
+      description: What are you trying to do? / 希望解决什么实际问题？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal and alternatives / 方案与替代选择
+      description: Include platform, privacy, latency or model-license implications where relevant.
+    validations:
+      required: true

@@ -1,0 +1,26 @@
+name: Bug report / 问题反馈
+description: Report a reproducible problem / 报告可复现的问题
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "English / 中文 welcome. Do not include pairing codes, private audio or transcripts. 请勿上传配对码、私人音频或转写。For vulnerabilities / 安全漏洞: https://github.com/yeshan333/tingsub/security/advisories/new"
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 环境
+      description: Commit, macOS, chip/RAM, Chrome, model revisions, language/display/draft settings.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps / 复现步骤
+      description: Minimal steps, expected result and actual result / 最小步骤、预期与实际结果。
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics / 脱敏诊断信息
+      description: Error, counters and timings; redact tokens and personal paths / 错误、计数和耗时，删去密钥与私人路径。
