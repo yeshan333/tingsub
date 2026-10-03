@@ -102,6 +102,9 @@ async function handle(message) {
         }
       });
       await chrome.scripting.executeScript({ target: { tabId: message.tabId }, files: ['overlay.js'] });
+      // activeTab also covers same-origin embedded players (for example Bilibili).
+      // Keep the main-frame overlay when a foreign frame cannot be injected.
+      await chrome.scripting.executeScript({ target: { tabId: message.tabId, allFrames: true }, files: ['overlay.js'] }).catch(() => {});
       await forward(message.tabId, { type: 'reset', fontSize: settings.fontSize });
       resetSent = true;
       const streamId = await chrome.tabCapture.getMediaStreamId({ targetTabId: message.tabId });

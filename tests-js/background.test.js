@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 
-function background({ busy = false, failure = 'capture', preferencesStatus = 200, sharedStorage, initialized = true } = {}) {
+function background({ busy = false, failure = 'capture', preferencesStatus = 200, sharedStorage, initialized = true, frameDenied = false } = {}) {
   const events = [];
+  const injections = [];
   const startedSettings = [];
   const savedSettings = [];
   let denied = true;
@@ -27,7 +28,7 @@ function background({ busy = false, failure = 'capture', preferencesStatus = 200
       set: async value => { savedSettings.push(value); Object.assign(storage, structuredClone(value)); },
       remove: async key => { delete storage[key]; },
     } },
-    scripting: { executeScript: async () => {} },
+    scripting: { executeScript: async options => { injections.push(options.target); if(options.target.allFrames && frameDenied) throw new Error('Cannot access foreign frame'); } },
     tabCapture: { getMediaStreamId: async () => {
       if (denied && failure === 'capture') { denied = false; throw new Error('采集被拒绝'); }
       return 'stream';
@@ -45,7 +46,7 @@ function background({ busy = false, failure = 'capture', preferencesStatus = 200
     return { ok: preferencesStatus === 200, status: preferencesStatus, json: async () => ({ ...serverPreferences }) };
   } });
   vm.runInContext(readFileSync('extension/background.js', 'utf8'), context);
-  return { events, startedSettings, savedSettings, storage, requests,
+  return { injections, events, startedSettings, savedSettings, storage, requests,
     setOnline(value) { online = value; },
     save: patch => { context.patch = patch; return vm.runInContext("handle({type:'savePreferences',token:'paired',patch})", context); },
     start: () => vm.runInContext("handle({type:'start',tabId:7})", context) };
@@ -143,4 +144,15 @@ test('旧插件的首次迁移不能覆盖桌面已经保存的共享设置', as
   await ui.start();
   assert.equal(ui.startedSettings[0].language, 'ja');
   assert.equal(ui.startedSettings[0].fontSize, 30);
+});
+
+
+test('同源嵌入播放器随主页面接收字幕，外域框架权限不足也不阻断主页面采集', async () => {
+  for (const frameDenied of [false,true]) {
+    const {start,injections,events,startedSettings} = background({failure:'none',frameDenied});
+    assert.equal((await start()).ok,true);
+    assert.equal(injections.some(target=>target.tabId===7 && target.allFrames),true);
+    assert.equal(events[0].type,'reset');
+    assert.equal(startedSettings.length,1);
+  }
 });
