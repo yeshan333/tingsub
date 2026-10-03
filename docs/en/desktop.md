@@ -41,8 +41,10 @@ Closing the window stops the service or download **started by that window**, inc
 
 Settings live in `.local/preferences.json` (captions) and `.local/interface.json` (appearance); process output goes to `.local/desktop.log`, replaced at the next start/preparation. Errors can include local file paths, so review logs before sharing. To use a custom data directory, place the global option before `gui`: `tingsub --data-dir PATH gui`. It must match the service's pairing and model directory.
 
-When the service is stopped, the extension can save edits only in its own browser storage. When it reconnects, the desktop/shared settings take precedence; edit while the service is ready to synchronize both sides. Old services without `/preferences` retain the extension-only behavior. Reload the unpacked extension after updating this checkout.
+With a pairing code configured, the extension durably retains edits while the service is unavailable. Before starting captions it retries those writes, then reads shared preferences. If retry fails, capture does not start with stale settings. Once synchronized, later desktop or extension edits take precedence. Old services without `/preferences` retain extension-only behavior. Reload the unpacked extension after updating this checkout.
 
 ## Current scope
 
 Apple Silicon macOS only. No standalone DMG, auto-update, tray mode or automatic tab capture. The existing terminal workflow remains supported. The extension UI and some process/error messages remain Chinese even when the desktop interface is English. See [development](development.md) for separate browser and native WebKit checks.
+
+Desktop operations use a cross-process lock per data directory, preventing multiple windows from preparing models or overwriting logs/configuration concurrently. The child inherits the lock so an unexpected desktop exit does not permit a competing job.

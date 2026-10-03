@@ -21,14 +21,17 @@ async function loadShared() {
   const versions = { ...editVersions };
   if (!token) return;
   try {
+    const { pendingPreferences: pendingBefore } = await chrome.storage.local.get('pendingPreferences');
     const response = await fetch('http://127.0.0.1:18765/preferences', {
       headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(1200),
     });
     if (!response.ok) return;
     const shared = await response.json();
+    const { pendingPreferences } = await chrome.storage.local.get('pendingPreferences');
     if (token !== $('token').value.trim() || versions.token !== editVersions.token) return;
     for (const key of keys.filter(key => key !== 'token')) {
       if (versions[key] !== editVersions[key]) continue;
+      if ([pendingBefore, pendingPreferences].some(pending => pending?.token === token && Object.hasOwn(pending.patch, key))) continue;
       if (key === 'partials') $(key).checked = shared[key]; else $(key).value = shared[key];
     }
     await save();
@@ -40,16 +43,14 @@ keys.forEach(key => $(key).addEventListener('input', () => {
   const token = $('token').value.trim();
   save();
   if (key === 'token') return;
-  saving = saving.then(async () => {
-    if (!token) return;
-    try {
-      const response = await fetch('http://127.0.0.1:18765/preferences', {
-        method: 'PATCH', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ [key]: value }), signal: AbortSignal.timeout(1200),
-      });
-      if (!response.ok && response.status !== 404) throw new Error();
-    } catch { status('设置仅保存在浏览器；服务恢复后请重新设置以同步桌面端。', true); }
-  });
+  if (!token) return;
+  // Hand off immediately: closing the popup must not discard queued edits.
+  const request = chrome.runtime.sendMessage({
+    target: 'background', type: 'savePreferences', token, patch: { [key]: value },
+  }).then(result => {
+    if (result?.error) status(result.error, true);
+  }).catch(() => status('设置同步失败，请重新打开插件后重试。', true));
+  saving = Promise.all([saving, request]);
 }));
 $('token').addEventListener('change', loadShared);
 let pending = false;

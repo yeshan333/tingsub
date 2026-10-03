@@ -51,6 +51,7 @@ test('用户切换配对码后，上一配对请求的旧响应不能覆盖新�
   const ui = await popup();
   await ui.edit('token', 'second-pairing');
   const changed = ui.elements.token.listeners.change();
+  while (ui.requests.length < 2) await new Promise(resolve => setImmediate(resolve));
   assert.equal(ui.requests.length, 2);
   ui.requests[1].resolve({ language: 'ja', display: 'source-zh', partials: false, fontSize: 32 });
   await changed;

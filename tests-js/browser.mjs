@@ -19,10 +19,19 @@ try {
   assert.equal(await worker.evaluate(async () => (await chrome.storage.local.get('language')).language), 'ja');
   await popup.screenshot({ path: '.local/popup.png' });
   // Explicit preference protocol fixture; real endpoint auth is checked in Python.
-  const patches = [];
+  await worker.evaluate(() => {
+    globalThis.preferencePatches = [];
+    const originalFetch = fetch;
+    globalThis.fetch = async (url, options) => {
+      if (url.endsWith('/preferences') && options.method === 'PATCH') {
+        globalThis.preferencePatches.push(JSON.parse(options.body));
+        return new Response('{}', { status: 200 });
+      }
+      return originalFetch(url, options);
+    };
+  });
   await popup.route('http://127.0.0.1:18765/preferences', async route => {
     assert.equal(route.request().headers().authorization, 'Bearer ui-test-pairing');
-    if (route.request().method() === 'PATCH') patches.push(route.request().postDataJSON());
     await route.fulfill({ json: { language: 'en', display: 'source-zh', partials: false, fontSize: 30 } });
   });
   await popup.locator('details').evaluate(el => { el.open = true; });
@@ -34,7 +43,8 @@ try {
   await popup.locator('#language').selectOption('ja');
   await popup.waitForFunction(async () => (await chrome.storage.local.get('language')).language === 'ja');
   await popup.waitForFunction(() => document.querySelector('#language').value === 'ja');
-  assert.deepEqual(patches, [{ language: 'ja' }]);
+  await popup.waitForFunction(async () => !(await chrome.storage.local.get('pendingPreferences')).pendingPreferences);
+  assert.deepEqual(await worker.evaluate(() => globalThis.preferencePatches), [{ language: 'ja' }]);
 
 
   // The renderer is exercised with explicit protocol fixtures, not claimed as ASR output.
