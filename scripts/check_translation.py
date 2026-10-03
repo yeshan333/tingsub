@@ -4,6 +4,7 @@ Stop the subtitle service first to avoid competing for the GPU. These authored
 examples guard specific regressions, not general translation quality.
 """
 
+import argparse
 import json
 import re
 import time
@@ -211,7 +212,12 @@ def run_cases(engine):
 
 
 def main():
-    model_file = Path(".local/models.json")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--model-file", type=Path, default=Path(".local/models.json"))
+    parser.add_argument("--output", type=Path,
+                        default=Path(".local/benchmark/translation-check.json"))
+    args = parser.parse_args()
+    model_file = args.model_file
     engine = MLXEngine(model_file)
     rows = run_cases(engine)
     config = json.loads(model_file.read_text())
@@ -220,7 +226,7 @@ def main():
         "reuse_warmup_calls": 2,
         "rows": rows,
     }
-    path = Path(".local/benchmark/translation-check.json")
+    path = args.output
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2))
     failures = sum(bool(row["errors"]) for row in rows)
