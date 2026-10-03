@@ -19,10 +19,17 @@ def main():
     prepare.add_argument("--force", action="store_true", help="忽略现有模型配置，重新解析并下载")
     serve = sub.add_parser("serve", help="预热本地模型并启动服务")
     serve.add_argument("--port", type=int, default=18765)
+    sub.add_parser("gui", help="打开 TingSub 桌面窗口")
     sub.add_parser("pair", help="显示浏览器插件配对码")
     args = parser.parse_args()
     directory = args.data_dir.resolve()
     directory.mkdir(parents=True, exist_ok=True)
+
+    if args.command == "gui":
+        from .desktop import launch
+
+        launch(directory)
+        return
 
     if args.command == "prepare":
         from huggingface_hub import HfApi, snapshot_download
