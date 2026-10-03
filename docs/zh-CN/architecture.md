@@ -37,7 +37,7 @@ Whisper 的语言识别和转写共享一次音频编码。重复异常或低置
 - `{"type":"ping"}` 返回 `pong`。`{"type":"stop"}` 提交尾段并处理待办，随后发送 `done`。直接断连取消等待中的任务，不保证排空。
 - 服务事件：`ready`、`transcript`、`translation_progress`、`translation`、`rejected`、`dropped`、`notice`、`error`、`pong`、`done`。
 
-字幕事件以片段 `id` 关联。`transcript` 包含 `source`、`language`、`final`、显示与时间字段；`translation_progress` 增加 `zh`；`translation` 增加完整 `zh`、`en`、推理耗时及指标。拒绝事件携带 `reason`，错误携带可读的 `message`。客户端必须忽略最终或翻译结果之后的旧草稿，以及超出历史窗口的结果。浮层只显示最新两个片段，15 秒无新字幕后清空。
+字幕事件以片段 `id` 关联。`transcript` 包含 `source`、`language`、`final`、显示与时间字段；`translation_progress` 增加 `zh`；`translation` 增加完整 `zh`、`en`、推理耗时及指标。拒绝事件携带 `reason`，错误携带可读的 `message`。客户端必须忽略最终或翻译结果之后的旧草稿，以及超出历史窗口的结果。浮层最多保留两个片段，显示一组译文和下一句识别草稿，15 秒无新字幕后清空。
 
 指标包含会话累计计数，以及最近最多 256 个成功翻译片段的 P50/P95，见[指标定义](benchmarks.md)。协议变化需要同步升级扩展与服务。
 

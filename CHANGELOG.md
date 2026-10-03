@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- Real model download bytes and progress, separate loading validation, official/community/custom HTTPS download sources.
+- Compact video-anchored bilingual captions, long-text controls, hidden diagnostics and same-origin embedded-player support.
+
 - Standalone macOS App/DMG build with embedded runtime, extension and first-run guidance.
 - Desktop speech/translation selection with download/load validation, failure rollback and offline cached switching.
 

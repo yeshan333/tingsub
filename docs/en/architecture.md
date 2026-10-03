@@ -37,7 +37,7 @@ This is an internal protocol, not a stable third-party API. Identifiers containi
 - `{"type":"ping"}` returns `pong`. `{"type":"stop"}` drains the final segment and pending work, then sends `done`. Disconnect cancels waiting work rather than guaranteeing a drain.
 - Server events: `ready`, `transcript`, `translation_progress`, `translation`, `rejected`, `dropped`, `notice`, `error`, `pong`, `done`.
 
-Caption events share a segment `id`. `transcript` has `source`, `language`, `final`, display and timing fields. `translation_progress` adds `zh`; `translation` adds the final `zh`, `en`, inference timings and metrics. Rejections have `reason`, while failures include a human-readable `message`. Consumers must ignore older drafts after a final/translated result, and results for expired history. Only the newest two segments are displayed; silent captions are cleared after 15 seconds.
+Caption events share a segment `id`. `transcript` has `source`, `language`, `final`, display and timing fields. `translation_progress` adds `zh`; `translation` adds the final `zh`, `en`, inference timings and metrics. Rejections have `reason`, while failures include a human-readable `message`. Consumers must ignore older drafts after a final/translated result, and results for expired history. The overlay retains at most two segments, displaying one translation and the next recognition draft; silent captions are cleared after 15 seconds.
 
 Metrics contain session counters and rolling P50/P95 values over up to 256 successfully translated segments. See [metric definitions](benchmarks.md). The extension and service must be upgraded together for protocol changes.
 

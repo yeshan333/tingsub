@@ -4,9 +4,9 @@
 
 ## Data flow
 
-TingSub sends audio from the tab you explicitly start to `127.0.0.1:18765` on the same machine. Recognition and translation run in the local Python process. There is no cloud API, telemetry, account system or cloud fallback in this implementation. Dependency installation and `prepare` contact package registries/Hugging Face; the video website's own traffic is outside TingSub.
+TingSub sends audio from the tab you explicitly start to `127.0.0.1:18765` on the same machine. Recognition and translation run in the local Python process. There is no cloud API, telemetry, account system or cloud fallback in this implementation. Dependency installation and `prepare` contact package registries and the selected model download source (official Hugging Face, community mirror, or custom HTTPS endpoint); the video website's own traffic is outside TingSub.
 
-Normal caption sessions keep audio segments and text in memory; they do not automatically write recordings or transcript files. The overlay shows up to two recent segments and clears stale text. This is not a guarantee of secure memory erasure. The operating system, browser, video website and other software have their own behavior.
+Normal caption sessions keep audio segments and text in memory; they do not automatically write recordings or transcript files. The overlay shows one translated segment and the next recognition draft, and clears stale text. This is not a guarantee of secure memory erasure. The operating system, browser, video website and other software have their own behavior.
 
 Developer benchmark scripts intentionally write generated audio, transcripts, timings and screenshots under ignored `.local/`. They print inference results to the terminal. Review these files before sharing diagnostics. Routine server access logging is disabled, but error messages can still contain local details.
 
