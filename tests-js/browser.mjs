@@ -1,5 +1,6 @@
 import { chromium } from 'playwright';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir, mkdtemp, cp, writeFile, rm } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
 
@@ -132,3 +133,46 @@ try {
   assert.equal(await page.evaluate(() => document.querySelector('#tingqiao-local-captions').parentElement.id), 'player');
   console.log('通过：真实 Chromium 加载插件、设置持久化、双语渲染、过期草稿、历史上限、XSS文本、错误提示、全屏字幕。');
 } finally { await context.close(); }
+
+
+// Use a separate Chromium profile to verify Chrome's real path-derived ID and
+// durable storage across an App export update, without touching user Chrome.
+const updateRoot = await mkdtemp(resolve('.local/extension-update-'));
+let updatedContext;
+try {
+  const bundle = resolve(updateRoot, 'bundle');
+  const data = resolve(updateRoot, 'data');
+  const profile = resolve(updateRoot, 'profile');
+  await cp('extension', resolve(bundle, 'extension'), {recursive:true});
+  const exportExtension = () => execFileSync('python3', ['-c',
+    'import sys; sys.path.insert(0, "src"); from pathlib import Path; from live_subs.runtime import install_extension; sys.frozen=True; sys._MEIPASS=sys.argv[1]; print(install_extension(Path(sys.argv[2])))',
+    bundle, data], {encoding:'utf8'}).trim();
+  const firstPath = exportExtension();
+  const launch = path => chromium.launchPersistentContext(profile, {
+    channel:'chromium', headless:true,
+    args:[`--disable-extensions-except=${path}`, `--load-extension=${path}`],
+  });
+  updatedContext = await launch(firstPath);
+  let worker = updatedContext.serviceWorkers()[0] || await updatedContext.waitForEvent('serviceworker');
+  const originalId = new URL(worker.url()).host;
+  await worker.evaluate(() => chrome.storage.local.set({token:'fixture-pairing',language:'ja',translate:false}));
+  await updatedContext.close();
+  updatedContext = null;
+  const manifestPath = resolve(bundle, 'extension/manifest.json');
+  const manifest = JSON.parse(await readFile(manifestPath,'utf8'));
+  manifest.version = '0.1.1';
+  await writeFile(manifestPath, JSON.stringify(manifest));
+  const secondPath = exportExtension();
+  assert.equal(secondPath,firstPath,'替换 App 导出内容后，已安装插件的路径保持不变');
+  updatedContext = await launch(secondPath);
+  worker = updatedContext.serviceWorkers()[0] || await updatedContext.waitForEvent('serviceworker');
+  assert.equal(new URL(worker.url()).host,originalId,'更新后 Chrome 保留同一插件 ID');
+  assert.equal(await worker.evaluate(()=>chrome.runtime.getManifest().version),'0.1.1','重新加载后必须执行更新后的插件');
+  assert.deepEqual(await worker.evaluate(()=>chrome.storage.local.get(['token','language','translate'])),{
+    token:'fixture-pairing',language:'ja',translate:false,
+  },'更新插件不丢失配对码和用户设置');
+  console.log('通过：实际 Chrome 插件更新保留 ID、配对和偏好，并加载新版本。');
+} finally {
+  await updatedContext?.close();
+  await rm(updateRoot,{recursive:true,force:true});
+}
