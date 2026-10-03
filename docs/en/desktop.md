@@ -53,3 +53,19 @@ With a pairing code configured, the extension durably retains edits while the se
 Apple Silicon macOS only. No auto-update, tray mode or automatic tab capture. The existing terminal workflow remains supported. The extension UI and some process/error messages remain Chinese even when the desktop interface is English. See [development](development.md) for separate browser and native WebKit checks.
 
 Desktop operations use a cross-process lock per data directory, preventing multiple windows from preparing models or overwriting logs/configuration concurrently. The child inherits the lock so an unexpected desktop exit does not permit a competing job.
+
+## Download progress and sources
+
+In **Local models**, choose official Hugging Face, the HF-Mirror community mirror, or a custom Hugging Face-compatible HTTPS endpoint before preparing models. The choice is saved locally for the next preparation.
+
+Preparation has three stages: resolving file metadata, downloading, and loading/validation. Downloads show the current model, actual completed/total bytes, and a progress bar. Unknown file sizes use an indeterminate indicator. 100% means the files have downloaded; the active configuration changes only after model validation succeeds. Cancelling or failing keeps the previous pair and cached files can be reused on retry.
+
+[HF-Mirror](https://hf-mirror.com/) may help on slow connections in China. It is a third-party community service; speed and availability vary. There is no automatic source switching. Audio, pairing codes, and Hugging Face login tokens are never sent to download sources; catalog models are public. Custom endpoints reject plain HTTP, embedded credentials, queries, and fragments.
+
+CLI: `tingsub prepare --download-source mirror`, or `tingsub prepare --download-source custom --endpoint https://your-mirror.example`.
+
+## Browser captions
+
+Captions follow the visible video, leave room for bottom player controls, and support same-origin embedded players (including the tested Bilibili live page) and player fullscreen. They disappear when the video scrolls out of view. Cross-origin embedded players remain subject to Chrome active-tab permission limits.
+
+One bilingual translation remains readable while the next recognition draft is marked as in progress. Each language has its own two-line area for long text, with independent scrolling and an expand button. Hover over captions to drag the toolbar, recenter, open runtime information, or stop captions. Timing and statistics are collapsed by default.

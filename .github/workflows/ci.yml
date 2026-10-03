@@ -44,6 +44,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
       - run: npm run test:desktop
+      - run: npm run test:overlay
       - name: Package unpacked extension
         working-directory: extension
         run: zip -r ../tingsub-extension.zip .
