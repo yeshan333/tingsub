@@ -109,6 +109,9 @@ try {
   const init = () => { window.chrome = {runtime:{onMessage:{addListener:callback=>{window.receive=callback;}},sendMessage:async()=>({})}}; };
   await embedded.evaluate(init);
   await embedded.addScriptTag({content:await readFile('extension/overlay.js','utf8')});
+  await embedded.evaluate(() => { window.receive({target:'overlay',event:{type:'reset'}}); });
+  await embedded.waitForFunction(() => document.querySelector('#tingqiao-local-captions').style.visibility === 'visible');
+  assert.equal(await embedded.locator('#tingqiao-local-captions').isVisible(),true,'同源子页面尚未创建浮层时，父页面先提供字幕入口');
   const child = embedded.frames().find(frame=>frame.parentFrame());
   await child.evaluate(init);
   await child.addScriptTag({content:await readFile('extension/overlay.js','utf8')});
@@ -121,16 +124,40 @@ try {
   await embedded.close();
   const foreignServer = createServer((request,response)=>response.end('<video style="width:800px;height:450px"></video>'));
   await new Promise(resolve=>foreignServer.listen(0,'127.0.0.1',resolve));
-  const outerServer = createServer((request,response)=>response.end(`<iframe src="http://127.0.0.1:${foreignServer.address().port}" style="width:1000px;height:600px"></iframe>`));
+  const outerServer = createServer((request,response)=>response.end(`<iframe src="http://127.0.0.1:${foreignServer.address().port}" style="width:1000px;height:600px;border:0;margin:50px"></iframe><div style="height:1400px"></div>`));
   await new Promise(resolve=>outerServer.listen(0,'127.0.0.1',resolve));
   const foreignPage = await browser.newPage();
   try {
     await foreignPage.goto(`http://127.0.0.1:${outerServer.address().port}`);
+    await foreignPage.evaluate(init);
+    await foreignPage.addScriptTag({content:await readFile('extension/overlay.js','utf8')});
+    await foreignPage.evaluate(() => {
+      window.receive({target:'overlay',event:{type:'reset'}});
+      window.receive({target:'overlay',event:{type:'translation',id:1,zh:'跨域播放器的字幕',en:'Captions over a foreign player',final:true}});
+    });
+    await foreignPage.waitForFunction(() => document.querySelector('#tingqiao-local-captions').style.visibility === 'visible');
+    const fallbackBounds = () => foreignPage.evaluate(() => {
+      const overlay = document.getElementById('tingqiao-local-captions').getBoundingClientRect();
+      const frame = document.querySelector('iframe').getBoundingClientRect();
+      return overlay.left >= frame.left && overlay.right <= frame.right && overlay.top >= frame.top && overlay.bottom < frame.bottom;
+    });
+    assert.equal(await fallbackBounds(),true,'无权注入跨域播放器时，字幕仍在父页面内按 iframe 边界显示');
+    assert.equal(await foreignPage.locator('.zh').textContent(),'跨域播放器的字幕');
     const foreignFrame = foreignPage.frames().find(frame=>frame.parentFrame());
     await foreignFrame.evaluate(init);
     await foreignFrame.addScriptTag({content:await readFile('extension/overlay.js','utf8')});
     assert.equal(await foreignFrame.evaluate(()=>typeof window.receive),'undefined', '即使127.0.0.1有永久权限，跨源嵌入页也不能注册字幕接收器');
     assert.equal(await foreignFrame.locator('#tingqiao-local-captions').count(),0);
+    await foreignPage.evaluate(() => scrollTo(0, 1000));
+    await foreignPage.waitForFunction(() => document.querySelector('#tingqiao-local-captions').style.visibility === 'hidden');
+    await foreignPage.evaluate(() => { scrollTo(0, 0); document.querySelector('iframe').style.width='700px'; });
+    await foreignPage.waitForFunction(() => document.querySelector('#tingqiao-local-captions').style.visibility === 'visible');
+    assert.equal(await fallbackBounds(),true,'iframe 滚回视口并缩放后，字幕恢复且仍在其边界内');
+    await foreignPage.locator('body').click({position:{x:5,y:5}});
+    await foreignPage.evaluate(() => document.body.requestFullscreen());
+    await foreignPage.waitForFunction(() => document.querySelector('#tingqiao-local-captions').parentElement === document.body);
+    assert.equal(await fallbackBounds(),true,'父页面播放器容器全屏时保留跨域 iframe 字幕');
+    await foreignPage.evaluate(() => document.exitFullscreen());
   } finally {
     await foreignPage.close();
     await Promise.all([new Promise(resolve=>foreignServer.close(resolve)),new Promise(resolve=>outerServer.close(resolve))]);

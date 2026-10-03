@@ -33,7 +33,7 @@
   const statusMessage = shadow.querySelector('.status-message');
   let manualPosition = null;
   let geometryFrame = 0;
-  let trackedVideo;
+  let trackedPlayer;
   let hadVideo = false;
   let floor = 0;
   let running = false;
@@ -48,22 +48,39 @@
       const weight = video => { const r = video.getBoundingClientRect(); return r.width * r.height * (!video.paused ? 2 : 1); };
       return weight(b) - weight(a);
     });
-    const video = videos[0];
-    if (video !== trackedVideo) {
-      if (trackedVideo) resizeObserver.unobserve(trackedVideo);
-      trackedVideo = video;
-      if (video) resizeObserver.observe(video);
+    let player = videos[0];
+    const frames = [...document.querySelectorAll('iframe')].filter(frame => {
+      const r = frame.getBoundingClientRect(); return r.width >= 320 && r.height >= 180;
+    });
+    if (!player) {
+      // activeTab cannot inject into foreign players. Keep captions in the
+      // permitted parent, anchored to the iframe without reading its contents.
+      player = frames.filter(frame => {
+        const r = frame.getBoundingClientRect();
+        if (r.bottom <= 0 || r.right <= 0 || r.top >= innerHeight || r.left >= innerWidth) return false;
+        try {
+          // A same-origin child overlay positions against its actual video,
+          // avoiding chat/sidebar content inside the iframe and duplicate text.
+          if (frame.contentDocument?.getElementById('tingqiao-local-captions')) return false;
+        } catch { /* Cross-origin frames use the parent fallback. */ }
+        return true;
+      }).sort((a, b) => {
+        const area = frame => { const r = frame.getBoundingClientRect(); return r.width * r.height; };
+        return area(b) - area(a);
+      })[0];
     }
-    if (!video) {
+    if (player !== trackedPlayer) {
+      if (trackedPlayer) resizeObserver.unobserve(trackedPlayer);
+      trackedPlayer = player;
+      if (player) resizeObserver.observe(player);
+    }
+    if (!player) {
       // Never turn a scrolled-away player into a page-wide caption card.
-      const embedded = [...document.querySelectorAll('iframe')].some(frame => {
-        const r = frame.getBoundingClientRect(); return r.width >= 320 && r.height >= 180;
-      });
-      if (hadVideo || window !== window.top || embedded) return null;
+      if (hadVideo || window !== window.top || frames.length) return null;
       return { left: 0, top: 0, right: innerWidth, bottom: innerHeight, width: innerWidth, height: innerHeight };
     }
     hadVideo = true;
-    const rect = video.getBoundingClientRect();
+    const rect = player.getBoundingClientRect();
     const left = Math.max(0, rect.left), top = Math.max(0, rect.top);
     const right = Math.min(innerWidth, rect.right), bottom = Math.min(innerHeight, rect.bottom);
     return { left, top, right, bottom, width: right - left, height: bottom - top };
