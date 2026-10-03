@@ -81,6 +81,6 @@ uv run --frozen tingsub serve
 
 ## 卸载
 
-Ctrl+C 停止服务，在 `chrome://extensions` 移除扩展。不再需要时删除仓库及其中的 `.venv`、`.local`。模型快照单独保存在 Hugging Face 缓存中，可能被其他应用共享，请只删除确认不再使用的模型。项目不安装后台常驻守护进程或登录启动项。
+Ctrl+C 停止服务，在 `chrome://extensions` 移除扩展。不再需要时删除仓库及其中的 `.venv`、`.local`。新下载的模型位于 `.local/model-cache`，删除 `.local` 会同时删除它们。旧配置可能仍指向共享的 Hugging Face 缓存，请检查 `models.json`，只删除确认不再使用的快照。独立应用另见[卸载说明](distribution.md)。项目不安装后台常驻守护进程或登录启动项。
 
 桌面依赖更新请使用 `uv sync --frozen --extra desktop`。字幕设置共享与离线编辑行为见[桌面指南](desktop.md)。

@@ -44,7 +44,7 @@ Python 与 JavaScript 依赖分别采用各自许可，具体解析版本和下�
 
 | 用途 | 模型 | 许可 | 选择建议 |
 |---|---|---|---|
-| 识别 | `mlx-community/whisper-large-v3-turbo-4bit` | MIT | 默认 |
+| 识别 | `mlx-community/whisper-large-v3-turbo-4bit` | Apache-2.0 (conversion) / MIT (Whisper) | 默认 |
 | 识别 | `mlx-community/whisper-small-mlx-4bit` | MIT（上游 Whisper） | 更省内存，识别能力有取舍 |
 | 翻译 | `mlx-community/Qwen2.5-3B-Instruct-4bit` | Qwen Research License | 默认 |
 | 翻译 | `mlx-community/Qwen2.5-1.5B-Instruct-4bit` | Apache-2.0 | 实验选项，内存更低，保真度较弱 |

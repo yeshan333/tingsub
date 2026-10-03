@@ -81,6 +81,6 @@ Click **Reload** for TingSub in `chrome://extensions`, then refresh the video pa
 
 ## Uninstall
 
-Stop the service with Ctrl+C, then remove the extension in `chrome://extensions`. Remove the checkout and its `.venv`/`.local` directories when no longer needed. Model snapshots live separately in the Hugging Face cache: remove only those you no longer use, since other applications may share them. There is no installed background daemon or login item.
+Stop the service with Ctrl+C, then remove the extension in `chrome://extensions`. Remove the checkout and its `.venv`/`.local` directories when no longer needed. New model downloads live in `.local/model-cache`, so deleting `.local` deletes those downloads too. Older configurations may still reference a shared Hugging Face cache: inspect `models.json` and only remove snapshots you no longer use. For the standalone App, follow the separate [uninstall steps](distribution.md). There is no installed background daemon or login item.
 
 Use `uv sync --frozen --extra desktop` when updating desktop dependencies. See the [desktop guide](desktop.md) for shared preferences and offline editing behavior.

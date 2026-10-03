@@ -11,8 +11,8 @@ CATALOG = [
             "zh-CN": "默认 · 兼顾识别质量和速度",
             "en": "Default · balanced recognition",
         },
-        "license": "MIT",
-        "license_url": "https://huggingface.co/openai/whisper-large-v3-turbo",
+        "license": "Apache-2.0 (conversion) / MIT (Whisper)",
+        "license_url": "https://huggingface.co/mlx-community/whisper-large-v3-turbo-4bit",
     },
     {
         "kind": "asr",

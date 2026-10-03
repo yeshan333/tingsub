@@ -44,7 +44,7 @@ This list is attribution and orientation, not a substitute for every resolved pa
 
 | Role | Checkpoint | License | Guidance |
 |---|---|---|---|
-| Speech | `mlx-community/whisper-large-v3-turbo-4bit` | MIT | Default |
+| Speech | `mlx-community/whisper-large-v3-turbo-4bit` | Apache-2.0 (conversion) / MIT (Whisper) | Default |
 | Speech | `mlx-community/whisper-small-mlx-4bit` | MIT (upstream Whisper) | Lower memory; recognition tradeoff |
 | Translation | `mlx-community/Qwen2.5-3B-Instruct-4bit` | Qwen Research License | Default |
 | Translation | `mlx-community/Qwen2.5-1.5B-Instruct-4bit` | Apache-2.0 | Experimental; lower memory, weaker fidelity |
