@@ -6,6 +6,7 @@
 
 - Fix observed English sentences in the Chinese translation field with explicit target-language instructions and a two-sentence bilingual example.
 - Expand real-model checks to 14 scenarios with empty/reused caches, preserving ambiguous times and explicitly stated AM/PM, complete sentences, negation and technical names; document remaining semantic errors.
+- Correct real-model reuse checks to prime both prompt variants; reject swapped time/ticket values, ordinary words mistaken for AM/PM, and “not useful” mistaken for “not use.”
 
 ## 0.1.0 — Initial source publication
 
