@@ -31,41 +31,58 @@ def build(output: Path, site_url: str) -> None:
     for lang, data in content.items():
         page = output if lang == "zh-CN" else output / "en"
         page.mkdir(parents=True, exist_ok=True)
-        values = {key: escape(value, quote=True) for key, value in data.items()
-                  if isinstance(value, str)}
+        values = {
+            key: escape(value, quote=True) for key, value in data.items() if isinstance(value, str)
+        }
         for key in ("product_title", "workspace_title", "setup_title", "end_title"):
             values[f"{key}_html"] = values[key].replace("\n", "<br>")
         values.update(
-            lang=lang, other_lang="en" if lang == "zh-CN" else "zh-CN",
-            prefix="" if lang == "zh-CN" else "../", home="./",
+            lang=lang,
+            other_lang="en" if lang == "zh-CN" else "zh-CN",
+            prefix="" if lang == "zh-CN" else "../",
+            home="./",
             language_url="en/" if lang == "zh-CN" else "../",
             site_url=escape(site_url),
             canonical=escape(site_url + ("/" if lang == "zh-CN" else "/en/")),
         )
-        for key, filename in {"install": "desktop", "distribution": "distribution",
-                              "docs": "README", "privacy": "privacy", "models": "models"}.items():
+        for key, filename in {
+            "install": "installation",
+            "distribution": "distribution",
+            "docs": "README",
+            "privacy": "privacy",
+            "models": "models",
+        }.items():
             values[f"{key}_url"] = f"{REPO_URL}/blob/main/docs/{lang}/{filename}.md"
         values["facts_html"] = "".join(
             f'<div class="fact"><strong>{escape(item["value"])}</strong>'
-            f'<p>{escape(item["label"])}</p></div>' for item in data["facts"])
+            f"<p>{escape(item['label'])}</p></div>"
+            for item in data["facts"]
+        )
         values["features_html"] = "".join(
             f'<article class="feature"><span class="feature-number">{escape(item["number"])}</span>'
-            f'<div><h3>{escape(item["title"])}</h3><p>{escape(item["body"])}</p></div></article>'
-            for item in data["features"])
-        values["requirements_html"] = "".join(f"<li>{escape(item)}</li>" for item in data["requirements"])
+            f"<div><h3>{escape(item['title'])}</h3><p>{escape(item['body'])}</p></div></article>"
+            for item in data["features"]
+        )
+        values["requirements_html"] = "".join(
+            f"<li>{escape(item)}</li>" for item in data["requirements"]
+        )
         values["steps_html"] = "".join(
-            f'<li><h3>{escape(item["title"])}</h3><p>{escape(item["body"])}</p></li>'
-            for item in data["steps"])
+            f"<li><h3>{escape(item['title'])}</h3><p>{escape(item['body'])}</p></li>"
+            for item in data["steps"]
+        )
         values["faq_html"] = "".join(
-            f'<details><summary>{escape(item["q"])}</summary><p>{escape(item["a"])}</p></details>'
-            for item in data["faq"])
+            f"<details><summary>{escape(item['q'])}</summary><p>{escape(item['a'])}</p></details>"
+            for item in data["faq"]
+        )
         (page / "index.html").write_text(template.substitute(values), encoding="utf-8")
     (output / ".nojekyll").touch()
     (output / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-        f'<url><loc>{escape(site_url)}/</loc></url>'
-        f'<url><loc>{escape(site_url)}/en/</loc></url></urlset>\n', encoding="utf-8")
+        f"<url><loc>{escape(site_url)}/</loc></url>"
+        f"<url><loc>{escape(site_url)}/en/</loc></url></urlset>\n",
+        encoding="utf-8",
+    )
     print(f"Built Chinese and English pages in {output}")
 
 

@@ -1,61 +1,276 @@
 <!doctype html>
 <html lang="$lang">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f6f4ed">
-  <title>$title</title>
-  <meta name="description" content="$description">
-  <link rel="canonical" href="$canonical">
-  <link rel="alternate" hreflang="zh-CN" href="$site_url/">
-  <link rel="alternate" hreflang="en" href="$site_url/en/">
-  <link rel="alternate" hreflang="x-default" href="$site_url/">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="TingSub · 听桥">
-  <meta property="og:title" content="$title">
-  <meta property="og:description" content="$description">
-  <meta property="og:url" content="$canonical">
-  <meta property="og:image" content="$site_url/assets/captions-$lang.png">
-  <meta property="og:image:alt" content="$caption_alt">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="${prefix}assets/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="${prefix}assets/style.css">
-  <script src="${prefix}assets/site.js" defer></script>
-</head>
-<body>
-  <a class="skip-link" href="#main">$skip</a>
-  <header class="header wrap">
-    <a class="brand" href="$home" aria-label="TingSub · 听桥"><img src="${prefix}assets/icon.svg" width="34" height="34" alt=""><span>TingSub<span class="brand-cn">听桥</span></span></a>
-    <nav aria-label="$nav_product"><a href="#product">$nav_product</a><a href="#setup">$nav_setup</a><a href="#faq">$nav_faq</a></nav>
-    <div class="header-end"><a class="language" href="$language_url" lang="$other_lang" aria-label="$switch_label">$switch_text</a><a class="github-link" href="https://github.com/yeshan333/tingsub">GitHub <span aria-hidden="true">↗</span></a></div>
-  </header>
-  <main id="main">
-    <section class="hero wrap" aria-labelledby="hero-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="signal" aria-hidden="true"></span>$eyebrow</p><h1 id="hero-title">$hero_line1<br><em>$hero_line2</em></h1><p class="lead">$hero_body</p><div class="actions"><a class="button primary" href="$install_url">$cta <span aria-hidden="true">↗</span></a><a class="text-link" href="#demo">$demo_cta <span aria-hidden="true">↓</span></a></div><p class="compat">$compat</p></div>
-      <div class="demo" id="demo" aria-label="$demo_label">
-        <div class="demo-top"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>$scene_label</span><span class="demo-mark" aria-hidden="true">↗</span></div>
-        <div class="scene"><img src="${prefix}assets/coast.svg" width="800" height="650" alt="" fetchpriority="high"><div class="scene-heading"><span>FIELD NOTES — 001</span><p>A little further,<br>a little slower.</p></div><div class="scene-coordinate" aria-hidden="true">35° N / 139° E</div><div class="caption" aria-live="polite" aria-atomic="true"><p class="caption-zh" lang="zh-CN">沿着海岸慢慢走，下一站不必着急。</p><p class="caption-original" lang="en">Take your time along the coast. The next stop can wait.</p></div></div>
-        <div class="demo-controls" hidden><fieldset><legend class="sr-only">$demo_language</legend><label><input type="radio" name="sample-language" value="en" checked><span>$english</span></label><label><input type="radio" name="sample-language" value="ja"><span>$japanese</span></label></fieldset><label class="translation-toggle"><input type="checkbox" id="translation" checked><span class="switch" aria-hidden="true"></span>$translate</label></div>
-        <p class="sample-source"><span>$source_label</span><q lang="en">Take your time along the coast. The next stop can wait.</q></p>
-        <p class="demo-note">$demo_note</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f4ed" />
+    <title>$title</title>
+    <meta name="description" content="$description" />
+    <link rel="canonical" href="$canonical" />
+    <link rel="alternate" hreflang="zh-CN" href="$site_url/" />
+    <link rel="alternate" hreflang="en" href="$site_url/en/" />
+    <link rel="alternate" hreflang="x-default" href="$site_url/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TingSub · 听桥" />
+    <meta property="og:title" content="$title" />
+    <meta property="og:description" content="$description" />
+    <meta property="og:url" content="$canonical" />
+    <meta property="og:image" content="$site_url/assets/captions-$lang.png" />
+    <meta property="og:image:alt" content="$caption_alt" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="${prefix}assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="${prefix}assets/style.css" />
+    <script src="${prefix}assets/site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">$skip</a>
+    <header class="header wrap">
+      <a class="brand" href="$home" aria-label="TingSub · 听桥"
+        ><img
+          src="${prefix}assets/icon.svg"
+          width="34"
+          height="34"
+          alt=""
+        /><span>TingSub<span class="brand-cn">听桥</span></span></a
+      >
+      <nav aria-label="$nav_product">
+        <a href="#product">$nav_product</a><a href="#setup">$nav_setup</a
+        ><a href="#faq">$nav_faq</a>
+      </nav>
+      <div class="header-end">
+        <a
+          class="language"
+          href="$language_url"
+          lang="$other_lang"
+          aria-label="$switch_label"
+          >$switch_text</a
+        ><a class="github-link" href="https://github.com/yeshan333/tingsub"
+          >GitHub <span aria-hidden="true">↗</span></a
+        >
       </div>
-    </section>
-    <div class="facts wrap">$facts_html</div>
-    <section class="product wrap section" id="product" aria-labelledby="product-title">
-      <div class="section-intro"><p class="eyebrow">$product_kicker</p><h2 id="product-title">$product_title_html</h2><p class="section-body">$product_body</p></div>
-      <div class="feature-list">$features_html</div>
-    </section>
-    <section class="workspace section" aria-labelledby="workspace-title"><div class="wrap">
-      <div class="workspace-intro"><div><p class="eyebrow">$workspace_kicker</p><h2 id="workspace-title">$workspace_title_html</h2></div><p class="section-body">$workspace_body</p></div>
-      <fieldset class="screen-controls" hidden><legend class="sr-only">$workspace_legend</legend><label><input type="radio" name="screen" value="captions" checked><span>$workspace_captions</span></label><label><input type="radio" name="screen" value="models"><span>$workspace_models</span></label></fieldset>
-      <div class="screens"><figure data-screen="captions"><img src="${prefix}assets/captions-$lang.png" width="1200" height="960" loading="lazy" alt="$caption_alt"><figcaption>$workspace_captions</figcaption></figure><figure data-screen="models"><img src="${prefix}assets/models-$lang.png" width="1200" height="960" loading="lazy" alt="$model_alt"><figcaption>$workspace_models</figcaption></figure></div>
-      <p class="screenshot-note">$screenshot_note</p>
-      <div class="workspace-details"><div><h3>$detail_download_title</h3><p>$detail_download_body</p></div><div><h3>$detail_control_title</h3><p>$detail_control_body</p></div></div>
-    </div></section>
-    <section class="setup wrap section" id="setup" aria-labelledby="setup-title"><div><p class="eyebrow">$setup_kicker</p><h2 id="setup-title">$setup_title_html</h2><p class="section-body">$setup_body</p><div class="requirements"><h3>$requirements_title</h3><ul>$requirements_html</ul></div></div><div class="setup-right"><ol class="steps">$steps_html</ol><a class="button primary" href="$install_url">$cta <span aria-hidden="true">↗</span></a><a class="build-link" href="$distribution_url">$build_link <span aria-hidden="true">↗</span></a></div></section>
-    <section class="faq wrap section" id="faq" aria-labelledby="faq-title"><div><p class="eyebrow">$faq_kicker</p><h2 id="faq-title">$faq_title</h2></div><div class="faq-items">$faq_html</div></section>
-    <section class="end"><div class="wrap end-inner"><div><p class="eyebrow">TING<span class="bridge-word">⌒</span>SUB</p><h2>$end_title_html</h2><p>$end_body</p></div><a class="button light" href="$install_url">$cta <span aria-hidden="true">↗</span></a></div></section>
-  </main>
-  <footer class="footer wrap"><div><a class="brand" href="$home"><img src="${prefix}assets/icon.svg" width="30" height="30" alt=""><span>TingSub</span></a><p>$footer_tag</p></div><nav aria-label="$nav_docs"><a href="https://github.com/yeshan333/tingsub">$footer_source ↗</a><a href="$docs_url">$nav_docs</a><a href="$privacy_url">$footer_privacy</a><a href="$models_url">$footer_license</a><a href="https://github.com/yeshan333/tingsub/issues">$footer_feedback</a></nav><p class="footer-note">$footer_note</p></footer>
-</body>
+    </header>
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="signal" aria-hidden="true"></span>$eyebrow
+          </p>
+          <h1 id="hero-title">$hero_line1<br /><em>$hero_line2</em></h1>
+          <p class="lead">$hero_body</p>
+          <div class="actions">
+            <a class="button primary" href="$install_url"
+              >$cta <span aria-hidden="true">↗</span></a
+            ><a class="text-link" href="#demo"
+              >$demo_cta <span aria-hidden="true">↓</span></a
+            >
+          </div>
+          <p class="compat">$compat</p>
+        </div>
+        <div class="demo" id="demo" aria-label="$demo_label">
+          <div class="demo-top">
+            <span class="window-dots" aria-hidden="true"
+              ><i></i><i></i><i></i></span
+            ><span>$scene_label</span
+            ><span class="demo-mark" aria-hidden="true">↗</span>
+          </div>
+          <div class="scene">
+            <img
+              src="${prefix}assets/coast.svg"
+              width="800"
+              height="650"
+              alt=""
+              fetchpriority="high"
+            />
+            <div class="scene-heading">
+              <span>FIELD NOTES — 001</span>
+              <p>A little further,<br />a little slower.</p>
+            </div>
+            <div class="scene-coordinate" aria-hidden="true">
+              35° N / 139° E
+            </div>
+            <div class="caption" aria-live="polite" aria-atomic="true">
+              <p class="caption-zh" lang="zh-CN">
+                沿着海岸慢慢走，下一站不必着急。
+              </p>
+              <p class="caption-original" lang="en">
+                Take your time along the coast. The next stop can wait.
+              </p>
+            </div>
+          </div>
+          <div class="demo-controls" hidden>
+            <fieldset>
+              <legend class="sr-only">$demo_language</legend>
+              <label
+                ><input
+                  type="radio"
+                  name="sample-language"
+                  value="en"
+                  checked
+                /><span>$english</span></label
+              ><label
+                ><input type="radio" name="sample-language" value="ja" /><span
+                  >$japanese</span
+                ></label
+              >
+            </fieldset>
+            <label class="translation-toggle"
+              ><input type="checkbox" id="translation" checked /><span
+                class="switch"
+                aria-hidden="true"
+              ></span
+              >$translate</label
+            >
+          </div>
+          <p class="sample-source">
+            <span>$source_label</span
+            ><q lang="en"
+              >Take your time along the coast. The next stop can wait.</q
+            >
+          </p>
+          <p class="demo-note">$demo_note</p>
+        </div>
+      </section>
+      <div class="facts wrap">$facts_html</div>
+      <section
+        class="product wrap section"
+        id="product"
+        aria-labelledby="product-title"
+      >
+        <div class="section-intro">
+          <p class="eyebrow">$product_kicker</p>
+          <h2 id="product-title">$product_title_html</h2>
+          <p class="section-body">$product_body</p>
+        </div>
+        <div class="feature-list">$features_html</div>
+      </section>
+      <section class="workspace section" aria-labelledby="workspace-title">
+        <div class="wrap">
+          <div class="workspace-intro">
+            <div>
+              <p class="eyebrow">$workspace_kicker</p>
+              <h2 id="workspace-title">$workspace_title_html</h2>
+            </div>
+            <p class="section-body">$workspace_body</p>
+          </div>
+          <fieldset class="screen-controls" hidden>
+            <legend class="sr-only">$workspace_legend</legend>
+            <label
+              ><input
+                type="radio"
+                name="screen"
+                value="captions"
+                checked
+              /><span>$workspace_captions</span></label
+            ><label
+              ><input type="radio" name="screen" value="models" /><span
+                >$workspace_models</span
+              ></label
+            >
+          </fieldset>
+          <div class="screens">
+            <figure data-screen="captions">
+              <img
+                src="${prefix}assets/captions-$lang.png"
+                width="1200"
+                height="960"
+                loading="lazy"
+                alt="$caption_alt"
+              />
+              <figcaption>$workspace_captions</figcaption>
+            </figure>
+            <figure data-screen="models">
+              <img
+                src="${prefix}assets/models-$lang.png"
+                width="1200"
+                height="960"
+                loading="lazy"
+                alt="$model_alt"
+              />
+              <figcaption>$workspace_models</figcaption>
+            </figure>
+          </div>
+          <p class="screenshot-note">$screenshot_note</p>
+          <div class="workspace-details">
+            <div>
+              <h3>$detail_download_title</h3>
+              <p>$detail_download_body</p>
+            </div>
+            <div>
+              <h3>$detail_control_title</h3>
+              <p>$detail_control_body</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="setup wrap section"
+        id="setup"
+        aria-labelledby="setup-title"
+      >
+        <div>
+          <p class="eyebrow">$setup_kicker</p>
+          <h2 id="setup-title">$setup_title_html</h2>
+          <p class="section-body">$setup_body</p>
+          <div class="requirements">
+            <h3>$requirements_title</h3>
+            <ul>
+              $requirements_html
+            </ul>
+          </div>
+        </div>
+        <div class="setup-right">
+          <ol class="steps">
+            $steps_html
+          </ol>
+          <a class="button primary" href="$install_url"
+            >$cta <span aria-hidden="true">↗</span></a
+          ><a class="build-link" href="$distribution_url"
+            >$build_link <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+      <section class="faq wrap section" id="faq" aria-labelledby="faq-title">
+        <div>
+          <p class="eyebrow">$faq_kicker</p>
+          <h2 id="faq-title">$faq_title</h2>
+        </div>
+        <div class="faq-items">$faq_html</div>
+      </section>
+      <section class="end">
+        <div class="wrap end-inner">
+          <div>
+            <p class="eyebrow">TING<span class="bridge-word">⌒</span>SUB</p>
+            <h2>$end_title_html</h2>
+            <p>$end_body</p>
+          </div>
+          <a class="button light" href="$install_url"
+            >$cta <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+    </main>
+    <footer class="footer wrap">
+      <div>
+        <a class="brand" href="$home"
+          ><img
+            src="${prefix}assets/icon.svg"
+            width="30"
+            height="30"
+            alt=""
+          /><span>TingSub</span></a
+        >
+        <p>$footer_tag</p>
+      </div>
+      <nav aria-label="$nav_docs">
+        <a href="https://github.com/yeshan333/tingsub">$footer_source ↗</a
+        ><a href="$docs_url">$nav_docs</a
+        ><a href="$privacy_url">$footer_privacy</a
+        ><a href="$models_url">$footer_license</a
+        ><a href="https://github.com/yeshan333/tingsub/issues"
+          >$footer_feedback</a
+        >
+      </nav>
+      <p class="footer-note">$footer_note</p>
+    </footer>
+  </body>
 </html>
