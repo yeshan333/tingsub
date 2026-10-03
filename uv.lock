@@ -1216,7 +1216,7 @@ requires-dist = [
     { name = "mlx-lm", specifier = ">=0.24,<1" },
     { name = "mlx-whisper", specifier = ">=0.4.2,<0.5" },
     { name = "numpy", specifier = ">=2,<3" },
-    { name = "pywebview", marker = "extra == 'desktop'", specifier = ">=6.0,<7" },
+    { name = "pywebview", marker = "extra == 'desktop'", specifier = "==6.2.1" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.34,<1" },
     { name = "webrtcvad-wheels", specifier = ">=2.0.14,<3" },
 ]

@@ -31,7 +31,7 @@ live-subs = "live_subs.cli:main"
 
 [project.optional-dependencies]
 desktop = [
-    "pywebview>=6.0,<7",
+    "pywebview==6.2.1",
 ]
 
 [dependency-groups]

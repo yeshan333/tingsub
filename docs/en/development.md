@@ -58,3 +58,5 @@ uv run --frozen --extra desktop python scripts/check_desktop_native.py
 ```
 
 This opens its own native window, clicks the real start/stop controls, waits for model warm-up, verifies the loopback API and checks that stopping releases the port. It cleans up its owned service and does not capture browser audio. CI does not download models to run this check.
+
+The native check also verifies that navigation to a foreign URL is rejected. Add `--no-inference` to check the WebKit interface and navigation boundary without loading models.

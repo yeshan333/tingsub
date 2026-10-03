@@ -5,9 +5,11 @@ Runs its own window and owned service. Does not automate the user's browser.
 
 import argparse
 import json
+import threading
 import time
 from pathlib import Path
 
+from live_subs import desktop_security
 from live_subs.desktop import launch, probe
 from live_subs.server import token_at
 
@@ -17,12 +19,23 @@ def main():
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-dir", type=Path, default=Path(".local"))
+    parser.add_argument("--no-inference", action="store_true", help="Check native policy only")
     args = parser.parse_args()
     directory = args.data_dir.resolve()
     if probe(token_at(directory))[0] != "stopped":
         raise SystemExit("Stop the existing local service before this check")
     original_start = webview.start
     result = {}
+    rejected_navigation = threading.Event()
+    original_policy = desktop_security.trusted_document
+
+    def observed_policy(url, expected, main_frame):
+        allowed = original_policy(url, expected, main_frame)
+        if url == "http://127.0.0.1:9/untrusted" and not allowed:
+            rejected_navigation.set()
+        return allowed
+
+    desktop_security.trusted_document = observed_policy
 
     def exercise():
         window = webview.windows[0]
@@ -39,6 +52,13 @@ def main():
             if not window.events.loaded.wait(20):
                 raise AssertionError("Native page did not load")
             wait_for("!document.getElementById('serviceAction').disabled", 15)
+            entry = window.get_current_url()
+            window.evaluate_js("location.href = 'http://127.0.0.1:9/untrusted'")
+            assert rejected_navigation.wait(timeout=3), "Native navigation guard did not reject"
+            assert window.get_current_url() == entry
+            result["native_navigation_guard"] = "passed"
+            if args.no_inference:
+                return
             started = time.monotonic()
             window.evaluate_js("document.getElementById('serviceAction').click()")
             wait_for("document.getElementById('serviceDot').classList.contains('ready')")
@@ -61,6 +81,7 @@ def main():
         launch(directory)
     finally:
         webview.start = original_start
+        desktop_security.trusted_document = original_policy
     print(json.dumps(result, indent=2))
     if "error" in result or not result:
         raise SystemExit(1)

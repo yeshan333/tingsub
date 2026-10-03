@@ -58,3 +58,5 @@ uv run --frozen --extra desktop python scripts/check_desktop_native.py
 ```
 
 该检查打开独立原生窗口，点击真实界面的启动／停止控件，等待模型预热，验证本机接口可用并确认停止后端口释放。退出会清理其启动的服务，不采集浏览器音频。此项不在 CI 下载模型运行。
+
+原生检查也验证外部 URL 导航被拒绝。仅检查 WebKit 界面和导航边界、不加载模型时，可追加 `--no-inference`。
