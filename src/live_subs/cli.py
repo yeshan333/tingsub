@@ -1,21 +1,21 @@
 import argparse
-import json
 import os
 import platform
 import socket
 from pathlib import Path
 
-DEFAULT_ASR = "mlx-community/whisper-large-v3-turbo-4bit"
-DEFAULT_TRANSLATION = "mlx-community/Qwen2.5-3B-Instruct-4bit"
+from .catalog import DEFAULT_ASR, DEFAULT_TRANSLATION  # noqa: F401
+from .runtime import default_data_directory
 
 
 def main():
     parser = argparse.ArgumentParser(description="TingSub · 听桥：完全本地的直播双语字幕")
-    parser.add_argument("--data-dir", type=Path, default=Path(".local"))
+    parser.add_argument("--data-dir", type=Path, default=default_data_directory())
     sub = parser.add_subparsers(dest="command", required=True)
     prepare = sub.add_parser("prepare", help="首次联网下载模型；运行时不联网")
-    prepare.add_argument("--asr", default=DEFAULT_ASR)
-    prepare.add_argument("--translation", default=DEFAULT_TRANSLATION)
+    prepare.add_argument("--asr")
+    prepare.add_argument("--translation")
+    prepare.add_argument("--validate", action="store_true", help="实际加载校验后才启用新模型")
     prepare.add_argument("--force", action="store_true", help="忽略现有模型配置，重新解析并下载")
     serve = sub.add_parser("serve", help="预热本地模型并启动服务")
     serve.add_argument("--port", type=int, default=18765)
@@ -32,39 +32,10 @@ def main():
         return
 
     if args.command == "prepare":
-        from huggingface_hub import HfApi, snapshot_download
+        from .model_manager import prepare_models
 
-        api = HfApi()
-        result = {}
-        existing_file = directory / "models.json"
-        existing = json.loads(existing_file.read_text()) if existing_file.exists() else {}
-        for kind, repo in [("asr", args.asr), ("translation", args.translation)]:
-            previous = existing.get(kind, {})
-            previous_path = Path(previous.get("path", "/nonexistent"))
-            if (
-                not args.force
-                and previous.get("repo") == repo
-                and (previous_path / "config.json").is_file()
-            ):
-                weights = list(previous_path.glob("*.safetensors")) + list(
-                    previous_path.glob("*.npz")
-                )
-                if weights:
-                    result[kind] = previous
-                    print(f"复用已下载的 {kind}: {repo} @ {previous['revision']}", flush=True)
-                    continue
-            revision = api.model_info(repo).sha
-            print(f"下载 {kind}: {repo} @ {revision}", flush=True)
-            path = snapshot_download(
-                repo,
-                revision=revision,
-                allow_patterns=["*.json", "*.safetensors", "*.npz", "*.txt", "*.model", "*.jinja"],
-            )
-            result[kind] = {"repo": repo, "revision": revision, "path": path}
-        temporary = directory / "models.json.tmp"
-        temporary.write_text(json.dumps(result, ensure_ascii=False, indent=2))
-        temporary.replace(directory / "models.json")
-        print("模型已固定到具体版本；后续运行只读取本地文件。")
+        prepare_models(directory, args.asr, args.translation,
+                       force=args.force, validate=args.validate)
     else:
         from .server import token_at
 
