@@ -11,11 +11,12 @@ from pathlib import Path
 
 import numpy as np
 import webrtcvad
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .audio import FRAME_BYTES, FRAME_SECONDS, SAMPLE_RATE, Segmenter
 from .pipeline import Pipeline
+from .preferences import read_preferences, update_preferences
 
 
 def token_at(directory: Path) -> str:
@@ -66,6 +67,32 @@ def create_app(directory: Path, engine_factory=None):
             "local_only": True,
             "protocol": 1,
         }
+
+    def authorize_preferences(request: Request):
+        origin = request.headers.get("origin")
+        if origin and not re.fullmatch(r"chrome-extension://[a-p]{32}", origin):
+            raise HTTPException(403, "Extension origin required")
+        if not secrets.compare_digest(request.headers.get("authorization", ""), f"Bearer {token}"):
+            raise HTTPException(401, "Pairing required")
+
+    @app.get("/preferences")
+    async def preferences(request: Request):
+        authorize_preferences(request)
+        return read_preferences(directory)
+
+    @app.patch("/preferences")
+    async def save_preferences(request: Request):
+        authorize_preferences(request)
+        # A small fixed schema; reject oversized input before JSON parsing.
+        body = await request.body()
+        if len(body) > 1024:
+            raise HTTPException(413, "Preferences too large")
+        try:
+            import json
+
+            return update_preferences(directory, json.loads(body))
+        except (ValueError, TypeError) as exc:
+            raise HTTPException(422, str(exc)) from exc
 
     @app.websocket("/stream")
     async def stream(ws: WebSocket):

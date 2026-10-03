@@ -127,3 +127,25 @@ def test_capture_resumes_after_timestamp_gap_without_treating_new_speech_as_expi
     assert [e["id"] for e in events if e["type"] == "translation"] == [2]
     assert sum(e["type"] == "notice" for e in events) == 1
     assert not any(e["type"] == "error" for e in events)
+
+
+def test_caption_preferences_require_pairing_and_reject_ordinary_website_origins(service):
+    client, token = service
+    assert client.get("/preferences").status_code == 401
+    assert client.patch("/preferences", json={"language": "ja"}).status_code == 401
+    headers = {"authorization": f"Bearer {token}", "origin": "https://example.com"}
+    assert client.patch("/preferences", headers=headers, json={"language": "ja"}).status_code == 403
+    headers = {"authorization": f"Bearer {token}", **ORIGIN}
+    assert client.get("/preferences", headers=headers).json()["language"] == "en"
+    assert client.patch("/preferences", headers=headers, json={"language": "ja"}).status_code == 200
+    assert client.get("/preferences", headers=headers).json()["language"] == "ja"
+
+
+def test_invalid_shared_preferences_do_not_change_the_last_saved_caption_settings(service):
+    client, token = service
+    headers = {"authorization": f"Bearer {token}"}
+    client.patch("/preferences", headers=headers, json={"fontSize": 32})
+    assert client.patch("/preferences", headers=headers, json={"fontSize": 100}).status_code == 422
+    assert client.patch("/preferences", headers=headers, content=b"invalid").status_code == 422
+    assert client.patch("/preferences", headers=headers, content=b"x" * 1025).status_code == 413
+    assert client.get("/preferences", headers=headers).json()["fontSize"] == 32
