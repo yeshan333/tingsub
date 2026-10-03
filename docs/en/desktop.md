@@ -4,7 +4,7 @@
 
 TingSub offers a lightweight macOS window using the system WebKit renderer. The Python/MLX service still performs inference in a separate process. The desktop interface is available in English and Simplified Chinese, with dark, light and system appearance.
 
-![TingSub desktop interface, showing sample captions](../assets/desktop.png)
+![TingSub desktop interface, showing sample captions](../assets/screenshots/captions-en.png)
 
 The caption preview uses authored sample text, not live transcription. Real captions appear on the selected browser page.
 
@@ -22,7 +22,7 @@ Current local/CI builds are **ad-hoc signed, not Apple-notarized**. They may tri
 
 ### Switch models
 
-Stop the service, select models and click **Download & apply**. Whisper Turbo / Small and Qwen 2.5 3B / 1.5B can be selected independently. Smaller models use less memory but may be less accurate; they are not automatically better for every input. See [model licenses](models.md).
+You can browse and preselect models while the service runs. Stop the service before clicking **Download & apply**. Whisper Turbo / Small and Qwen 2.5 3B / 1.5B can be selected independently. Smaller models use less memory but may be less accurate; they are not automatically better for every input. See [model licenses](models.md).
 
 A downloaded model is cached separately from the active configuration. The old pair stays active until the new pair successfully loads and translates a Japanese sample. Download/load failure or cancellation before activation retains the previous pair. Switching back to cached models works offline. A completed switch takes effect the next time you start the service. Validation is a compatibility check, not a general accuracy guarantee.
 
@@ -53,6 +53,12 @@ With a pairing code configured, the extension durably retains edits while the se
 Apple Silicon macOS only. No auto-update, tray mode or automatic tab capture. The existing terminal workflow remains supported. The extension UI and some process/error messages remain Chinese even when the desktop interface is English. See [development](development.md) for separate browser and native WebKit checks.
 
 Desktop operations use a cross-process lock per data directory, preventing multiple windows from preparing models or overwriting logs/configuration concurrently. The child inherits the lock so an unexpected desktop exit does not permit a competing job.
+
+## Model storage
+
+**Local models → Model storage** shows the download cache for the current data directory. Click **Open in Finder** to open it, including while the service is running. Before the first download, the shortcut creates the empty cache folder.
+
+The standalone default is `~/Library/Application Support/TingSub/model-cache`; source runs use `.local/model-cache`. A custom `--data-dir` uses `model-cache` beneath that directory. Switching download sources does not change this location or move existing models. The GUI does not offer a separate download destination.
 
 ## Download progress and sources
 
