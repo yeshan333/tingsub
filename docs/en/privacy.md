@@ -28,3 +28,7 @@ No all-sites host access or microphone permission is requested. Page navigation 
 `.local/token` is created with owner-only file permissions and is shared with the extension for WebSocket authentication. Protect it like a password. The extension-origin check is an additional browser boundary, not a substitute for the token. Software already running under your local account is outside this boundary.
 
 To rotate: stop the service and captions, remove only `.local/token`, run `uv run --frozen tingsub pair` to create a new code, replace it in the extension and restart the service. Do not remove the entire data directory just to rotate a token. See [uninstall instructions](installation.md) for removal and [security policy](../../SECURITY.md) for reporting issues.
+
+## Desktop local data
+
+The desktop adds no audio upload or telemetry. Caption preferences live in `.local/preferences.json`, appearance in `.local/interface.json`. Subprocess output goes to `.local/desktop.log`, replaced on each start/preparation; it does not intentionally record audio or transcripts, but errors can contain local paths. The pairing code reaches the system clipboard only on Copy and is not intentionally displayed in the page or logs. Installing desktop dependencies contacts package registries; model preparation and documentation links require explicit user actions.

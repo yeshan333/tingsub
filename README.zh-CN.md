@@ -27,7 +27,17 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 - 显示本段首字、首个中文、句尾延迟；通过本机配对码认证推理连接。
 - 一次处理一个标签页，不使用麦克风。
 
-当前扩展界面和大部分运行提示为简体中文；用户与贡献者文档提供完整的**英文和简体中文**版本。界面国际化是后续方向，文档语言不会改变字幕语言。
+桌面界面支持中英文；扩展界面和大部分运行提示仍为简体中文。用户与贡献者文档提供完整的**英文和简体中文**版本。界面语言不会改变字幕语言。
+
+## 桌面窗口
+
+深色工作空间、字幕样式预览、模型准备、服务启停和浏览器配对，支持中英文及深浅外观。使用系统 WebKit，继续沿用本地 MLX 推理。
+
+```sh
+uv run --frozen --extra desktop tingsub gui
+```
+
+也可双击 `gui.command`。首次使用、Dock 启动器及服务关闭行为见[桌面指南](docs/zh-CN/desktop.md)。
 
 ## 快速开始
 
@@ -74,6 +84,7 @@ flowchart LR
 
 | 指南 | English | 简体中文 |
 | --- | --- | --- |
+| 桌面 GUI | [Read](docs/en/desktop.md) | [阅读](docs/zh-CN/desktop.md) |
 | 文档索引 | [Read](docs/en/README.md) | [阅读](docs/zh-CN/README.md) |
 | 安装、设置、更新、卸载 | [Read](docs/en/installation.md) | [阅读](docs/zh-CN/installation.md) |
 | 故障排查 | [Read](docs/en/troubleshooting.md) | [阅读](docs/zh-CN/troubleshooting.md) |

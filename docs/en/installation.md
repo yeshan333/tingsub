@@ -12,6 +12,10 @@
 
 There is no supported CPU, CUDA, Windows, Linux, Intel Mac or Firefox runtime yet. The service and Chrome run on the same Mac.
 
+## Use the desktop window
+
+Run `uv run --frozen --extra desktop tingsub gui` or open `gui.command` to prepare models, start the service and copy the pairing code in a desktop window. See the [desktop guide](desktop.md). The terminal workflow remains available below.
+
 ## Install and start
 
 ```sh
@@ -76,3 +80,5 @@ Click **Reload** for TingSub in `chrome://extensions`, then refresh the video pa
 ## Uninstall
 
 Stop the service with Ctrl+C, then remove the extension in `chrome://extensions`. Remove the checkout and its `.venv`/`.local` directories when no longer needed. Model snapshots live separately in the Hugging Face cache: remove only those you no longer use, since other applications may share them. There is no installed background daemon or login item.
+
+Use `uv sync --frozen --extra desktop` when updating desktop dependencies. See the [desktop guide](desktop.md) for shared preferences and offline editing behavior.

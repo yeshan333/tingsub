@@ -27,7 +27,17 @@ TingSub is an early-stage Chrome extension and local MLX service for Apple Silic
 - Per-segment first-text, first-Chinese and speech-end latency; a local pairing code protects the inference connection.
 - One active tab at a time, without microphone access.
 
-The current extension UI and most runtime messages are in Simplified Chinese. All user and contributor guides are available in **English and Simplified Chinese**. UI localization is a planned follow-up; documentation languages do not change caption languages.
+The desktop UI supports English and Simplified Chinese. The extension UI and most runtime messages remain Simplified Chinese. All user and contributor guides are available in **English and Simplified Chinese**. Interface languages do not change caption languages.
+
+## Desktop window
+
+A quiet workspace for caption preferences, model preparation, service control and browser pairing. English/Chinese UI, dark/light appearance, system WebKit, and the same local MLX inference.
+
+```sh
+uv run --frozen --extra desktop tingsub gui
+```
+
+You can also double-click `gui.command`. See the [desktop guide](docs/en/desktop.md) for first-time setup, the Dock launcher and shutdown behavior.
 
 ## Quick start
 
@@ -74,6 +84,7 @@ The repository includes deterministic logic tests, isolated browser checks and s
 
 | Guide | English | 简体中文 |
 | --- | --- | --- |
+| Desktop GUI | [Read](docs/en/desktop.md) | [阅读](docs/zh-CN/desktop.md) |
 | Documentation index | [Read](docs/en/README.md) | [阅读](docs/zh-CN/README.md) |
 | Install, settings, update, uninstall | [Read](docs/en/installation.md) | [阅读](docs/zh-CN/installation.md) |
 | Troubleshooting | [Read](docs/en/troubleshooting.md) | [阅读](docs/zh-CN/troubleshooting.md) |

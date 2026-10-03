@@ -44,3 +44,9 @@ Metrics contain session counters and rolling P50/P95 values over up to 256 succe
 ## Boundaries
 
 The service binds loopback only. No cloud fallback or model downloads occur during serving. There is no microphone mode, transcript export, multi-user API, persistent transcript database, speaker diarization or sentence-level accuracy guarantee. GPU backends other than Apple MLX require separate implementation and validation.
+
+## Desktop control and shared settings
+
+The optional `desktop` extra uses macOS WebKit through pywebview. All page assets ship in the package. A limited bridge starts/stops owned subprocesses, prepares models, copies the pairing code and opens fixed resources. There are no remote fonts or scripts. CSP permits `unsafe-eval` because pywebview 6 dynamically constructs bridge methods; inline scripts remain blocked and resources/connections stay same-origin.
+
+`GET /preferences` and `PATCH /preferences` require `Authorization: Bearer <pairing code>`. When Origin is present, only Chrome extension origins are accepted. The schema allows language, display mode, drafts and integer font sizes 18–40; a file lock and atomic replacement preserve independent desktop/extension edits. There are no HTTP administration endpoints for start, stop or model downloads. The extension reads shared preferences before capture; existing WebSocket session parameters do not change.

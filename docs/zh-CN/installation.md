@@ -12,6 +12,10 @@
 
 当前不支持 CPU、CUDA、Windows、Linux、Intel Mac 或 Firefox 运行后端。服务与 Chrome 必须运行在同一台 Mac 上。
 
+## 使用桌面窗口
+
+推荐通过 `uv run --frozen --extra desktop tingsub gui` 或 `gui.command` 打开桌面工作空间，在界面中准备模型、启动服务并复制配对码。完整说明见[桌面指南](desktop.md)。下方保留原有终端操作方式。
+
 ## 安装与启动
 
 ```sh
@@ -76,3 +80,5 @@ uv run --frozen tingsub serve
 ## 卸载
 
 Ctrl+C 停止服务，在 `chrome://extensions` 移除扩展。不再需要时删除仓库及其中的 `.venv`、`.local`。模型快照单独保存在 Hugging Face 缓存中，可能被其他应用共享，请只删除确认不再使用的模型。项目不安装后台常驻守护进程或登录启动项。
+
+桌面依赖更新请使用 `uv sync --frozen --extra desktop`。字幕设置共享与离线编辑行为见[桌面指南](desktop.md)。
