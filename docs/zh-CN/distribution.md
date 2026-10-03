@@ -29,7 +29,7 @@ uv run --frozen --extra desktop --group bundle python scripts/build_desktop.py
 
 这项显式启用的检查打开真实 WebKit 窗口，验证外部导航被阻止，通过原生桥接启动真实模型服务，再停止服务。`--no-inference` 只检查页面与导航策略。验证独立运行时，应把 App 复制到源码目录外，从 `/tmp` 执行，清除开发环境变量并使用最小系统 PATH。命令行诊断入口为 `--worker --help`。
 
-数据保存在 `~/Library/Application Support/TingSub`，替换 App 保留模型、配对和设置。Chrome 插件导出到按内容区分的版本目录，替换 App 不会破坏已加载插件。更新后加载新导出的插件，并手动移除浏览器内的旧版本。目前不支持自动更新。
+数据保存在 `~/Library/Application Support/TingSub`，替换 App 保留模型、配对和设置。新安装的 Chrome 插件导出到固定的 `extensions/extension` 路径；已有预览版的版本目录也会原地更新，保留 Chrome ID、本地配对和设置。替换 App 后点击「打开插件文件夹」更新文件，再在 Chrome 对已有插件点击「重新加载」，无需删除旧插件或另装一份。目前不支持自动更新。
 
 卸载时退出 TingSub，移除 Applications 中的应用和 Chrome 插件。只有希望一并删除模型缓存、配对和设置时，才删除对应 Application Support 目录。源码运行的 `.local` 目录相互独立，不会自动迁移。
 

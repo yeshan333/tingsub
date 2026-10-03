@@ -29,7 +29,7 @@ For a maintainer with installed Developer ID credentials, set `TINGSUB_CODESIGN_
 
 This opt-in check opens a real WebKit window, rejects foreign navigation, invokes the native bridge, starts a real model service and stops it. `--no-inference` only checks the native page and navigation policy. For standalone verification copy the App outside the checkout, run from `/tmp`, unset development environment variables and use a minimal system PATH. CLI diagnostics are available through `--worker --help`.
 
-Data lives under `~/Library/Application Support/TingSub`. Updating the App preserves models, pairing and preferences. The exported Chrome extension uses a content-versioned directory so replacing an App does not break the loaded extension. Load the newly exported extension after updates; remove the old browser extension manually. There is no automatic updater.
+Data lives under `~/Library/Application Support/TingSub`. Updating the App preserves models, pairing and preferences. New installations export Chrome files to the stable `extensions/extension` path. Existing preview-version folders are also updated in place, so their Chrome IDs and local pairing/settings remain intact. After replacing the App, click **Open extension folder**, then **Reload** the existing extension in Chrome. Do not remove it or load a new copy. There is no automatic updater.
 
 To uninstall, quit TingSub, remove it from Applications and remove its Chrome extension. Delete its Application Support directory only if you also want to delete cached models, pairing and settings. Source-based runs have a separate `.local` directory and are not migrated automatically.
 
