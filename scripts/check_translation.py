@@ -37,6 +37,19 @@ def english_hour(word: str, number: int) -> str:
     return rf"(?<![\w.])(?:{word}\b|{number}(?:[:.]00)?(?!\d|[:.]\d))"
 
 
+def english_time(word: str, number: int) -> str:
+    # The hour must be in a clock expression, not merely somewhere in the field.
+    hour = english_hour(word, number)
+    return rf"(?:\bat\s+{hour}|{hour}\s+o['’]clock\b)"
+
+
+def english_period(word: str, number: int, period: str) -> str:
+    day_word = "morning" if period == "am" else "afternoon"
+    # Bare 'am' is also an English verb; an abbreviation must follow the hour.
+    abbreviation = rf"{period[0]}\.?\s*m\.?(?![a-z])"
+    return rf"(?:\b{day_word}\b|{english_hour(word, number)}\s*{abbreviation})"
+
+
 CASES = [
     Case("英文单词 you 保留原文并译为中文", "you", "en", ("你",)),
     Case("英文音乐标记保留原文并译为中文", "Music", "en", ("音乐",)),
@@ -44,7 +57,7 @@ CASES = [
     Case(
         "日语单句会议保留三点且不补时段",
         "次の会議は三時に始まります。", "ja",
-        ("会议", chinese_hour("三"), "开始"), ("meeting", english_hour("three", 3), "start|begin"),
+        ("会议", chinese_hour("三"), "开始"), ("meeting", english_time("three", 3), "start|begin"),
         ambiguous_time=True,
     ),
     Case(
@@ -56,20 +69,21 @@ CASES = [
         "日语两句会议和电脑要求均译为中英且不补时段",
         "次の会議は三時に始まります。パソコンを持ってきてください。", "ja",
         ("会议", chinese_hour("三"), "开始", "带", "电脑"),
-        ("meeting", english_hour("three", 3), "start|begin", "bring", "computer|laptop"),
+        ("meeting", english_time("three", 3), "start|begin", "bring", "computer|laptop"),
         ambiguous_time=True,
     ),
     Case(
         "日语明确下午的会议保留下午三点和电脑要求",
         "会議は午後三時に始まります。パソコンを持ってきてください。", "ja",
         ("会议", "下午" + chinese_hour("三"), "开始", "带", "电脑"),
-        ("meeting", english_hour("three", 3), r"afternoon|p\.?m", "bring", "computer|laptop"),
+        ("meeting", english_time("three", 3), english_period("three", 3, "pm"),
+         "bring", "computer|laptop"),
     ),
     Case(
         "日语明确明天上午的约定保留日期时段和地点",
         "明日の午前八時に駅で会いましょう。", "ja",
         ("明天", "(?:上午|早上)" + chinese_hour("八"), "站", "见|会面"),
-        ("tomorrow", english_hour("eight", 8), r"morning|a\.?m", "station", "meet"),
+        ("tomorrow", english_time("eight", 8), english_period("eight", 8, "am"), "station", "meet"),
     ),
     Case(
         "日语两句否定保留没有会议和计划未定",
@@ -86,20 +100,20 @@ CASES = [
         "日语商店开门和现金要求均保留且不补时段",
         "店は十時に開きます。現金を持ってきてください。", "ja",
         ("店", chinese_hour("十"), "开", "现金", "带"),
-        ("store|shop", english_hour("ten", 10), "open", "cash", "bring"), ambiguous_time=True,
+        ("store|shop", english_time("ten", 10), "open", "cash", "bring"), ambiguous_time=True,
     ),
     Case(
         "日语音乐会时间和两张票均保留且不补时段",
         "コンサートは八時に始まります。チケットは二枚あります。", "ja",
-        ("音乐会|演唱会", chinese_hour("八"), "开始", rf"(?<![{ZH_DIGITS}])(?:两|二)张", "票"),
-        ("concert", english_hour("eight", 8), "start|begin", r"\b(?:two|2)\b", "ticket"),
+        ("音乐会|演唱会", chinese_hour("八"), "开始", rf"(?<![{ZH_DIGITS}])(?:两|二)张票"),
+        ("concert", english_time("eight", 8), "start|begin", r"\b(?:two|2)\s+tickets?\b"),
         ambiguous_time=True,
     ),
     Case(
         "日语技术名称保留拉丁专名且保留未使用的否定",
         "このアプリはOpenAIのAPIを使っていません。", "ja",
         ("应用", "OpenAI", "API", "没有使用|未使用|不使用"),
-        ("app", "OpenAI", "API", "not use|not using|doesn't use"),
+        ("app", "OpenAI", "API", r"\b(?:not\s+(?:use|using)|doesn['’]t\s+use)\b"),
         latin_names=("OpenAI", "API"),
     ),
     Case(
@@ -141,31 +155,55 @@ def check_result(case: Case, result: dict) -> list[str]:
     return errors
 
 
-def main():
-    model_file = Path(".local/models.json")
-    engine = MLXEngine(model_file)
+def prime_translation_caches(engine):
+    # Separate, unscored inputs populate BOTH prompt variants before measured reuse.
+    engine.translation_caches.clear()
+    engine.translate("Hello.", "en", "zh-en")
+    engine.translate("こんにちは。", "ja", "zh-en")
+    if not all(engine.translation_caches.get(key, ([], None))[0] for key in (False, True)):
+        raise AssertionError("Cache warm-up did not populate both prompt variants")
+
+
+def run_cases(engine):
     rows = []
     for mode in ("cold", "reuse"):
+        if mode == "reuse":
+            prime_translation_caches(engine)
         # Reverse the second pass to exercise changed preceding text and both
         # cache branches; do not require bit-identical text from GPU arithmetic.
         for case in CASES if mode == "cold" else reversed(CASES):
             if mode == "cold":
                 engine.translation_caches.clear()
+            bilingual = case.language != "en" and case.display == "zh-en"
+            cached_tokens = len(engine.translation_caches.get(bilingual, ([], None))[0])
             start = time.perf_counter()
             try:
+                if mode == "reuse" and not cached_tokens:
+                    raise AssertionError("Reuse case has no populated prompt cache")
                 result = engine.translate(case.source, case.language, case.display)
                 errors = check_result(case, result)
             except Exception as exc:
                 result, errors = {}, [f"{type(exc).__name__}: {exc}"]
             elapsed = round((time.perf_counter() - start) * 1000)
-            rows.append(dict(mode=mode, name=case.name, ms=elapsed, result=result, errors=errors))
+            rows.append(dict(
+                mode=mode, name=case.name, cached_tokens_before=cached_tokens,
+                ms=elapsed, result=result, errors=errors,
+            ))
             status = "FAIL" if errors else "PASS"
             print(f"{status} [{mode}] {case.name} ({elapsed}ms): {result}", flush=True)
             for error in errors:
                 print(f"  {error}", flush=True)
+    return rows
+
+
+def main():
+    model_file = Path(".local/models.json")
+    engine = MLXEngine(model_file)
+    rows = run_cases(engine)
     config = json.loads(model_file.read_text())
     report = {
         "translation_model": {k: config["translation"][k] for k in ("repo", "revision")},
+        "reuse_warmup_calls": 2,
         "rows": rows,
     }
     path = Path(".local/benchmark/translation-check.json")
