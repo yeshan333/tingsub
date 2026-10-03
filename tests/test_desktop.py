@@ -223,3 +223,24 @@ def test_translation_toggle_persists_without_changing_the_selected_target_langua
     update_preferences(tmp_path, {"translate": True})
     assert read_preferences(tmp_path)["translate"] is True
     assert read_preferences(tmp_path)["display"] == "source-zh"
+
+
+@pytest.mark.parametrize("exists", [False, True], ids=["before-first-log", "existing-log"])
+def test_log_shortcut_reveals_current_file_or_opens_its_directory_without_creating_a_log(
+    controller, monkeypatch, exists
+):
+    log = controller.directory / "desktop.log"
+    if exists:
+        log.write_text("diagnostic output")
+    run = Mock()
+    monkeypatch.setattr("live_subs.desktop.subprocess.run", run)
+    assert DesktopAPI(controller).open_resource("logs") == {"ok": True}
+    expected = (
+        ["/usr/bin/open", "-R", str(log)]
+        if exists
+        else ["/usr/bin/open", str(controller.directory)]
+    )
+    run.assert_called_once_with(expected, check=True, timeout=3)
+    assert log.exists() is exists
+    if exists:
+        assert log.read_text() == "diagnostic output"

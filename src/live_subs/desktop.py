@@ -297,6 +297,12 @@ class DesktopAPI:
             if not (extension / "manifest.json").is_file():
                 raise RuntimeError("Extension folder not found. Download it from the repository.")
             subprocess.run(["/usr/bin/open", str(extension)], check=True, timeout=3)
+        elif name == "logs":
+            log = self._controller._log
+            arguments = ["/usr/bin/open", "-R", str(log)] if log.is_file() else [
+                "/usr/bin/open", str(self._controller.directory)
+            ]
+            subprocess.run(arguments, check=True, timeout=3)
         elif name == "chrome":
             subprocess.run(
                 ["/usr/bin/open", "-a", "Google Chrome", "chrome://extensions"],
