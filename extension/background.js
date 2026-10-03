@@ -42,6 +42,18 @@ async function handle(message) {
       }
       const settings = await chrome.storage.local.get({ token: '', language: 'en', display: 'zh-en', partials: true, fontSize: 26 });
       if (!settings.token.trim()) throw new Error('请先填写本地服务配对码');
+      // Read shared defaults at capture time, including changes made in the desktop window.
+      const response = await fetch('http://127.0.0.1:18765/preferences', {
+        headers: { Authorization: `Bearer ${settings.token.trim()}` },
+        signal: AbortSignal.timeout(2000),
+      });
+      if (response.ok) {
+        const shared = await response.json();
+        for (const key of ['language', 'display', 'partials', 'fontSize']) settings[key] = shared[key];
+        await chrome.storage.local.set(settings);
+      } else if (response.status !== 404) {
+        throw new Error('无法同步字幕设置，请检查本机配对码');
+      }
       await chrome.scripting.executeScript({ target: { tabId: message.tabId }, files: ['overlay.js'] });
       await forward(message.tabId, { type: 'reset', fontSize: settings.fontSize });
       resetSent = true;

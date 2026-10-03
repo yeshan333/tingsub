@@ -14,7 +14,39 @@ async function save() {
   });
   $('sizeLabel').textContent = $('fontSize').value;
 }
-keys.forEach(key => $(key).addEventListener('input', save));
+let saving = Promise.resolve();
+async function loadShared() {
+  const token = $('token').value.trim();
+  if (!token) return;
+  try {
+    const response = await fetch('http://127.0.0.1:18765/preferences', {
+      headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(1200),
+    });
+    if (!response.ok) return;
+    const shared = await response.json();
+    for (const key of keys.filter(key => key !== 'token')) {
+      if (key === 'partials') $(key).checked = shared[key]; else $(key).value = shared[key];
+    }
+    await save();
+  } catch { /* Offline editing remains available in browser storage. */ }
+}
+keys.forEach(key => $(key).addEventListener('input', () => {
+  const value = key === 'partials' ? $(key).checked : key === 'fontSize' ? Number($(key).value) : $(key).value;
+  const token = $('token').value.trim();
+  save();
+  if (key === 'token') return;
+  saving = saving.then(async () => {
+    if (!token) return;
+    try {
+      const response = await fetch('http://127.0.0.1:18765/preferences', {
+        method: 'PATCH', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [key]: value }), signal: AbortSignal.timeout(1200),
+      });
+      if (!response.ok && response.status !== 404) throw new Error();
+    } catch { status('设置仅保存在浏览器；服务恢复后请重新设置以同步桌面端。', true); }
+  });
+}));
+$('token').addEventListener('change', loadShared);
 let pending = false;
 function status(message, error = false) {
   $('status').textContent = message;
@@ -41,13 +73,14 @@ async function refresh() {
       status('端口被其他服务占用，无法连接听桥', true); return;
     }
     status(health.busy ? '本机模型正在处理另一个连接' : '本机模型已就绪，打开直播后即可开始');
-  } catch { status('本机服务未就绪。请运行 start.command，并等待模型预热完成。', true); }
+  } catch { status('本机服务未就绪。请在 TingSub 桌面窗口启动服务，或运行 start.command。', true); }
 }
 $('start').addEventListener('click', async () => {
   pending = true;
   $('start').disabled = true;
   try {
     await save();
+    await saving;
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (!tab?.id || !/^https?:/.test(tab.url || '')) throw new Error('请在 YouTube 等视频网页中开启字幕');
     status('正在连接直播音频…');
@@ -63,5 +96,6 @@ $('stop').addEventListener('click', async () => {
   await chrome.runtime.sendMessage({ target: 'background', type: 'stop' });
   await refresh();
 });
+await loadShared();
 await refresh();
 setInterval(() => { refresh().catch(error => status(error.message, true)); }, 2000);
