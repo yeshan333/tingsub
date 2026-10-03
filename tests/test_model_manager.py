@@ -142,3 +142,52 @@ def test_mirror_preparation_pins_metadata_revision_and_never_forwards_login_toke
     assert observed[0]["total_bytes"] == 200
     assert json.loads((tmp_path / "download.json").read_text())["source"] == "mirror"
     assert json.loads((tmp_path / "preparation.json").read_text())["stage"] == "complete"
+
+
+@pytest.mark.parametrize("suffix", [".safetensors", ".npz"])
+def test_missing_weight_blob_is_shown_as_incomplete_and_redownloaded(
+    tmp_path, current, monkeypatch, suffix
+):
+    from pathlib import Path
+
+    from live_subs.desktop import DesktopController
+    from live_subs.model_manager import complete
+
+    folder = Path(current["asr"]["path"])
+    dangling = folder / ("missing-shard" + suffix)
+    dangling.symlink_to(tmp_path / "missing-blob")
+    assert not complete(current["asr"]), "a valid shard cannot hide a missing sibling shard"
+    monkeypatch.setattr("live_subs.desktop.probe", lambda _: ("stopped", False))
+    state = DesktopController(tmp_path).snapshot()
+    assert state["models"][0]["ready"] is False
+    assert state["models"][0]["bytes"] == 0
+    selected = next(item for item in state["catalog"] if item["repo"] == DEFAULT_ASR)
+    assert selected["downloaded"] is False
+
+    def repair(repo, **options):
+        dangling.unlink()
+        return snapshot(tmp_path, repo)["path"]
+
+    download = Mock(side_effect=repair)
+    result = prepare_models(tmp_path, downloader=download, revision_for=lambda _: "repaired")
+    assert download.call_args.args == (DEFAULT_ASR,)
+    assert download.call_count == 1
+    assert complete(result["asr"])
+    assert result["translation"] == current["translation"]
+
+
+def test_weight_directories_are_incomplete_but_valid_cache_symlinks_are_reusable(tmp_path):
+    from pathlib import Path
+
+    from live_subs.model_manager import snapshot_status
+
+    item = snapshot(tmp_path, DEFAULT_ASR)
+    weight = Path(item["path"]) / "weights.safetensors"
+    weight.unlink()
+    weight.mkdir()
+    assert snapshot_status(item) == (False, 0)
+    weight.rmdir()
+    blob = tmp_path / "blob"
+    blob.write_bytes(b"cached model")
+    weight.symlink_to(blob)
+    assert snapshot_status(item) == (True, len(b"cached model"))

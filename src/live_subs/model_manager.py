@@ -3,6 +3,7 @@
 import fnmatch
 import json
 import os
+import stat
 import tempfile
 from pathlib import Path
 
@@ -31,13 +32,27 @@ def atomic_json(path, value):
         Path(temporary).unlink(missing_ok=True)
 
 
-def complete(item):
+def snapshot_status(item):
+    """Return readiness and weight bytes without following missing cache blobs."""
     if not isinstance(item, dict) or not isinstance(item.get("path"), str):
-        return False
+        return False, 0
     path = Path(item["path"])
-    return (path / "config.json").is_file() and bool(
-        list(path.glob("*.safetensors")) + list(path.glob("*.npz"))
-    )
+    try:
+        weights = list(path.glob("*.safetensors")) + list(path.glob("*.npz"))
+        details = [weight.stat() for weight in weights]
+        if not (path / "config.json").is_file() or not details:
+            return False, 0
+        if not all(stat.S_ISREG(info.st_mode) for info in details):
+            return False, 0
+        return True, sum(info.st_size for info in details)
+    except OSError:
+        # Snapshot links may outlive their blobs, or a cache may disappear
+        # between scanning the directory and reading the file metadata.
+        return False, 0
+
+
+def complete(item):
+    return snapshot_status(item)[0]
 
 
 def selection_at(directory):

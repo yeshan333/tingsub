@@ -12,7 +12,13 @@ from pathlib import Path
 
 from .catalog import DEFAULT_ASR, DEFAULT_TRANSLATION
 from .downloads import validate_download
-from .model_manager import catalog_at, read_config, selection_at, validate_selection
+from .model_manager import (
+    catalog_at,
+    read_config,
+    selection_at,
+    snapshot_status,
+    validate_selection,
+)
 from .operation import acquire_operation
 from .preferences import read_preferences, update_preferences
 from .runtime import install_extension, worker_command
@@ -81,15 +87,13 @@ class DesktopController:
         result = []
         for kind, repo in (("asr", DEFAULT_ASR), ("translation", DEFAULT_TRANSLATION)):
             item = config.get(kind, {})
-            folder = Path(item.get("path", "/nonexistent"))
-            weights = list(folder.glob("*.safetensors")) + list(folder.glob("*.npz"))
-            ready = (folder / "config.json").is_file() and bool(weights)
+            ready, size = snapshot_status(item)
             result.append(
                 {
                     "kind": kind,
                     "repo": item.get("repo", repo),
                     "ready": ready,
-                    "bytes": sum(file.stat().st_size for file in weights),
+                    "bytes": size,
                 }
             )
         return result
