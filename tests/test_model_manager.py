@@ -108,3 +108,37 @@ def test_prepare_without_options_preserves_previously_selected_models(tmp_path):
     offline = Mock(side_effect=AssertionError("Unexpected network"))
     assert prepare_models(tmp_path, downloader=offline, revision_for=offline) == active
     assert {item["repo"] for item in catalog_at(tmp_path)} >= {"custom/whisper", "custom/qwen"}
+
+
+def test_mirror_preparation_pins_metadata_revision_and_never_forwards_login_token(
+    tmp_path, current, monkeypatch
+):
+    from types import SimpleNamespace
+
+    import huggingface_hub
+
+    repo = "mlx-community/whisper-small-mlx-4bit"
+    api = Mock()
+    api.model_info.return_value = SimpleNamespace(
+        sha="mirror-revision", siblings=[SimpleNamespace(rfilename="weights.safetensors", size=200)]
+    )
+    constructor = Mock(return_value=api)
+    monkeypatch.setattr(huggingface_hub, "HfApi", constructor)
+    observed = []
+
+    def download(model, **options):
+        assert options["endpoint"] == "https://hf-mirror.com"
+        assert options["token"] is False
+        assert options["revision"] == "mirror-revision"
+        bar = options["tqdm_class"](total=200, unit="B", name="huggingface_hub.snapshot_download")
+        bar.update(50)
+        bar.close()
+        observed.append(json.loads((tmp_path / "preparation.json").read_text()))
+        return snapshot(tmp_path, model)["path"]
+
+    prepare_models(tmp_path, asr=repo, downloader=download, download={"source": "mirror"})
+    constructor.assert_called_once_with(endpoint="https://hf-mirror.com", token=False)
+    assert observed[0]["bytes"] == 50
+    assert observed[0]["total_bytes"] == 200
+    assert json.loads((tmp_path / "download.json").read_text())["source"] == "mirror"
+    assert json.loads((tmp_path / "preparation.json").read_text())["stage"] == "complete"

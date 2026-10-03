@@ -1,11 +1,15 @@
 """Download, validate and atomically activate model pairs without losing a working pair."""
 
+import fnmatch
 import json
 import os
 import tempfile
 from pathlib import Path
 
 from .catalog import CATALOG, DEFAULT_ASR, DEFAULT_TRANSLATION
+from .downloads import DownloadProgress, validate_download
+
+PATTERNS = ["*.json", "*.safetensors", "*.npz", "*.txt", "*.model", "*.jinja"]
 
 
 def read_config(path):
@@ -87,8 +91,11 @@ def prepare_models(
     downloader=None,
     revision_for=None,
     engine_factory=None,
+    download=None,
 ):
     directory.mkdir(parents=True, exist_ok=True)
+    source = validate_download(download or read_config(directory / "download.json") or None)
+    atomic_json(directory / "download.json", source)
     active = read_config(directory / "models.json")
     library = read_config(directory / "model-library.json")
     selected = selection_at(directory)
@@ -98,13 +105,15 @@ def prepare_models(
     for item in active.values():
         if isinstance(item, dict) and item.get("repo"):
             library[item["repo"]] = item
+    api = None
     if downloader is None or revision_for is None:
         from huggingface_hub import HfApi, snapshot_download
 
         downloader = downloader or snapshot_download
-        revision_for = revision_for or (lambda repo: HfApi().model_info(repo).sha)
+        if revision_for is None:
+            api = HfApi(endpoint=source["endpoint"], token=False)
 
-    def progress(stage, kind="", repo="", error=""):
+    def progress(stage, kind="", repo="", error="", **details):
         atomic_json(
             directory / "preparation.json",
             {
@@ -112,27 +121,71 @@ def prepare_models(
                 "kind": kind,
                 "repo": repo,
                 "error": error,
+                "source": source["source"],
+                **details,
             },
         )
 
     candidate = directory / "candidate-models.json"
     try:
         result = {}
-        for kind, repo in selected.items():
+        for index, (kind, repo) in enumerate(selected.items(), 1):
             previous = library.get(repo, {})
             if not force and complete(previous) and previous.get("revision"):
                 result[kind] = previous
                 print(f"复用 {repo} @ {previous['revision']}", flush=True)
                 continue
-            progress("download", kind, repo)
-            revision = revision_for(repo)
-            print(f"下载 {kind}: {repo} @ {revision}", flush=True)
-            path = downloader(
-                repo,
-                revision=revision,
-                cache_dir=str(directory / "model-cache"),
-                allow_patterns=["*.json", "*.safetensors", "*.npz", "*.txt", "*.model", "*.jinja"],
+            progress("resolve", kind, repo, index=index, count=len(selected))
+            info = api.model_info(repo, files_metadata=True) if api else None
+            revision = info.sha if info else revision_for(repo)
+            files = (
+                [
+                    item
+                    for item in info.siblings
+                    if any(fnmatch.fnmatch(item.rfilename, pattern) for pattern in PATTERNS)
+                ]
+                if info
+                else []
             )
+            total = (
+                sum(item.size for item in files)
+                if files and all(item.size is not None for item in files)
+                else None
+            )
+            snapshot = (
+                directory
+                / "model-cache"
+                / ("models--" + repo.replace("/", "--"))
+                / "snapshots"
+                / revision
+            )
+            cached = sum(
+                item.size or 0
+                for item in files
+                if (snapshot / item.rfilename).is_file()
+                and (snapshot / item.rfilename).stat().st_size == item.size
+            )
+            tracker = DownloadProgress(
+                lambda details, kind=kind, repo=repo, index=index: progress(
+                    "download", kind, repo, index=index, count=len(selected), **details
+                ),
+                total=total,
+                cached=cached,
+            )
+            tracker.report(0, force=True)
+            print(f"下载 {kind}: {repo} @ {revision}", flush=True)
+            try:
+                path = downloader(
+                    repo,
+                    revision=revision,
+                    cache_dir=str(directory / "model-cache"),
+                    allow_patterns=PATTERNS,
+                    endpoint=source["endpoint"],
+                    token=False,
+                    tqdm_class=tracker.progress_class(),
+                )
+            finally:
+                tracker.finish()
             item = {"repo": repo, "revision": revision, "path": str(path)}
             if not complete(item):
                 raise ValueError(f"Incomplete model snapshot: {repo}")
