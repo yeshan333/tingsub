@@ -25,6 +25,12 @@ try {
       ],
       preferences: { language: 'en', display: 'zh-en', partials: true, fontSize: 26 }, logs: '', error: '',
     };
+    window.fixture.selection = Object.fromEntries(window.fixture.models.map(model => [model.kind, model.repo]));
+    window.fixture.catalog = [
+      ...window.fixture.models.map(model => ({ ...model, name: model.repo, downloaded: true, description: {} })),
+      { kind: 'asr', repo: 'mlx-community/whisper-small-mlx-4bit', name: 'Whisper Small', description: {} },
+      { kind: 'translation', repo: 'mlx-community/Qwen2.5-1.5B-Instruct-4bit', name: 'Qwen 1.5B', description: {} },
+    ];
     window.calls = [];
     window.pywebview = { api: {
       snapshot: async () => structuredClone(window.fixture),
@@ -33,7 +39,7 @@ try {
       save_preferences: async patch => { Object.assign(window.fixture.preferences, patch); window.calls.push(['preferences', patch]); },
       start_service: async () => { window.calls.push(['start']); window.fixture.state = 'starting'; window.fixture.owned = true; },
       stop_service: async () => { window.calls.push(['stop']); window.fixture.state = 'stopped'; window.fixture.owned = false; },
-      prepare_models: async () => { window.calls.push(['prepare']); window.fixture.state = 'preparing'; window.fixture.owned = true; },
+      prepare_models: async selection => { window.calls.push(['prepare', selection]); window.fixture.state = 'preparing'; window.fixture.owned = true; },
       copy_pairing: async () => { window.calls.push(['copy']); return { ok: true }; },
       open_resource: async name => window.calls.push(['resource', name]),
     } };
@@ -73,8 +79,26 @@ try {
     assert.equal(await page.locator('#serviceAction').isVisible(), true);
     assert.equal(await page.locator('#serviceAction').evaluate(el => el.getBoundingClientRect().bottom <= innerHeight), true, `${name} service controls must stay in view`);
   }
+  await page.evaluate(() => { window.fixture.state = 'stopped'; });
+  await page.locator('[data-page="models"]').click();
+  await page.waitForFunction(() => !document.querySelector('#translationModel').disabled);
+  await page.locator('#asrModel').selectOption('mlx-community/whisper-small-mlx-4bit');
+  await page.locator('#translationModel').selectOption('mlx-community/Qwen2.5-1.5B-Instruct-4bit');
+  await page.waitForTimeout(1700); // One real refresh must not overwrite an unsubmitted choice.
+  assert.equal(await page.locator('#translationModel').inputValue(), 'mlx-community/Qwen2.5-1.5B-Instruct-4bit');
+  await page.screenshot({ path: '.local/desktop-models-en.png' });
+  await page.locator('#prepare').click();
+  assert.deepEqual(await page.evaluate(() => window.calls.filter(call => call[0] === 'prepare').at(-1)[1]), {
+    asr: 'mlx-community/whisper-small-mlx-4bit', translation: 'mlx-community/Qwen2.5-1.5B-Instruct-4bit',
+  });
+  assert.equal(await page.locator('#translationModel').isDisabled(), true);
+  await page.evaluate(() => { window.fixture.state = 'error'; window.fixture.owned = false; window.fixture.preparation = { stage: 'error' }; });
+  await page.waitForFunction(() => document.querySelector('#preparationStatus').textContent.includes('unchanged'));
+  assert.equal(await page.locator('#prepare').isEnabled(), true, 'Failed switch can be retried');
+  assert.equal(await page.evaluate(() => window.fixture.selection.translation), 'mlx-community/Qwen2.5-3B-Instruct-4bit');
   await page.evaluate(() => { window.fixture.state = 'stopped'; window.fixture.models.forEach(model => { model.ready = false; }); });
   await page.waitForFunction(() => document.querySelector('#serviceAction').textContent === 'Prepare models');
+  assert.equal(await page.locator('#welcome').isVisible(), true);
   await page.locator('#serviceAction').click();
   assert.equal(await page.locator('h1').textContent(), 'Local models');
   await page.locator('#prepare').click();

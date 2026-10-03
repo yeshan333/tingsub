@@ -2,6 +2,14 @@
 const $ = (id) => document.getElementById(id);
 const words = {
   "zh-CN": {
+    welcomeEyebrow: "初次见面",
+    welcomeTitle: "先选模型，再听世界。",
+    welcomeHint: "运行环境和浏览器插件已包含在独立应用里。只需下载模型，再按引导连接 Chrome。",
+    welcomeModels: "01 选择并准备模型", welcomeBrowser: "02 配对浏览器", welcomeStart: "03 开始字幕",
+    chooseModels: "选择模型", activeModels: "当前配置", applyModels: "下载并应用", stopToSwitch: "停止服务后可切换模型",
+    switchSafe: "加载校验成功后生效；失败或取消会保留原配置。",
+    downloading: "正在下载", validating: "正在加载并校验所选模型…", modelComplete: "模型已就绪。下一步：连接浏览器。",
+    modelFailed: "模型准备失败，原配置已保留。请查看日志后重试。", openChrome: "打开扩展管理页",
     brandSub: "听桥 · 本地字幕",
     workspace: "工作空间",
     captions: "字幕",
@@ -37,7 +45,7 @@ const words = {
     prepared: "模型已准备",
     licenseTitle: "模型有各自的许可证",
     licenseHint:
-      "默认翻译模型 Qwen2.5-3B 使用 Qwen Research License，商业使用需另行获得授权。TingSub 代码使用 MIT 许可证。",
+      "Qwen 3B 使用 Qwen Research License；1.5B 使用 Apache-2.0。请按所选模型的许可使用。TingSub 代码使用 MIT 许可证。",
     licenseLink: "查看模型许可",
     logs: "运行日志",
     asr: "语音识别",
@@ -98,6 +106,14 @@ const words = {
     operationError: "操作未完成：",
   },
   en: {
+    welcomeEyebrow: "WELCOME",
+    welcomeTitle: "Choose your models. Tune into the world.",
+    welcomeHint: "The standalone app includes the runtime and browser extension. Download models, then follow the Chrome pairing guide.",
+    welcomeModels: "01 Prepare models", welcomeBrowser: "02 Pair your browser", welcomeStart: "03 Start captions",
+    chooseModels: "Choose models", activeModels: "Current configuration", applyModels: "Download & apply", stopToSwitch: "Stop the service to switch models",
+    switchSafe: "Activated after a successful load check. Failure or cancellation keeps your current configuration.",
+    downloading: "Downloading", validating: "Loading and validating the selected models…", modelComplete: "Models are ready. Next: connect your browser.",
+    modelFailed: "Preparation failed. Your current configuration is unchanged. Check the log and retry.", openChrome: "Open Chrome extensions",
     brandSub: "LOCAL CAPTIONS",
     workspace: "WORKSPACE",
     captions: "Captions",
@@ -134,7 +150,7 @@ const words = {
     prepared: "Models available",
     licenseTitle: "Models have their own licenses",
     licenseHint:
-      "The default Qwen2.5-3B translation model uses the Qwen Research License; commercial use requires separate authorization. TingSub code is MIT licensed.",
+      "Qwen 3B uses the Qwen Research License; 1.5B uses Apache-2.0. Follow the license for your chosen model. TingSub code is MIT licensed.",
     licenseLink: "Read model license",
     logs: "Process log",
     asr: "Speech recognition",
@@ -202,6 +218,8 @@ const words = {
 let locale = "zh-CN";
 let page = "captions";
 let snapshot;
+let modelDraft;
+let activeSelection;
 let busy = false;
 let api;
 let toastTimer;
@@ -304,9 +322,8 @@ function render(data) {
     busy ||
     ["stopping", "conflict"].includes(state) ||
     (state === "ready" && !data.owned);
-  $("prepare").disabled =
-    busy || allModels || !["stopped", "error"].includes(state);
-  $("prepare").textContent = t(allModels ? "prepared" : "prepare");
+  renderModelChoices(data, allModels);
+  $("welcome").hidden = allModels;
   $("modelsDot").hidden = allModels;
   for (const [key, value] of Object.entries(data.preferences)) {
     if (dirty.has(key) || document.activeElement === $(key)) continue;
@@ -336,6 +353,51 @@ function render(data) {
     });
     $("modelList").dataset.signature = signature;
   }
+}
+function renderModelChoices(data, allModels) {
+  const selected = data.selection || Object.fromEntries(data.models.map(model => [model.kind, model.repo]));
+  const activeKey = JSON.stringify(selected);
+  if (!modelDraft || activeSelection !== activeKey) {
+    modelDraft = { ...selected };
+    activeSelection = activeKey;
+  }
+  const available = data.catalog || data.models.map(model => ({ ...model, name: model.repo, description: {}, downloaded: model.ready }));
+  const disabled = busy || !["stopped", "error"].includes(data.state);
+  for (const kind of ["asr", "translation"]) {
+    const control = $(kind + "Model");
+    const signature = JSON.stringify([locale, available.filter(item => item.kind === kind)]);
+    if (control.dataset.signature !== signature) {
+      control.replaceChildren();
+      available.filter(item => item.kind === kind).forEach(item => {
+        const option = document.createElement("option");
+        option.value = item.repo;
+        option.textContent = item.name + (item.downloaded ? " · " + t("downloaded") : "");
+        control.append(option);
+      });
+      control.dataset.signature = signature;
+    }
+    control.value = modelDraft[kind];
+    control.disabled = disabled;
+    const item = available.find(item => item.kind === kind && item.repo === modelDraft[kind]);
+    $(kind + "Description").textContent = item ? [item.description?.[locale], item.license].filter(Boolean).join(" · ") : "";
+  }
+  const changed = ["asr", "translation"].some(kind => modelDraft[kind] !== selected[kind]);
+  $("prepare").disabled = disabled || (allModels && !changed);
+  $("prepare").textContent = t(changed ? "applyModels" : allModels ? "prepared" : "prepare");
+  $("switchHint").textContent = t(disabled ? "stopToSwitch" : "switchSafe");
+  const progress = data.preparation || {};
+  const status = $("preparationStatus");
+  status.hidden = !["preparing", "error"].includes(data.state) && progress.stage !== "complete";
+  status.textContent = data.state === "error" ? t("modelFailed") : data.state === "preparing"
+    ? progress.stage === "validate" ? t("validating") : progress.stage === "download"
+      ? t("downloading") + " · " + progress.repo : t("preparingHint")
+    : t("modelComplete");
+}
+for (const kind of ["asr", "translation"]) {
+  $(kind + "Model").addEventListener("change", () => {
+    modelDraft[kind] = $(kind + "Model").value;
+    if (snapshot) render(snapshot);
+  });
 }
 async function refresh() {
   render(await api.snapshot());
@@ -411,7 +473,8 @@ document
 $("copyPairing").addEventListener("click", async () => {
   if (await action("copy_pairing")) toast(t("copied"));
 });
-$("prepare").addEventListener("click", () => action("prepare_models"));
+$("chooseModels").addEventListener("click", () => showPage("models"));
+$("prepare").addEventListener("click", () => action("prepare_models", { ...modelDraft }));
 $("serviceAction").addEventListener("click", () => {
   if (!snapshot) return;
   if (snapshot.owned) action("stop_service");

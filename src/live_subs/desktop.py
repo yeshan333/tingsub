@@ -6,18 +6,20 @@ import json
 import platform
 import socket
 import subprocess
-import sys
 import threading
 import webbrowser
 from pathlib import Path
 
-from .cli import DEFAULT_ASR, DEFAULT_TRANSLATION
+from .catalog import DEFAULT_ASR, DEFAULT_TRANSLATION
+from .model_manager import catalog_at, read_config, selection_at, validate_selection
 from .preferences import read_preferences, update_preferences
+from .runtime import install_extension, worker_command
 from .server import token_at
 
 LINKS = {
     "guide": "https://github.com/yeshan333/tingsub/blob/main/docs/zh-CN/installation.md",
     "github": "https://github.com/yeshan333/tingsub",
+    "licenses": "https://github.com/yeshan333/tingsub/blob/main/docs/en/models.md",
     "license": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE",
 }
 
@@ -138,12 +140,15 @@ class DesktopController:
                 "busy": busy,
                 "owned": owned,
                 "models": self._models(),
+                "catalog": catalog_at(self.directory),
+                "selection": selection_at(self.directory),
+                "preparation": read_config(self.directory / "preparation.json"),
                 "preferences": read_preferences(self.directory),
                 "error": self._error,
                 "logs": logs.replace(self._token, "[redacted]"),
             }
 
-    def _spawn(self, job):
+    def _spawn(self, job, arguments=()):
         with self._lock:
             self._reap()
             if self._closing or self._stopping or self._process is not None:
@@ -159,14 +164,7 @@ class DesktopController:
                     raise RuntimeError("Download the local models first")
                 with self._log.open("wb") as output:
                     self._process = subprocess.Popen(
-                        [
-                            sys.executable,
-                            "-m",
-                            "live_subs.cli",
-                            "--data-dir",
-                            str(self.directory),
-                            job,
-                        ],
+                        worker_command(self.directory, job, *arguments),
                         stdout=output,
                         stderr=subprocess.STDOUT,
                         stdin=subprocess.DEVNULL,
@@ -182,8 +180,10 @@ class DesktopController:
     def start_service(self):
         return self._spawn("serve")
 
-    def prepare_models(self):
-        return self._spawn("prepare")
+    def prepare_models(self, selection=None):
+        selected = validate_selection(self.directory, selection or selection_at(self.directory))
+        return self._spawn("prepare", ("--asr", selected["asr"], "--translation",
+                                       selected["translation"], "--validate"))
 
     def _terminate(self, process):
         try:
@@ -237,8 +237,8 @@ class DesktopAPI:
     def stop_service(self):
         return self._controller.stop_service()
 
-    def prepare_models(self):
-        return self._controller.prepare_models()
+    def prepare_models(self, selection=None):
+        return self._controller.prepare_models(selection)
 
     def save_preferences(self, patch):
         return update_preferences(self._controller.directory, patch)
@@ -277,10 +277,13 @@ class DesktopAPI:
 
     def open_resource(self, name):
         if name == "extension":
-            extension = Path(__file__).resolve().parents[2] / "extension"
+            extension = install_extension(self._controller.directory)
             if not (extension / "manifest.json").is_file():
                 raise RuntimeError("Extension folder not found. Download it from the repository.")
             subprocess.run(["/usr/bin/open", str(extension)], check=True, timeout=3)
+        elif name == "chrome":
+            subprocess.run(["/usr/bin/open", "-a", "Google Chrome", "chrome://extensions"],
+                           check=True, timeout=3)
         elif name in LINKS:
             webbrowser.open(LINKS[name])
         else:

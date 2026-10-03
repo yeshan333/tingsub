@@ -107,6 +107,13 @@
             </div>
             <span id="serviceBadge" class="badge"><i></i><span>…</span></span>
           </div>
+          <div id="welcome" class="welcome" hidden>
+            <span class="eyebrow" data-i18n="welcomeEyebrow">初次见面</span>
+            <h2 data-i18n="welcomeTitle">先选模型，再听世界。</h2>
+            <p data-i18n="welcomeHint">运行环境和浏览器插件已包含在应用里。只需下载模型，再按引导连接 Chrome。</p>
+            <div class="welcome-steps"><span data-i18n="welcomeModels">01 选择并准备模型</span><span data-i18n="welcomeBrowser">02 配对浏览器</span><span data-i18n="welcomeStart">03 开始字幕</span></div>
+            <button id="chooseModels" class="secondary" data-i18n="chooseModels">选择模型</button>
+          </div>
           <section id="page-captions" class="page">
             <div class="preview">
               <div class="preview-top">
@@ -191,6 +198,12 @@
               <h2 data-i18n="installedModels">推理模型</h2>
               <span data-i18n="metal">MLX · Metal 加速</span>
             </div>
+            <div class="group model-choices">
+              <label class="model-choice" for="asrModel"><strong data-i18n="asr">语音识别</strong><select id="asrModel"></select><small id="asrDescription"></small></label>
+              <label class="model-choice" for="translationModel"><strong data-i18n="translation">双语翻译</strong><select id="translationModel"></select><small id="translationDescription"></small></label>
+            </div>
+            <div id="preparationStatus" class="preparation-status" role="status" aria-live="polite" hidden></div>
+            <div class="section-heading"><h2 data-i18n="activeModels">当前配置</h2><span id="switchHint"></span></div>
             <div id="modelList" class="group models-list"></div>
             <div class="model-actions">
               <p data-i18n="downloadHint">
@@ -208,7 +221,7 @@
                   默认翻译模型 Qwen2.5-3B 使用 Qwen Research
                   License，商业使用需另行获得授权。TingSub 代码使用 MIT 许可证。
                 </p>
-                <button class="text-button" data-resource="license">
+                <button class="text-button" data-resource="licenses">
                   <span data-i18n="licenseLink">查看模型许可</span> ↗
                 </button>
               </div>
@@ -241,7 +254,7 @@
                   <button class="secondary" data-resource="extension">
                     <span data-i18n="openExtension">打开插件文件夹</span
                     ><svg><use href="#i-arrow" /></svg></button
-                  ><code>chrome://extensions</code>
+                  ><button class="text-button" data-resource="chrome"><span data-i18n="openChrome">打开扩展管理页</span> ↗</button>
                 </div>
               </li>
               <li>

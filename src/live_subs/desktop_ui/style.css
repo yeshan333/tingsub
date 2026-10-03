@@ -886,3 +886,16 @@ input.switch:checked:before {
     width: 90px;
   }
 }
+
+.welcome { border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px; margin-bottom: 24px; background: var(--panel); }
+.welcome .eyebrow { font-size: 10px; letter-spacing: .15em; color: var(--muted); }
+.welcome h2 { font-size: 23px; margin: 10px 0; font-weight: 500; }
+.welcome p { font-size: 12px; line-height: 1.8; color: var(--muted); }
+.welcome-steps { display: flex; gap: 24px; margin: 18px 0; font-size: 11px; }
+.model-choice { display: grid; grid-template-columns: 110px 1fr; gap: 9px 20px; padding: 20px; align-items: center; }
+.model-choice + .model-choice { border-top: 1px solid var(--line); }
+.model-choice strong { font-size: 12px; font-weight: 500; }
+.model-choice select { width: 100%; max-width: none; }
+.model-choice small { grid-column: 2; color: var(--muted); line-height: 1.7; font-size: 11px; }
+.preparation-status { padding: 14px 0; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+#switchHint { max-width: 340px; text-align: right; line-height: 1.7; }
