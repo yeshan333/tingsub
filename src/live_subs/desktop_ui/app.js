@@ -6,7 +6,7 @@ const words = {
     welcomeTitle: "先选模型，再听世界。",
     welcomeHint: "运行环境和浏览器插件已包含在独立应用里。只需下载模型，再按引导连接 Chrome。",
     welcomeModels: "01 选择并准备模型", welcomeBrowser: "02 配对浏览器", welcomeStart: "03 开始字幕",
-    chooseModels: "选择模型", activeModels: "当前配置", applyModels: "下载并应用", stopToSwitch: "停止服务后可切换模型",
+    chooseModels: "选择模型", activeModels: "当前配置", applyModels: "下载并应用", stopToSwitch: "可先浏览和选择，停止服务后应用", stopToApply: "停止服务后应用",
     switchSafe: "加载校验成功后生效；失败或取消会保留原配置。",
     downloadSource: "模型下载源", sourceOfficial: "Hugging Face · 官方", sourceMirror: "HF-Mirror · 社区镜像", sourceCustom: "自定义地址", sourceEndpoint: "兼容 Hugging Face 的 HTTPS 地址", downloadSourceHint: "网络较慢时可尝试社区镜像；速度和可用性取决于网络。仅用于下载公开模型，不发送音频或配对码。", resolving: "正在获取模型文件信息…", sizeUnknown: "正在确认文件大小",
     downloading: "正在下载", validating: "正在加载并校验所选模型…", modelComplete: "模型已就绪。下一步：连接浏览器。",
@@ -113,7 +113,7 @@ const words = {
     welcomeTitle: "Choose your models. Tune into the world.",
     welcomeHint: "The standalone app includes the runtime and browser extension. Download models, then follow the Chrome pairing guide.",
     welcomeModels: "01 Prepare models", welcomeBrowser: "02 Pair your browser", welcomeStart: "03 Start captions",
-    chooseModels: "Choose models", activeModels: "Current configuration", applyModels: "Download & apply", stopToSwitch: "Stop the service to switch models",
+    chooseModels: "Choose models", activeModels: "Current configuration", applyModels: "Download & apply", stopToSwitch: "Browse and choose now; stop the service to apply", stopToApply: "Stop service to apply",
     switchSafe: "Activated after a successful load check. Failure or cancellation keeps your current configuration.",
     downloadSource: "Model download source", sourceOfficial: "Hugging Face · Official", sourceMirror: "HF-Mirror · Community", sourceCustom: "Custom endpoint", sourceEndpoint: "Hugging Face-compatible HTTPS endpoint", downloadSourceHint: "Try the community mirror on slow connections. Speed and availability vary. Only public model files are downloaded; audio and pairing codes are never sent.", resolving: "Getting model file information…", sizeUnknown: "Determining download size",
     downloading: "Downloading", validating: "Loading and validating the selected models…", modelComplete: "Models are ready. Next: connect your browser.",
@@ -377,8 +377,9 @@ function renderModelChoices(data, allModels) {
   $("endpointField").hidden = downloadDraft.source !== "custom";
   const available = data.catalog || data.models.map(model => ({ ...model, name: model.repo, description: {}, downloaded: model.ready }));
   const disabled = busy || !["stopped", "error"].includes(data.state);
-  $("downloadSource").disabled = disabled;
-  $("downloadEndpoint").disabled = disabled;
+  const choicesLocked = busy || data.state === "preparing";
+  $("downloadSource").disabled = choicesLocked;
+  $("downloadEndpoint").disabled = choicesLocked;
   for (const kind of ["asr", "translation"]) {
     const control = $(kind + "Model");
     const signature = JSON.stringify([locale, available.filter(item => item.kind === kind)]);
@@ -393,13 +394,13 @@ function renderModelChoices(data, allModels) {
       control.dataset.signature = signature;
     }
     control.value = modelDraft[kind];
-    control.disabled = disabled;
+    control.disabled = choicesLocked;
     const item = available.find(item => item.kind === kind && item.repo === modelDraft[kind]);
     $(kind + "Description").textContent = item ? [item.description?.[locale], item.license].filter(Boolean).join(" · ") : "";
   }
   const changed = ["asr", "translation"].some(kind => modelDraft[kind] !== selected[kind]);
   $("prepare").disabled = disabled || (allModels && !changed);
-  $("prepare").textContent = t(changed ? "applyModels" : allModels ? "prepared" : "prepare");
+  $("prepare").textContent = t(changed && disabled ? "stopToApply" : changed ? "applyModels" : allModels ? "prepared" : "prepare");
   $("switchHint").textContent = t(disabled ? "stopToSwitch" : "switchSafe");
   const progress = data.preparation || {};
   const status = $("preparationStatus");

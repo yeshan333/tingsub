@@ -68,6 +68,21 @@ try {
   await page.evaluate(() => { window.fixture.state = 'ready'; window.fixture.owned = false; });
   await page.waitForFunction(() => document.querySelector('#serviceTitle').textContent === '外部服务已连接');
   assert.equal(await page.locator('#serviceAction').isDisabled(), true);
+  await page.locator('[data-page="models"]').click();
+  for (const busy of [false,true]) {
+    await page.evaluate(busy=>{window.fixture.busy=busy;},busy);
+    await page.locator('#asrModel').selectOption('mlx-community/whisper-small-mlx-4bit');
+    await page.locator('#translationModel').selectOption('mlx-community/Qwen2.5-1.5B-Instruct-4bit');
+    await page.waitForTimeout(1700);
+    assert.equal(await page.locator('#asrModel').isEnabled(),true,'服务空闲或生成字幕时都可浏览模型');
+    assert.equal(await page.locator('#translationModel').inputValue(),'mlx-community/Qwen2.5-1.5B-Instruct-4bit');
+    assert.equal(await page.locator('#downloadSource').isEnabled(),true);
+    assert.equal(await page.locator('#prepare').isDisabled(),true,'浏览选择不能切换运行中的模型');
+    assert.equal(await page.locator('#prepare').textContent(),'停止服务后应用');
+    assert.equal(await page.evaluate(()=>window.fixture.selection.translation),'mlx-community/Qwen2.5-3B-Instruct-4bit');
+    assert.equal(await page.evaluate(()=>window.calls.filter(call=>call[0]==='prepare').length),0);
+  }
+  await page.evaluate(()=>{window.fixture.busy=false;});
   await page.locator('[data-page="connection"]').click();
   await page.locator('#copyPairing').click();
   await page.waitForFunction(() => document.querySelector('#toast').textContent === '配对码已复制');
