@@ -64,7 +64,7 @@ try {
       assert.equal(await page.locator("h1").count(), 1);
       assert.equal(
         await page.locator("link[rel=canonical]").getAttribute("href"),
-        `https://yeshan333.github.io/tingsub/${path}`,
+        `https://shansan.top/tingsub/${path}`,
       );
       const links = await page
         .locator("a")

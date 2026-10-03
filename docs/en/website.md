@@ -32,7 +32,7 @@ Tests build and serve the site under `/tingsub/`, verify both languages, guide l
 
 In repository **Settings → Pages**, select **GitHub Actions** as the source. `.github/workflows/pages.yml` builds and tests pull requests but only deploys from `main`. A merge that changes site inputs triggers publication; **Run workflow** on `main` can republish. The `github-pages` environment and Pages deployment permissions are confined to the deployment job. Only `dist/site` is uploaded, never the checkout or application data.
 
-Expected URL: <https://yeshan333.github.io/tingsub/>. If the repository or domain changes, update the builder's default URL and the expected canonical URLs in the browser test. Do not add a root-domain `robots.txt` policy from this project subdirectory; `sitemap.xml` is available within the site.
+Expected URL: <https://shansan.top/tingsub/>. If the repository or domain changes, update the builder's default URL and the expected canonical URLs in the browser test. Do not add a root-domain `robots.txt` policy from this project subdirectory; `sitemap.xml` is available within the site.
 
 ## Copy and positioning
 

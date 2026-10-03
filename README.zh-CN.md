@@ -11,7 +11,7 @@
 
 # TingSub · 听桥
 
-[产品主页](https://yeshan333.github.io/tingsub/) · [主页维护说明](docs/zh-CN/website.md)
+[产品主页](https://shansan.top/tingsub/) · [主页维护说明](docs/zh-CN/website.md)
 
 把浏览器中播放的英语、日语实时变成**中文＋英文字幕**，识别与翻译都在你的 Mac 上完成。也可选择**中文＋原文**，保留日语原文。
 

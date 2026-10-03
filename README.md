@@ -11,7 +11,7 @@
 
 # TingSub · 听桥
 
-[Product homepage](https://yeshan333.github.io/tingsub/en/) · [Website maintenance](docs/en/website.md)
+[Product homepage](https://shansan.top/tingsub/en/) · [Website maintenance](docs/en/website.md)
 
 Turn English and Japanese browser audio into **Chinese + English live captions**, with speech recognition and translation running on your Mac. Choose **Chinese + original** to keep Japanese speech in Japanese.
 

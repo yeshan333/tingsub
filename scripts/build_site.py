@@ -89,6 +89,6 @@ def build(output: Path, site_url: str) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "dist/site")
-    parser.add_argument("--site-url", default="https://yeshan333.github.io/tingsub")
+    parser.add_argument("--site-url", default="https://shansan.top/tingsub")
     args = parser.parse_args()
     build(args.output, args.site_url)

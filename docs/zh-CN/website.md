@@ -32,7 +32,7 @@ npm run test:site
 
 在仓库 **Settings → Pages** 将来源设为 **GitHub Actions**。`.github/workflows/pages.yml` 为 PR 构建和测试，但只从 `main` 发布。影响主页的改动合并后自动上线，也可在 `main` 手动 **Run workflow** 重新发布。`github-pages` 环境和 Pages 写权限仅用于部署 job。上传范围仅为 `dist/site`，不包含源码仓库或应用数据。
 
-预期地址：<https://yeshan333.github.io/tingsub/>。如果迁移仓库或更换域名，请同步修改构建器默认 URL 及浏览器测试中的 canonical 预期。项目子目录不提供域名根目录级别的 `robots.txt` 策略；站点内提供 `sitemap.xml`。
+预期地址：<https://shansan.top/tingsub/>。如果迁移仓库或更换域名，请同步修改构建器默认 URL 及浏览器测试中的 canonical 预期。项目子目录不提供域名根目录级别的 `robots.txt` 策略；站点内提供 `sitemap.xml`。
 
 ## 文案与定位
 
