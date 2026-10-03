@@ -16,7 +16,7 @@ Open `TingSub-0.1.0-macos-<minimum>-arm64.dmg`, drag TingSub to Applications, th
 2. **Browser connection:** open the extension folder and Chrome extensions. Enable Developer mode, choose Load unpacked and select the exported `extension` folder. Paste the pairing code into TingSub's extension.
 3. **Start service:** wait for readiness, open your video tab and click Start captions in the extension.
 
-Chrome requires explicit extension installation and a user gesture to capture a tab. Those steps cannot be silently automated. No Chrome Web Store listing is available yet. Exported extensions live outside the app and survive app replacement; after an extension update, load the newly exported folder and remove the older extension.
+Chrome requires explicit extension installation and a user gesture to capture a tab. Those steps cannot be silently automated. No Chrome Web Store listing is available yet. Exported extensions live outside the app and keep the same path across updates, preserving Chrome’s extension ID, pairing and settings. After replacing the App, click **Open extension folder** once to refresh the files, then click **Reload** on the existing TingSub entry in `chrome://extensions`; do not remove it or load a second copy. Older preview export folders are refreshed in place as well.
 
 Current local/CI builds are **ad-hoc signed, not Apple-notarized**. They may trigger macOS security prompts when downloaded. A public notarized release requires a maintainer's Developer ID and Apple notarization. Do not describe a CI artifact as a notarized release.
 
