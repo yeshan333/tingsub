@@ -43,6 +43,7 @@ jobs:
       - run: python3 scripts/check_docs.py
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
+      - run: npm run test:desktop
       - name: Package unpacked extension
         working-directory: extension
         run: zip -r ../tingsub-extension.zip .
