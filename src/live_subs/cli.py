@@ -13,6 +13,12 @@ def main():
     parser.add_argument("--data-dir", type=Path, default=default_data_directory())
     sub = parser.add_subparsers(dest="command", required=True)
     prepare = sub.add_parser("prepare", help="首次联网下载模型；运行时不联网")
+    prepare.add_argument(
+        "--download-source", choices=("official", "mirror", "custom"), default="official"
+    )
+    prepare.add_argument(
+        "--endpoint", help="HTTPS Hugging Face-compatible endpoint for custom source"
+    )
     prepare.add_argument("--asr")
     prepare.add_argument("--translation")
     prepare.add_argument("--validate", action="store_true", help="实际加载校验后才启用新模型")
@@ -46,8 +52,14 @@ def run_operation(args, directory, parser):
     if args.command == "prepare":
         from .model_manager import prepare_models
 
-        prepare_models(directory, args.asr, args.translation,
-                       force=args.force, validate=args.validate)
+        prepare_models(
+            directory,
+            args.asr,
+            args.translation,
+            force=args.force,
+            validate=args.validate,
+            download={"source": args.download_source, "endpoint": args.endpoint},
+        )
     else:
         if platform.system() != "Darwin" or platform.machine() != "arm64":
             parser.error("此版本的推理后端要求 Apple Silicon Mac")

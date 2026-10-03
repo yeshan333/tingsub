@@ -39,7 +39,7 @@ try {
       save_preferences: async patch => { Object.assign(window.fixture.preferences, patch); window.calls.push(['preferences', patch]); },
       start_service: async () => { window.calls.push(['start']); window.fixture.state = 'starting'; window.fixture.owned = true; },
       stop_service: async () => { window.calls.push(['stop']); window.fixture.state = 'stopped'; window.fixture.owned = false; },
-      prepare_models: async selection => { window.calls.push(['prepare', selection]); window.fixture.state = 'preparing'; window.fixture.owned = true; },
+      prepare_models: async (selection, download) => { window.calls.push(['prepare', selection, download]); window.fixture.state = 'preparing'; window.fixture.owned = true; },
       copy_pairing: async () => { window.calls.push(['copy']); return { ok: true }; },
       open_resource: async name => window.calls.push(['resource', name]),
     } };
@@ -86,12 +86,24 @@ try {
   await page.locator('#translationModel').selectOption('mlx-community/Qwen2.5-1.5B-Instruct-4bit');
   await page.waitForTimeout(1700); // One real refresh must not overwrite an unsubmitted choice.
   assert.equal(await page.locator('#translationModel').inputValue(), 'mlx-community/Qwen2.5-1.5B-Instruct-4bit');
+  await page.locator('#downloadSource').selectOption('custom');
+  await page.locator('#downloadEndpoint').fill('https://models.example');
   await page.screenshot({ path: '.local/desktop-models-en.png' });
   await page.locator('#prepare').click();
   assert.deepEqual(await page.evaluate(() => window.calls.filter(call => call[0] === 'prepare').at(-1)[1]), {
     asr: 'mlx-community/whisper-small-mlx-4bit', translation: 'mlx-community/Qwen2.5-1.5B-Instruct-4bit',
   });
   assert.equal(await page.locator('#translationModel').isDisabled(), true);
+  assert.deepEqual(await page.evaluate(() => window.calls.filter(call => call[0] === 'prepare').at(-1)[2]), {source:'custom', endpoint:'https://models.example'});
+  await page.evaluate(() => { window.fixture.preparation = {stage:'download', bytes:52428800, total_bytes:209715200, index:1, count:2, repo:'Whisper Small'}; });
+  await page.waitForFunction(() => document.querySelector('#modelProgress').value === 25);
+  assert.equal(await page.locator('#downloadBytes').textContent(), '25% · 50.0 MB / 200.0 MB');
+  assert.equal(await page.locator('#downloadSource').isDisabled(), true);
+  await page.screenshot({path:'.local/desktop-download-progress.png'});
+  await page.evaluate(() => { window.fixture.preparation = {stage:'validate'}; });
+  await page.waitForFunction(() => document.querySelector('#preparationStatus').textContent.includes('validating'));
+  assert.equal(await page.locator('#modelProgress').getAttribute('value'), null, '加载校验必须使用阶段提示，不能显示虚构百分比');
+  assert.equal(await page.locator('#downloadBytes').textContent(), '');
   await page.evaluate(() => { window.fixture.state = 'error'; window.fixture.owned = false; window.fixture.preparation = { stage: 'error' }; });
   await page.waitForFunction(() => document.querySelector('#preparationStatus').textContent.includes('unchanged'));
   assert.equal(await page.locator('#prepare').isEnabled(), true, 'Failed switch can be retried');

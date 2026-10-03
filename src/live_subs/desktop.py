@@ -11,6 +11,7 @@ import webbrowser
 from pathlib import Path
 
 from .catalog import DEFAULT_ASR, DEFAULT_TRANSLATION
+from .downloads import validate_download
 from .model_manager import catalog_at, read_config, selection_at, validate_selection
 from .operation import acquire_operation
 from .preferences import read_preferences, update_preferences
@@ -136,6 +137,9 @@ class DesktopController:
                 "catalog": catalog_at(self.directory),
                 "selection": selection_at(self.directory),
                 "preparation": read_config(self.directory / "preparation.json"),
+                "download": validate_download(
+                    read_config(self.directory / "download.json") or None
+                ),
                 "preferences": read_preferences(self.directory),
                 "error": self._error,
                 "logs": logs.replace(self._token, "[redacted]"),
@@ -158,8 +162,10 @@ class DesktopController:
                 with self._log.open("wb") as output:
                     self._process = subprocess.Popen(
                         worker_command(self.directory, job, *arguments),
-                        env={**os.environ,
-                             "TINGSUB_OPERATION_FD": str(self._operation_lock.fileno())},
+                        env={
+                            **os.environ,
+                            "TINGSUB_OPERATION_FD": str(self._operation_lock.fileno()),
+                        },
                         stdout=output,
                         stderr=subprocess.STDOUT,
                         stdin=subprocess.DEVNULL,
@@ -175,10 +181,25 @@ class DesktopController:
     def start_service(self):
         return self._spawn("serve")
 
-    def prepare_models(self, selection=None):
+    def prepare_models(self, selection=None, download=None):
+        source = validate_download(
+            download or read_config(self.directory / "download.json") or None
+        )
         selected = validate_selection(self.directory, selection or selection_at(self.directory))
-        return self._spawn("prepare", ("--asr", selected["asr"], "--translation",
-                                       selected["translation"], "--validate"))
+        return self._spawn(
+            "prepare",
+            (
+                "--asr",
+                selected["asr"],
+                "--translation",
+                selected["translation"],
+                "--validate",
+                "--download-source",
+                source["source"],
+                "--endpoint",
+                source["endpoint"],
+            ),
+        )
 
     def _terminate(self, process):
         try:
@@ -232,8 +253,8 @@ class DesktopAPI:
     def stop_service(self):
         return self._controller.stop_service()
 
-    def prepare_models(self, selection=None):
-        return self._controller.prepare_models(selection)
+    def prepare_models(self, selection=None, download=None):
+        return self._controller.prepare_models(selection, download)
 
     def save_preferences(self, patch):
         return update_preferences(self._controller.directory, patch)
@@ -277,8 +298,11 @@ class DesktopAPI:
                 raise RuntimeError("Extension folder not found. Download it from the repository.")
             subprocess.run(["/usr/bin/open", str(extension)], check=True, timeout=3)
         elif name == "chrome":
-            subprocess.run(["/usr/bin/open", "-a", "Google Chrome", "chrome://extensions"],
-                           check=True, timeout=3)
+            subprocess.run(
+                ["/usr/bin/open", "-a", "Google Chrome", "chrome://extensions"],
+                check=True,
+                timeout=3,
+            )
         elif name in LINKS:
             webbrowser.open(LINKS[name])
         else:

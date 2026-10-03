@@ -8,6 +8,7 @@ const words = {
     welcomeModels: "01 选择并准备模型", welcomeBrowser: "02 配对浏览器", welcomeStart: "03 开始字幕",
     chooseModels: "选择模型", activeModels: "当前配置", applyModels: "下载并应用", stopToSwitch: "停止服务后可切换模型",
     switchSafe: "加载校验成功后生效；失败或取消会保留原配置。",
+    downloadSource: "模型下载源", sourceOfficial: "Hugging Face · 官方", sourceMirror: "HF-Mirror · 社区镜像", sourceCustom: "自定义地址", sourceEndpoint: "兼容 Hugging Face 的 HTTPS 地址", sourceHint: "网络较慢时可尝试社区镜像；速度和可用性取决于网络。仅用于下载公开模型，不发送音频或配对码。", resolving: "正在获取模型文件信息…", sizeUnknown: "正在确认文件大小",
     downloading: "正在下载", validating: "正在加载并校验所选模型…", modelComplete: "模型已就绪。下一步：连接浏览器。",
     modelFailed: "模型准备失败，原配置已保留。请查看日志后重试。", openChrome: "打开扩展管理页",
     brandSub: "听桥 · 本地字幕",
@@ -112,6 +113,7 @@ const words = {
     welcomeModels: "01 Prepare models", welcomeBrowser: "02 Pair your browser", welcomeStart: "03 Start captions",
     chooseModels: "Choose models", activeModels: "Current configuration", applyModels: "Download & apply", stopToSwitch: "Stop the service to switch models",
     switchSafe: "Activated after a successful load check. Failure or cancellation keeps your current configuration.",
+    downloadSource: "Model download source", sourceOfficial: "Hugging Face · Official", sourceMirror: "HF-Mirror · Community", sourceCustom: "Custom endpoint", sourceEndpoint: "Hugging Face-compatible HTTPS endpoint", sourceHint: "Try the community mirror on slow connections. Speed and availability vary. Only public model files are downloaded; audio and pairing codes are never sent.", resolving: "Getting model file information…", sizeUnknown: "Determining download size",
     downloading: "Downloading", validating: "Loading and validating the selected models…", modelComplete: "Models are ready. Next: connect your browser.",
     modelFailed: "Preparation failed. Your current configuration is unchanged. Check the log and retry.", openChrome: "Open Chrome extensions",
     brandSub: "LOCAL CAPTIONS",
@@ -219,6 +221,7 @@ let locale = "zh-CN";
 let page = "captions";
 let snapshot;
 let modelDraft;
+let downloadDraft;
 let activeSelection;
 let busy = false;
 let api;
@@ -361,8 +364,14 @@ function renderModelChoices(data, allModels) {
     modelDraft = { ...selected };
     activeSelection = activeKey;
   }
+  downloadDraft ||= { ...(data.download || { source: "official", endpoint: "" }) };
+  $("downloadSource").value = downloadDraft.source;
+  $("downloadEndpoint").value = downloadDraft.endpoint;
+  $("endpointField").hidden = downloadDraft.source !== "custom";
   const available = data.catalog || data.models.map(model => ({ ...model, name: model.repo, description: {}, downloaded: model.ready }));
   const disabled = busy || !["stopped", "error"].includes(data.state);
+  $("downloadSource").disabled = disabled;
+  $("downloadEndpoint").disabled = disabled;
   for (const kind of ["asr", "translation"]) {
     const control = $(kind + "Model");
     const signature = JSON.stringify([locale, available.filter(item => item.kind === kind)]);
@@ -387,10 +396,21 @@ function renderModelChoices(data, allModels) {
   $("switchHint").textContent = t(disabled ? "stopToSwitch" : "switchSafe");
   const progress = data.preparation || {};
   const status = $("preparationStatus");
+  const active = data.state === "preparing";
+  $("downloadProgress").hidden = !active;
+  const bar = $("modelProgress");
+  const total = progress.total_bytes;
+  const ready = Math.max(0, progress.bytes || 0);
+  const measured = active && progress.stage === "download" && Number.isFinite(total) && total > 0;
+  if (measured) bar.value = Math.min(100, ready / total * 100);
+  else bar.removeAttribute("value");
+  const size = bytes => bytes >= 1024 ** 3 ? (bytes / 1024 ** 3).toFixed(2) + " GB" : (bytes / 1024 ** 2).toFixed(1) + " MB";
+  $("downloadBytes").textContent = active && progress.stage === "download"
+    ? measured ? `${Math.floor(Math.min(100, ready / total * 100))}% · ${size(ready)} / ${size(total)}` : `${size(ready)} · ${t("sizeUnknown")}` : "";
   status.hidden = !["preparing", "error"].includes(data.state) && progress.stage !== "complete";
   status.textContent = data.state === "error" ? t("modelFailed") : data.state === "preparing"
     ? progress.stage === "validate" ? t("validating") : progress.stage === "download"
-      ? t("downloading") + " · " + progress.repo : t("preparingHint")
+      ? t("downloading") + ` · ${progress.index || 1}/${progress.count || 2} · ` + progress.repo : progress.stage === "resolve" ? t("resolving") : t("preparingHint")
     : t("modelComplete");
 }
 for (const kind of ["asr", "translation"]) {
@@ -399,6 +419,12 @@ for (const kind of ["asr", "translation"]) {
     if (snapshot) render(snapshot);
   });
 }
+$("downloadSource").addEventListener("change", () => {
+  downloadDraft.source = $("downloadSource").value;
+  if (downloadDraft.source === "custom") downloadDraft.endpoint = "";
+  if (snapshot) render(snapshot);
+});
+$("downloadEndpoint").addEventListener("input", () => { downloadDraft.endpoint = $("downloadEndpoint").value; });
 async function refresh() {
   render(await api.snapshot());
 }
@@ -474,7 +500,7 @@ $("copyPairing").addEventListener("click", async () => {
   if (await action("copy_pairing")) toast(t("copied"));
 });
 $("chooseModels").addEventListener("click", () => showPage("models"));
-$("prepare").addEventListener("click", () => action("prepare_models", { ...modelDraft }));
+$("prepare").addEventListener("click", () => action("prepare_models", { ...modelDraft }, { ...downloadDraft }));
 $("serviceAction").addEventListener("click", () => {
   if (!snapshot) return;
   if (snapshot.owned) action("stop_service");

@@ -899,3 +899,5 @@ input.switch:checked:before {
 .model-choice small { grid-column: 2; color: var(--muted); line-height: 1.7; font-size: 11px; }
 .preparation-status { padding: 14px 0; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
 #switchHint { max-width: 340px; text-align: right; line-height: 1.7; }
+
+.download-options{margin-top:16px}.download-options .model-choice{display:grid;padding:16px 20px;gap:8px}.download-options small{line-height:1.6;color:var(--muted)}.download-options input{font:inherit;padding:9px;border:1px solid #8885;border-radius:6px;background:transparent;color:inherit}.download-progress{margin:20px 0 6px}.download-progress progress{display:block;width:100%;height:8px;accent-color:#69877d}.download-progress div{font-size:12px;margin-top:8px;font-variant-numeric:tabular-nums;opacity:.75}
