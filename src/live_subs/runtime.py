@@ -1,6 +1,6 @@
 """Paths and worker commands shared by source and standalone builds."""
 
-import hashlib
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -28,21 +28,22 @@ def worker_command(directory, command, *arguments):
 
 
 def install_extension(directory):
-    """Export a stable, content-versioned copy so Chrome survives app replacement."""
+    """Refresh the same unpacked path so Chrome retains its ID and local storage."""
     source = extension_directory()
     if not (source / "manifest.json").is_file():
         raise RuntimeError("Bundled extension is missing")
     if not bundled():
         return source
-    digest = hashlib.sha256()
-    files = sorted(path for path in source.rglob("*") if path.is_file())
-    for path in files:
-        digest.update(str(path.relative_to(source)).encode())
-        digest.update(path.read_bytes())
-    target = directory / "extensions" / digest.hexdigest()[:16] / "extension"
-    target.mkdir(parents=True, exist_ok=True)
-    for path in files:
-        destination = target / path.relative_to(source)
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(path, destination)
+    exports = directory / "extensions"
+    # Older previews exported content-addressed folders. Refresh those in place
+    # too: Chrome's path-derived ID and its paired storage must survive updates.
+    legacy = sorted(
+        path / "extension" for path in exports.glob("*")
+        if re.fullmatch(r"[0-9a-f]{16}", path.name)
+        and (path / "extension" / "manifest.json").is_file()
+    )
+    stable = exports / "extension"
+    target = stable if stable.exists() or not legacy else legacy[0]
+    for destination in dict.fromkeys([target, *legacy]):
+        shutil.copytree(source, destination, dirs_exist_ok=True)
     return target
