@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tingsub"
+version = "0.1.0"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "TingSub contributors" }]
+description = "Local English/Chinese live captions for English and Japanese browser audio"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.34,<1",
+  "numpy>=2,<3",
+  "webrtcvad-wheels>=2.0.14,<3",
+  "mlx-whisper>=0.4.2,<0.5",
+  "mlx-lm>=0.24,<1",
+  "huggingface-hub>=0.30,<2",
+]
+
+[project.urls]
+Homepage = "https://github.com/yeshan333/tingsub"
+Issues = "https://github.com/yeshan333/tingsub/issues"
+
+[project.scripts]
+tingsub = "live_subs.cli:main"
+live-subs = "live_subs.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=0.25,<2", "httpx>=0.28,<1", "ruff>=0.11,<1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/live_subs"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
