@@ -126,7 +126,13 @@ def test_parallel_preference_edits_preserve_both_fields_and_survive_a_new_contro
         worker.join(timeout=3)
     assert not errors
     saved = read_preferences(tmp_path)
-    assert saved == {"language": "ja", "display": "zh-en", "partials": True, "fontSize": 32}
+    assert saved == {
+        "language": "ja",
+        "display": "zh-en",
+        "partials": True,
+        "translate": True,
+        "fontSize": 32,
+    }
 
 
 @pytest.mark.parametrize(
@@ -137,6 +143,7 @@ def test_parallel_preference_edits_preserve_both_fields_and_survive_a_new_contro
         {"fontSize": 41},
         {"fontSize": 17},
         {"partials": 1},
+        {"translate": "false"},
         {"display": "ja-en"},
         {"token": "do-not-save"},
         [],
@@ -207,3 +214,12 @@ def test_two_windows_cannot_prepare_models_or_truncate_logs_in_the_same_director
     second.prepare_models()
     assert spawn.call_count == 2
     second.close()
+
+
+def test_translation_toggle_persists_without_changing_the_selected_target_languages(tmp_path):
+    update_preferences(tmp_path, {"display": "source-zh", "translate": False})
+    assert read_preferences(tmp_path)["translate"] is False
+    assert read_preferences(tmp_path)["display"] == "source-zh"
+    update_preferences(tmp_path, {"translate": True})
+    assert read_preferences(tmp_path)["translate"] is True
+    assert read_preferences(tmp_path)["display"] == "source-zh"

@@ -6,7 +6,13 @@ import os
 import tempfile
 from pathlib import Path
 
-DEFAULTS = {"language": "en", "display": "zh-en", "partials": True, "fontSize": 26}
+DEFAULTS = {
+    "language": "en",
+    "display": "zh-en",
+    "partials": True,
+    "translate": True,
+    "fontSize": 26,
+}
 
 
 def validate(patch):
@@ -16,6 +22,7 @@ def validate(patch):
         valid = {
             "language": lambda value=value: value in ("en", "ja", "auto"),
             "display": lambda value=value: value in ("zh-en", "source-zh"),
+            "translate": lambda value=value: type(value) is bool,
             "partials": lambda value=value: type(value) is bool,
             "fontSize": lambda value=value: type(value) is int and 18 <= value <= 40,
         }[key]()

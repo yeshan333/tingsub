@@ -66,6 +66,7 @@ def create_app(directory: Path, engine_factory=None):
             "busy": app.state.busy,
             "local_only": True,
             "protocol": 1,
+            "translation_control": True,
         }
 
     def authorize_preferences(request: Request):
@@ -122,6 +123,10 @@ def create_app(directory: Path, engine_factory=None):
                 return
             language = config.get("language", "en")
             display = config.get("display", "zh-en")
+            translate = config.get("translate", True)
+            if type(translate) is not bool:
+                await ws.close(code=1008, reason="翻译开关必须是布尔值")
+                return
             if language not in {"en", "ja", "auto"} or display not in {"zh-en", "source-zh"}:
                 await ws.close(code=1008, reason="不支持的字幕配置")
                 return
@@ -168,6 +173,7 @@ def create_app(directory: Path, engine_factory=None):
                         language,
                         display,
                         captured_ms - FRAME_SECONDS * 1000,
+                        translation_enabled=translate,
                     )
                     worker = asyncio.create_task(pipeline.run())
                 frame = data[8:]
