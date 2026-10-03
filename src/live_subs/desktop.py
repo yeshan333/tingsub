@@ -1,5 +1,6 @@
 """Small native WebKit host. Inference remains in an owned, isolated subprocess."""
 
+import fcntl
 import http.client
 import json
 import platform
@@ -60,6 +61,7 @@ class DesktopController:
         self._token = token_at(self.directory)
         self._lock = threading.RLock()
         self._process = None
+        self._operation_lock = None
         self._job = None
         self._closing = False
         self._stopping = False
@@ -88,6 +90,22 @@ class DesktopController:
             )
         return result
 
+    def _release_operation(self):
+        if self._operation_lock is not None:
+            self._operation_lock.close()
+            self._operation_lock = None
+
+    def _acquire_operation(self):
+        lock = (self.directory / "desktop-operation.lock").open("a")
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            lock.close()
+            raise RuntimeError(
+                "Another TingSub window is already working in this directory"
+            ) from exc
+        return lock
+
     def _reap(self):
         if self._process is not None and self._process.poll() is not None:
             code = self._process.returncode
@@ -95,6 +113,7 @@ class DesktopController:
                 self._error = f"{self._job} exited ({code})"
             self._process = None
             self._job = None
+            self._release_operation()
 
     def snapshot(self):
         with self._lock:
@@ -129,19 +148,35 @@ class DesktopController:
             self._reap()
             if self._closing or self._stopping or self._process is not None:
                 raise RuntimeError("Another operation is in progress")
-            state, _ = probe(self._token)
-            if state != "stopped":
-                raise RuntimeError("Port 18765 is already in use; stop the existing service first")
-            if job == "serve" and not all(item["ready"] for item in self._models()):
-                raise RuntimeError("Download the local models first")
-            with self._log.open("wb") as output:
-                self._process = subprocess.Popen(
-                    [sys.executable, "-m", "live_subs.cli", "--data-dir", str(self.directory), job],
-                    stdout=output,
-                    stderr=subprocess.STDOUT,
-                    stdin=subprocess.DEVNULL,
-                )
-            self._job, self._error = job, ""
+            self._operation_lock = self._acquire_operation()
+            try:
+                state, _ = probe(self._token)
+                if state != "stopped":
+                    raise RuntimeError(
+                        "Port 18765 is already in use; stop the existing service first"
+                    )
+                if job == "serve" and not all(item["ready"] for item in self._models()):
+                    raise RuntimeError("Download the local models first")
+                with self._log.open("wb") as output:
+                    self._process = subprocess.Popen(
+                        [
+                            sys.executable,
+                            "-m",
+                            "live_subs.cli",
+                            "--data-dir",
+                            str(self.directory),
+                            job,
+                        ],
+                        stdout=output,
+                        stderr=subprocess.STDOUT,
+                        stdin=subprocess.DEVNULL,
+                        # The child retains ownership if the desktop unexpectedly exits.
+                        pass_fds=(self._operation_lock.fileno(),),
+                    )
+                self._job, self._error = job, ""
+            except Exception:
+                self._release_operation()
+                raise
         return {"ok": True}
 
     def start_service(self):
@@ -164,6 +199,7 @@ class DesktopController:
                 if self._process is process:
                     self._process = None
                     self._job = None
+                    self._release_operation()
                 self._stopping = False
 
     def stop_service(self):

@@ -184,3 +184,26 @@ def test_overlapping_window_shutdown_callbacks_terminate_owned_service_only_once
         release.set()
         first.join(timeout=3)
     assert not first.is_alive()
+
+
+def test_two_windows_cannot_prepare_models_or_truncate_logs_in_the_same_directory(
+    controller,
+    monkeypatch,
+):
+    process = Mock()
+    process.poll.return_value = None
+    spawn = Mock(return_value=process)
+    monkeypatch.setattr("live_subs.desktop.subprocess.Popen", spawn)
+    second = DesktopController(controller.directory)
+    controller.prepare_models()
+    log = controller.directory / "desktop.log"
+    log.write_text("first window's download progress")
+    with pytest.raises(RuntimeError, match="Another TingSub window"):
+        second.prepare_models()
+    assert spawn.call_count == 1
+    assert log.read_text() == "first window's download progress"
+    assert len(spawn.call_args.kwargs["pass_fds"]) == 1
+    controller.close()
+    second.prepare_models()
+    assert spawn.call_count == 2
+    second.close()
