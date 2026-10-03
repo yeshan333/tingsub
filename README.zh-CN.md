@@ -11,6 +11,8 @@
 
 # TingSub · 听桥
 
+[产品主页](https://yeshan333.github.io/tingsub/) · [主页维护说明](docs/zh-CN/website.md)
+
 把浏览器中播放的英语、日语实时变成**中文＋英文字幕**，识别与翻译都在你的 Mac 上完成。也可选择**中文＋原文**，保留日语原文。
 
 TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。它采集你选定的标签页，保持原声播放，在网页上显示可拖动的字幕，支持 YouTube 网页全屏，无需直播自带字幕。
