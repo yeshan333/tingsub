@@ -244,3 +244,26 @@ def test_log_shortcut_reveals_current_file_or_opens_its_directory_without_creati
     assert log.exists() is exists
     if exists:
         assert log.read_text() == "diagnostic output"
+
+
+@pytest.mark.parametrize(
+    "exists", [False, True], ids=["before-first-download", "existing-downloads"]
+)
+def test_model_folder_shortcut_opens_the_displayed_cache_and_preserves_downloads(
+    controller, monkeypatch, exists
+):
+    folder = controller.directory / "model-cache"
+    weights = folder / "download.safetensors"
+    if exists:
+        folder.mkdir()
+        weights.write_bytes(b"existing model")
+    assert controller.snapshot()["model_cache"] == str(folder)
+    run = Mock()
+    monkeypatch.setattr("live_subs.desktop.subprocess.run", run)
+    assert DesktopAPI(controller).open_resource("models") == {"ok": True}
+    run.assert_called_once_with(["/usr/bin/open", str(folder)], check=True, timeout=3)
+    assert folder.is_dir()
+    if exists:
+        assert weights.read_bytes() == b"existing model"
+    else:
+        assert list(folder.iterdir()) == []

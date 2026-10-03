@@ -136,6 +136,7 @@ class DesktopController:
                 "models": self._models(),
                 "catalog": catalog_at(self.directory),
                 "selection": selection_at(self.directory),
+                "model_cache": str(self.directory / "model-cache"),
                 "preparation": read_config(self.directory / "preparation.json"),
                 "download": validate_download(
                     read_config(self.directory / "download.json") or None
@@ -297,6 +298,10 @@ class DesktopAPI:
             if not (extension / "manifest.json").is_file():
                 raise RuntimeError("Extension folder not found. Download it from the repository.")
             subprocess.run(["/usr/bin/open", str(extension)], check=True, timeout=3)
+        elif name == "models":
+            folder = self._controller.directory / "model-cache"
+            folder.mkdir(parents=True, exist_ok=True)
+            subprocess.run(["/usr/bin/open", str(folder)], check=True, timeout=3)
         elif name == "logs":
             log = self._controller._log
             arguments = ["/usr/bin/open", "-R", str(log)] if log.is_file() else [
