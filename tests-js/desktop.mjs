@@ -86,6 +86,7 @@ try {
   await page.locator('#translationModel').selectOption('mlx-community/Qwen2.5-1.5B-Instruct-4bit');
   await page.waitForTimeout(1700); // One real refresh must not overwrite an unsubmitted choice.
   assert.equal(await page.locator('#translationModel').inputValue(), 'mlx-community/Qwen2.5-1.5B-Instruct-4bit');
+  assert.match(await page.locator('[data-i18n=downloadSourceHint]').textContent(), /community mirror/);
   await page.locator('#downloadSource').selectOption('custom');
   await page.locator('#downloadEndpoint').fill('https://models.example');
   await page.screenshot({ path: '.local/desktop-models-en.png' });

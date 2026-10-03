@@ -203,7 +203,7 @@
               <label class="model-choice" for="translationModel"><strong data-i18n="translation">双语翻译</strong><select id="translationModel"></select><small id="translationDescription"></small></label>
             </div>
             <div class="group download-options">
-              <label class="model-choice" for="downloadSource"><strong data-i18n="downloadSource">模型下载源</strong><select id="downloadSource"><option value="official" data-i18n="sourceOfficial">Hugging Face · 官方</option><option value="mirror" data-i18n="sourceMirror">HF-Mirror · 社区镜像</option><option value="custom" data-i18n="sourceCustom">自定义地址</option></select><small data-i18n="sourceHint">网络较慢时可尝试社区镜像；速度和可用性取决于网络。仅用于下载公开模型，不发送音频或配对码。</small></label>
+              <label class="model-choice" for="downloadSource"><strong data-i18n="downloadSource">模型下载源</strong><select id="downloadSource"><option value="official" data-i18n="sourceOfficial">Hugging Face · 官方</option><option value="mirror" data-i18n="sourceMirror">HF-Mirror · 社区镜像</option><option value="custom" data-i18n="sourceCustom">自定义地址</option></select><small data-i18n="downloadSourceHint">网络较慢时可尝试社区镜像；速度和可用性取决于网络。仅用于下载公开模型，不发送音频或配对码。</small></label>
               <label id="endpointField" class="model-choice" for="downloadEndpoint" hidden><strong data-i18n="sourceEndpoint">兼容 Hugging Face 的 HTTPS 地址</strong><input id="downloadEndpoint" type="url" placeholder="https://your-mirror.example" autocomplete="off" spellcheck="false"></label>
             </div>
             <div id="downloadProgress" class="download-progress" hidden><progress id="modelProgress" max="100" aria-label="Model download"></progress><div id="downloadBytes"></div></div>
