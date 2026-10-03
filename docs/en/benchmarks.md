@@ -49,6 +49,8 @@ uv run --frozen python scripts/compare_asr.py
 
 On Apple M4 Pro / 48 GB, macOS 27.0.1, Python 3.12.11, MLX 0.32.3 and MLX LM 0.32.0, using the Qwen 3B revision in [models](models.md), the same 28 checks passed **24/28 before** and **28/28 after** this prompt change. The baseline is `eda8e783f916c52239cfe6966439478045421b6f`. These results were rerun after correcting cache priming and checks for swapped numbers, ordinary “am” versus a time abbreviation, and “not useful” versus “not use.” The previous prompt put an English sentence into `zh` for both the two-sentence meeting request and the technical negation example, with and without cache reuse. Explicit target-language instructions plus a distinct two-sentence bilingual example fixed those observed failures. Models, decoding settings and segmentation are unchanged; there is still one generation call per translation.
 
+The latest checks also bind day-period words to the clock expression and Chinese negation to the app/API usage relationship. They were checked against saved baseline outputs and a fresh current-model run.
+
 These are authored text regressions, not unseen evaluation data or a livestream test. Prompt exploration still found semantic errors outside the guarded cases: `切符を忘れないでください。` in the train example became “do not forget to buy your ticket,” adding a purchase; `田中さん` retained Japanese kana in Chinese and became “Mr. Tanaka” in English, inferring gender. Those problems remain unresolved. Passing this check does not certify arbitrary captions; no correction, retry, or caption dropping hides them.
 
 ## Evidence boundaries
