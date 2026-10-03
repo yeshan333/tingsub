@@ -31,6 +31,10 @@ The desktop UI supports English and Simplified Chinese. The extension UI and mos
 
 ## Desktop window
 
+The standalone App/DMG includes its runtime and browser extension: no Python or uv installation needed. Choose and download models, then pair Chrome in the [desktop guide](docs/en/desktop.md). Current builds are not Apple-notarized; maintainers can follow the [distribution guide](docs/en/distribution.md).
+
+For development, run from source:
+
 A quiet workspace for caption preferences, model preparation, service control and browser pairing. English/Chinese UI, dark/light appearance, system WebKit, and the same local MLX inference.
 
 ```sh
@@ -39,7 +43,7 @@ uv run --frozen --extra desktop tingsub gui
 
 You can also double-click `gui.command`. See the [desktop guide](docs/en/desktop.md) for first-time setup, the Dock launcher and shutdown behavior.
 
-## Quick start
+## Quick start from source
 
 You need an **Apple Silicon Mac running macOS 14+**, **Chrome 116+**, and [uv](https://docs.astral.sh/uv/getting-started/installation/). 16 GB RAM is recommended; the two default model snapshots total roughly 2.2 GB, plus dependencies and caches. Intel Macs, Windows, Linux and Firefox are not supported inference targets in this version.
 
@@ -59,7 +63,7 @@ Save the pairing code printed by `pair`. Wait for `Application startup complete`
 3. Play a livestream. Select **英语** (English) or **日语** (Japanese), then click **为当前标签页开启字幕** (Start captions for this tab).
 4. Use **停止** (Stop) or the caption panel's × button to stop. Navigating, refreshing or closing the captured tab stops the session too.
 
-The service listens on `127.0.0.1:18765`. See the [installation guide](docs/en/installation.md) for updates, settings and uninstalling, or [troubleshooting](docs/en/troubleshooting.md) if it cannot connect. No Chrome Web Store listing or standalone installer is provided yet.
+The service listens on `127.0.0.1:18765`. See the [installation guide](docs/en/installation.md) for updates, settings and uninstalling, or [troubleshooting](docs/en/troubleshooting.md) if it cannot connect. No Chrome Web Store listing or Apple-notarized release is available yet.
 
 ## How it works
 

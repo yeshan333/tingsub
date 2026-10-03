@@ -2,6 +2,8 @@
 
 # Installation and usage
 
+Standalone App/DMG users do not need Python or uv. Start with the [desktop guide](desktop.md); the requirements and commands below are for source installations. Build/signing details are in [distribution](distribution.md).
+
 ## Requirements
 
 - Apple Silicon (M-series) Mac, macOS 14 or newer; 16 GB RAM recommended.

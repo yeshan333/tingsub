@@ -2,6 +2,8 @@
 
 # 安装与使用
 
+独立 App/DMG 用户不需要安装 Python 或 uv，直接按[桌面指南](desktop.md)操作；下方依赖和命令仅适用于源码安装。构建和签名方式见[分发指南](distribution.md)。
+
 ## 环境要求
 
 - Apple Silicon（M 系列）Mac，macOS 14 或更新版本，建议 16 GB 及以上内存。

@@ -31,6 +31,10 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 
 ## 桌面窗口
 
+独立 App/DMG 内置运行环境和浏览器插件，无需安装 Python 或 uv。首次打开后在界面中选择、下载模型并配对 Chrome，见[桌面指南](docs/zh-CN/desktop.md)。当前构建尚未 Apple 公证；维护者构建方式见[分发指南](docs/zh-CN/distribution.md)。
+
+下面是开发者从源码启动的方式：
+
 深色工作空间、字幕样式预览、模型准备、服务启停和浏览器配对，支持中英文及深浅外观。使用系统 WebKit，继续沿用本地 MLX 推理。
 
 ```sh
@@ -39,7 +43,7 @@ uv run --frozen --extra desktop tingsub gui
 
 也可双击 `gui.command`。首次使用、Dock 启动器及服务关闭行为见[桌面指南](docs/zh-CN/desktop.md)。
 
-## 快速开始
+## 从源码快速开始
 
 需要 **macOS 14+ 的 Apple Silicon Mac**、**Chrome 116+** 和 [uv](https://docs.astral.sh/uv/getting-started/installation/)。建议至少 16 GB 内存；两个默认模型快照约 2.2 GB，还需预留依赖与缓存空间。本版本不支持 Intel Mac、Windows、Linux 推理，也不支持 Firefox。
 
@@ -59,7 +63,7 @@ uv run --frozen tingsub serve
 3. 播放直播，选择**英语**或**日语**，点击**为当前标签页开启字幕**。
 4. 点击**停止**或字幕面板的 × 停止字幕。切换视频、刷新或关闭采集的标签页也会停止本次会话。
 
-服务监听 `127.0.0.1:18765`。[安装指南](docs/zh-CN/installation.md)包含设置、更新和卸载步骤；连接失败可看[故障排查](docs/zh-CN/troubleshooting.md)。当前尚未提供 Chrome 商店版本或独立安装包。
+服务监听 `127.0.0.1:18765`。[安装指南](docs/zh-CN/installation.md)包含设置、更新和卸载步骤；连接失败可看[故障排查](docs/zh-CN/troubleshooting.md)。当前尚未提供 Chrome 商店版本或经过 Apple 公证的发行版。
 
 ## 工作方式
 

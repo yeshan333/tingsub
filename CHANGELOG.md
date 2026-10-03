@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- Standalone macOS App/DMG build with embedded runtime, extension and first-run guidance.
+- Desktop speech/translation selection with download/load validation, failure rollback and offline cached switching.
+
 - Add a macOS WebKit desktop workspace with model preparation, service control, pairing guidance, caption preview, bilingual UI and dark/light appearance.
 - Share caption settings between desktop and extension through paired preference endpoints; add native smoke checks and bilingual desktop documentation.
 
