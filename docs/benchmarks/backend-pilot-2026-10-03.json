@@ -1,0 +1,4959 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-03",
+  "production_commit": "eda8e783f916c52239cfe6966439478045421b6f",
+  "hardware": {
+    "chip": "Apple M4 Pro",
+    "memory_gb": 48,
+    "platform": "macOS-27.0.1-arm64-arm-64bit"
+  },
+  "runtime_versions": {
+    "python": "3.12.11",
+    "mlx": "0.32.3",
+    "mlx-whisper": "0.4.3",
+    "mlx-lm": "0.32.0",
+    "numpy": "2.5.3",
+    "webrtcvad-wheels": "2.0.14.post1",
+    "httpx": "0.28.1"
+  },
+  "models": {
+    "asr": {
+      "repo": "mlx-community/whisper-large-v3-turbo-4bit",
+      "revision": "0f058d38170d183f9fdee07908f5b515d91793a8"
+    },
+    "translation": {
+      "repo": "mlx-community/Qwen2.5-3B-Instruct-4bit",
+      "revision": "4f83f8f146fdf28b512a06562b671d7af4fab457"
+    }
+  },
+  "native_model_and_build": {
+    "repo": "ggerganov/whisper.cpp",
+    "revision": "5359861c739e955e79d9a303bcbc70fb988958b1",
+    "whisper_cpp_version": "1.8.4",
+    "whisper_cpp_commit": "9386f239401074690479731c1e41683fbbeac557",
+    "ggml_version": "0.11.0",
+    "model_file": "ggml-large-v3-turbo-q5_0.bin",
+    "coreml_bundle": "ggml-large-v3-turbo-encoder.mlmodelc",
+    "coreml_allow_fallback": false,
+    "model_sha256": "394221709cd5ad1f40c46e6031ca61bce88931e6e088c188294c6d5a55ffa7e2"
+  },
+  "fixtures": [
+    {
+      "id": "en-natural-0",
+      "language": "en",
+      "kind": "human read speech",
+      "dataset": "hf-internal-testing/librispeech_asr_dummy",
+      "config": "clean",
+      "split": "validation",
+      "row": 0,
+      "revision": "5be91486e11a2d616f4ec5db8d3fd248585ac07a",
+      "download_sha256": "4e25e22555cd16e90edb0a3b49fdcf1fe652b2a1250ab643634db33895c75b41",
+      "pcm_file_sha256": "bf964d77ca0de8e384e98ddf741f630548e91f97201a4ad991522cd59366e533",
+      "duration_seconds": 5.855
+    },
+    {
+      "id": "en-natural-1",
+      "language": "en",
+      "kind": "human read speech",
+      "dataset": "hf-internal-testing/librispeech_asr_dummy",
+      "config": "clean",
+      "split": "validation",
+      "row": 1,
+      "revision": "5be91486e11a2d616f4ec5db8d3fd248585ac07a",
+      "download_sha256": "46a9d58622b4675b29564da2d9ba73e702241c5fa969f12c387cad4aa984276a",
+      "pcm_file_sha256": "6b52e5626968ee5d914a17b26f6091ed9280574be4ec06d0196dc7dba3639daa",
+      "duration_seconds": 4.815
+    },
+    {
+      "id": "en-natural-2",
+      "language": "en",
+      "kind": "human read speech",
+      "dataset": "hf-internal-testing/librispeech_asr_dummy",
+      "config": "clean",
+      "split": "validation",
+      "row": 2,
+      "revision": "5be91486e11a2d616f4ec5db8d3fd248585ac07a",
+      "download_sha256": "59bf7bb1129c11734a8dd362ad52b4e10ae31c03f0879fc92f7107ecd513513f",
+      "pcm_file_sha256": "95bb02555ac31323de4fc70cdb0c01f0a00638fe35b6f786544a7c39f505c506",
+      "duration_seconds": 12.485
+    },
+    {
+      "id": "ja-natural-0",
+      "language": "ja",
+      "kind": "human read speech",
+      "dataset": "japanese-asr/ja_asr.jsut_basic5000",
+      "config": "default",
+      "split": "test",
+      "row": 0,
+      "revision": "278db379fc96167ff2293d7abf9ab86976afcd78",
+      "download_sha256": "11f13d4b52cecdb330cb3d87026a23d2c62fb4c91b0bb9c197319dbdb4f678ed",
+      "pcm_file_sha256": "b5ed8cc2c3b56462410c4f7c509d7a992236a71075e42e01d32b90fabf9d7e89",
+      "duration_seconds": 3.19
+    },
+    {
+      "id": "ja-natural-1",
+      "language": "ja",
+      "kind": "human read speech",
+      "dataset": "japanese-asr/ja_asr.jsut_basic5000",
+      "config": "default",
+      "split": "test",
+      "row": 1,
+      "revision": "278db379fc96167ff2293d7abf9ab86976afcd78",
+      "download_sha256": "69faa5f58d67b2c487e223934e2fdc78a6d42b9b1ca208feac4d817e0a172b6d",
+      "pcm_file_sha256": "75db7f34091b5a684a44455c7fb45a35dd9916ad2a9fdd4904e98e35978bbffa",
+      "duration_seconds": 4.9
+    },
+    {
+      "id": "ja-natural-2",
+      "language": "ja",
+      "kind": "human read speech",
+      "dataset": "japanese-asr/ja_asr.jsut_basic5000",
+      "config": "default",
+      "split": "test",
+      "row": 2,
+      "revision": "278db379fc96167ff2293d7abf9ab86976afcd78",
+      "download_sha256": "1a71e3ac25f02530bafd15a93b165680d10c685e2022ea351bb99a5289f06305",
+      "pcm_file_sha256": "a99762ab0b39375def0483cfe9ce4b104b2d57babfe57e75bbc7be73135f1f9c",
+      "duration_seconds": 3.82
+    },
+    {
+      "id": "en-tts",
+      "language": "en",
+      "kind": "macOS TTS",
+      "voice": "Samantha",
+      "pcm_file_sha256": "e12ad701d17505e3728246a264f9a5f448fffcdbefde73fdc4965014e24bbb4a",
+      "duration_seconds": 3.820125
+    },
+    {
+      "id": "ja-tts",
+      "language": "ja",
+      "kind": "macOS TTS",
+      "voice": "Kyoko",
+      "pcm_file_sha256": "8b128426e2a0d4250b5c1c49abd815d58c45a821569eede51698fdd1e5c83a27",
+      "duration_seconds": 4.9718125
+    }
+  ],
+  "notes": [
+    "Numeric export from actual local model runs. No source audio, reference text, hypotheses, translations or private paths included.",
+    "Native provenance collected separately for older raw reports that did not embed it. Core ML settings apply only to runs labelled cpp-coreml.",
+    "Same model family, different quantization and encoder artifacts; this is not an isolated Python-versus-C++ comparison.",
+    "Repeated clips are not independent speech samples. Latency in realtime runs covers successful translations only; quality retains missing output.",
+    "No browser capture, network livestream timing, power, memory peak, or ANE utilization was measured."
+  ],
+  "runs": [
+    {
+      "mode": "asr",
+      "repeats": 3,
+      "max_seconds": 3,
+      "partials": false,
+      "summary": {
+        "cpp/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.07142857142857142,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 584.9,
+            "p95": 591.91
+          }
+        },
+        "cpp/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 24
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 590.81,
+            "p95": 604.13
+          }
+        },
+        "mlx/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.05714285714285714,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 487.7,
+            "p95": 497.55
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 24
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 494.77,
+            "p95": 503.7
+          }
+        }
+      },
+      "id": "asr-3s",
+      "native_label": "cpp-metal",
+      "whole_utterance": false,
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 494.48,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.91,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 590.62,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 582.35,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 503.08,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.43,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 588.29,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 574.29,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 494.13,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.41,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.34,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 487.91,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.32,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 589.55,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 585.12,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 573.9,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 582.1,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 579.4,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 499.97,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.97,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 598.51,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 575.74,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 498.69,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 490.23,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 5,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 594.96,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 585.19,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 503.72,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.59,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 604.07,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 579.88,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 493.35,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 484.2,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 584.92,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 577.32,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 503.7,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 502.95,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 596.57,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 590.81,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 588.65,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 585.82,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 496.74,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.65,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 588.58,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 573.09,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 497.55,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.15,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 591.91,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 585.23,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 573.97,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 583.68,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 576.96,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 495.15,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.42,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.91,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 487.27,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 492.4,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 601.79,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 577.06,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 496.87,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.13,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 5,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 595.45,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 585.96,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 498.69,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.26,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 603.02,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 578.23,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 501.02,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.74,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 585.93,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 575.66,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 494.9,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 485.03,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 591.06,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 587.71,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 498.45,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 489.07,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 492.09,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.28,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 594.8,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 584.9,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 493.14,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.0,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 589.4,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 575.19,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 497.28,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.7,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.09,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 486.78,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.79,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 591.65,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 586.63,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 572.9,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 582.65,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 579.18,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 498.58,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.97,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 613.12,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 574.66,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 498.38,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.57,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 5,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 598.9,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 585.94,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 500.81,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.0,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 604.13,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 576.48,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 490.98,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 483.63,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 587.87,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 575.86,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 494.77,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 489.97,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 591.66,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 590.32,
+              "audio_ms": 2340
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "asr",
+      "repeats": 2,
+      "max_seconds": 3,
+      "partials": false,
+      "summary": {
+        "cpp/en": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.04285714285714286,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 596.51,
+            "p95": 668.1
+          }
+        },
+        "cpp/ja": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.03260869565217391,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 605.34,
+            "p95": 613.06
+          }
+        },
+        "mlx/en": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.04285714285714286,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 496.64,
+            "p95": 535.08
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 8,
+            "recognized": 8
+          },
+          "error_rate": 0.043478260869565216,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 8,
+            "p50": 498.42,
+            "p95": 503.11
+          }
+        }
+      },
+      "id": "asr-whole",
+      "native_label": "cpp-metal",
+      "whole_utterance": true,
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 535.08,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 615.61,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 493.77,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 596.21,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 519.89,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 668.1,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 498.23,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 598.38,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 501.6,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 608.63,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 498.11,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 605.34,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 493.63,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 596.51,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 501.97,
+              "audio_ms": 5972
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 613.06,
+              "audio_ms": 5972
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 609.4,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 503.27,
+              "audio_ms": 6855
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 596.35,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 492.74,
+              "audio_ms": 5815
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 639.6,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 516.21,
+              "audio_ms": 13485
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 602.04,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 495.08,
+              "audio_ms": 4190
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 0,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 612.12,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 502.49,
+              "audio_ms": 5900
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 604.16,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 2,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 498.42,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 595.26,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 496.64,
+              "audio_ms": 4820
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 610.78,
+              "audio_ms": 5972
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 1,
+            "recognized": 1
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 503.11,
+              "audio_ms": 5972
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "realtime",
+      "repeats": 2,
+      "max_seconds": 3,
+      "partials": false,
+      "summary": {
+        "mlx/en": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 22,
+            "translated": 22
+          },
+          "error_rate": 0.05714285714285714,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 22,
+            "p50": 523,
+            "p95": 539
+          },
+          "translation_ms": {
+            "n": 22,
+            "p50": 183,
+            "p95": 340
+          },
+          "first_zh_ms": {
+            "n": 22,
+            "p50": 3092,
+            "p95": 3768
+          },
+          "tail_ms": {
+            "n": 22,
+            "p50": 865,
+            "p95": 1047
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 16,
+            "translated": 16
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 16,
+            "p50": 523,
+            "p95": 542
+          },
+          "translation_ms": {
+            "n": 16,
+            "p50": 253,
+            "p95": 524
+          },
+          "first_zh_ms": {
+            "n": 16,
+            "p50": 2830,
+            "p95": 3722
+          },
+          "tail_ms": {
+            "n": 16,
+            "p50": 1004,
+            "p95": 1498
+          }
+        }
+      },
+      "id": "realtime-mlx-3s",
+      "native_label": null,
+      "whole_utterance": false,
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 542,
+              "first_text_ms": 3343,
+              "first_zh_ms": 3700,
+              "tail_ms": 915,
+              "translation_ms": 372
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 523,
+              "first_text_ms": 2824,
+              "first_zh_ms": 2979,
+              "tail_ms": 934,
+              "translation_ms": 170
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 511,
+              "first_text_ms": 3313,
+              "first_zh_ms": 3617,
+              "tail_ms": 833,
+              "translation_ms": 320
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 500,
+              "first_text_ms": 1821,
+              "first_zh_ms": 1911,
+              "tail_ms": 854,
+              "translation_ms": 113
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "translated": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 535,
+              "first_text_ms": 3477,
+              "first_zh_ms": 3771,
+              "tail_ms": 846,
+              "translation_ms": 309
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 528,
+              "first_text_ms": 3531,
+              "first_zh_ms": 3681,
+              "tail_ms": 697,
+              "translation_ms": 166
+            },
+            {
+              "queue_ms": 35,
+              "asr_ms": 487,
+              "first_text_ms": 1184,
+              "first_zh_ms": 1261,
+              "tail_ms": 865,
+              "translation_ms": 101
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 3333,
+              "first_zh_ms": 3501,
+              "tail_ms": 716,
+              "translation_ms": 183
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 523,
+              "first_text_ms": 2285,
+              "first_zh_ms": 2450,
+              "tail_ms": 953,
+              "translation_ms": 188
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 3395,
+              "first_zh_ms": 3722,
+              "tail_ms": 961,
+              "translation_ms": 426
+            },
+            {
+              "queue_ms": 518,
+              "asr_ms": 485,
+              "first_text_ms": 1445,
+              "first_zh_ms": 1632,
+              "tail_ms": 1498,
+              "translation_ms": 253
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 516,
+              "first_text_ms": 3317,
+              "first_zh_ms": 3674,
+              "tail_ms": 1026,
+              "translation_ms": 509
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 529,
+              "first_text_ms": 2471,
+              "first_zh_ms": 2608,
+              "tail_ms": 994,
+              "translation_ms": 222
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 542,
+              "first_text_ms": 3343,
+              "first_zh_ms": 3669,
+              "tail_ms": 988,
+              "translation_ms": 444
+            },
+            {
+              "queue_ms": 146,
+              "asr_ms": 487,
+              "first_text_ms": 1475,
+              "first_zh_ms": 1559,
+              "tail_ms": 1027,
+              "translation_ms": 153
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "queue_ms": 1,
+              "asr_ms": 539,
+              "first_text_ms": 2841,
+              "first_zh_ms": 3124,
+              "tail_ms": 1080,
+              "translation_ms": 299
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 526,
+              "first_text_ms": 2027,
+              "first_zh_ms": 2133,
+              "tail_ms": 888,
+              "translation_ms": 121
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 523,
+              "first_text_ms": 3184,
+              "first_zh_ms": 3502,
+              "tail_ms": 1210,
+              "translation_ms": 446
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 530,
+              "first_text_ms": 2691,
+              "first_zh_ms": 2822,
+              "tail_ms": 996,
+              "translation_ms": 224
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 507,
+              "first_text_ms": 3309,
+              "first_zh_ms": 3633,
+              "tail_ms": 849,
+              "translation_ms": 340
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 506,
+              "first_text_ms": 2807,
+              "first_zh_ms": 2959,
+              "tail_ms": 914,
+              "translation_ms": 167
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 529,
+              "first_text_ms": 3331,
+              "first_zh_ms": 3634,
+              "tail_ms": 849,
+              "translation_ms": 318
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 514,
+              "first_text_ms": 1835,
+              "first_zh_ms": 1925,
+              "tail_ms": 869,
+              "translation_ms": 114
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "translated": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 3474,
+              "first_zh_ms": 3768,
+              "tail_ms": 844,
+              "translation_ms": 309
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 530,
+              "first_text_ms": 3532,
+              "first_zh_ms": 3687,
+              "tail_ms": 703,
+              "translation_ms": 171
+            },
+            {
+              "queue_ms": 41,
+              "asr_ms": 484,
+              "first_text_ms": 1187,
+              "first_zh_ms": 1263,
+              "tail_ms": 867,
+              "translation_ms": 100
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 529,
+              "first_text_ms": 3331,
+              "first_zh_ms": 3502,
+              "tail_ms": 718,
+              "translation_ms": 187
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 528,
+              "first_text_ms": 2290,
+              "first_zh_ms": 2454,
+              "tail_ms": 958,
+              "translation_ms": 188
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 539,
+              "first_text_ms": 3400,
+              "first_zh_ms": 3711,
+              "tail_ms": 953,
+              "translation_ms": 413
+            },
+            {
+              "queue_ms": 511,
+              "asr_ms": 483,
+              "first_text_ms": 1435,
+              "first_zh_ms": 1506,
+              "tail_ms": 1374,
+              "translation_ms": 139
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 541,
+              "first_text_ms": 3342,
+              "first_zh_ms": 3712,
+              "tail_ms": 1066,
+              "translation_ms": 524
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 521,
+              "first_text_ms": 2463,
+              "first_zh_ms": 2597,
+              "tail_ms": 983,
+              "translation_ms": 219
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 518,
+              "first_text_ms": 3320,
+              "first_zh_ms": 3651,
+              "tail_ms": 972,
+              "translation_ms": 452
+            },
+            {
+              "queue_ms": 131,
+              "asr_ms": 488,
+              "first_text_ms": 1461,
+              "first_zh_ms": 1544,
+              "tail_ms": 1010,
+              "translation_ms": 149
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 506,
+              "first_text_ms": 2808,
+              "first_zh_ms": 3092,
+              "tail_ms": 1047,
+              "translation_ms": 299
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 501,
+              "first_text_ms": 2002,
+              "first_zh_ms": 2134,
+              "tail_ms": 889,
+              "translation_ms": 148
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 531,
+              "first_text_ms": 3192,
+              "first_zh_ms": 3513,
+              "tail_ms": 1224,
+              "translation_ms": 452
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 535,
+              "first_text_ms": 2697,
+              "first_zh_ms": 2830,
+              "tail_ms": 1004,
+              "translation_ms": 227
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "asr",
+      "repeats": 3,
+      "max_seconds": 3,
+      "partials": false,
+      "summary": {
+        "cpp/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.07142857142857142,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 479.3,
+            "p95": 488.17
+          }
+        },
+        "cpp/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 21,
+            "low_confidence": 3
+          },
+          "error_rate": 0.30434782608695654,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 483.54,
+            "p95": 496.91
+          }
+        },
+        "mlx/en": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 33,
+            "recognized": 33
+          },
+          "error_rate": 0.05714285714285714,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 33,
+            "p50": 488.32,
+            "p95": 495.12
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 12,
+          "counts": {
+            "segments": 24,
+            "recognized": 24
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 24,
+            "p50": 491.43,
+            "p95": 499.29
+          }
+        }
+      },
+      "id": "asr-coreml-3s",
+      "native_label": "cpp-coreml",
+      "whole_utterance": false,
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 512.03,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.43,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 486.11,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.3,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 493.67,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.65,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 481.93,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 469.38,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 495.12,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.71,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.84,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 487.0,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 486.98,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 485.9,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 478.0,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 462.71,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 476.63,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 468.7,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 498.35,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.66,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 494.21,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 468.34,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 496.14,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.83,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 488.13,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 477.46,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 498.5,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.59,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 496.19,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 461.66,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 489.32,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 484.2,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 480.06,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 469.9,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 491.43,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 489.91,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 488.32,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 481.46,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 483.29,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 477.5,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 494.15,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.27,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 483.13,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 467.12,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 490.23,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.08,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 488.17,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 477.01,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 463.79,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 479.4,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 470.26,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 493.41,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.41,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.31,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 489.31,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.87,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 496.12,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 468.89,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 499.29,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 478.84,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 489.53,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.33,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 497.29,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.36,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 501.76,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 466.27,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 501.27,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 484.27,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 482.7,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 469.05,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 493.14,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 483.6,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 483.54,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 481.16,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 493.31,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 489.2,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 492.78,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 487.05,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "asr_ms": 487.47,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 479.88,
+              "audio_ms": 2300
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 489.84,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.99,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "asr_ms": 485.5,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 467.42,
+              "audio_ms": 1320
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 491.63,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.32,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 482.5,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 488.67,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 483.99,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "recognized": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "asr_ms": 490.11,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.29,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 467.91,
+              "audio_ms": 660
+            },
+            {
+              "asr_ms": 479.56,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 469.65,
+              "audio_ms": 1760
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 497.9,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 481.1,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "asr_ms": 496.91,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 468.62,
+              "audio_ms": 440
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 493.53,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 489.79,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "asr_ms": 490.25,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 488.33,
+              "audio_ms": 1940
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 498.77,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 485.53,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "asr_ms": 496.39,
+              "audio_ms": 3000
+            },
+            {
+              "asr_ms": 462.19,
+              "audio_ms": 840
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 490.36,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 485.82,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "asr_ms": 481.79,
+              "audio_ms": 2300
+            },
+            {
+              "asr_ms": 471.2,
+              "audio_ms": 1500
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 491.71,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 491.88,
+              "audio_ms": 2340
+            }
+          ]
+        },
+        {
+          "repeat": 2,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "recognized": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "asr_ms": 485.63,
+              "audio_ms": 2680
+            },
+            {
+              "asr_ms": 482.54,
+              "audio_ms": 2340
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "realtime",
+      "repeats": 2,
+      "max_seconds": 3,
+      "partials": false,
+      "summary": {
+        "cpp/en": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 22,
+            "translated": 22
+          },
+          "error_rate": 0.07142857142857142,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 22,
+            "p50": 488,
+            "p95": 559
+          },
+          "translation_ms": {
+            "n": 22,
+            "p50": 188,
+            "p95": 336
+          },
+          "first_zh_ms": {
+            "n": 22,
+            "p50": 3092,
+            "p95": 3759
+          },
+          "tail_ms": {
+            "n": 22,
+            "p50": 846,
+            "p95": 1047
+          }
+        },
+        "cpp/ja": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 16,
+            "translated": 14,
+            "low_confidence": 2
+          },
+          "error_rate": 0.30434782608695654,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 14,
+            "p50": 518,
+            "p95": 577
+          },
+          "translation_ms": {
+            "n": 14,
+            "p50": 415,
+            "p95": 522
+          },
+          "first_zh_ms": {
+            "n": 14,
+            "p50": 3503,
+            "p95": 3751
+          },
+          "tail_ms": {
+            "n": 14,
+            "p50": 993,
+            "p95": 1435
+          }
+        },
+        "mlx/en": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 22,
+            "translated": 22
+          },
+          "error_rate": 0.05714285714285714,
+          "error_metric": "WER",
+          "asr_ms": {
+            "n": 22,
+            "p50": 528,
+            "p95": 539
+          },
+          "translation_ms": {
+            "n": 22,
+            "p50": 179,
+            "p95": 330
+          },
+          "first_zh_ms": {
+            "n": 22,
+            "p50": 3112,
+            "p95": 3753
+          },
+          "tail_ms": {
+            "n": 22,
+            "p50": 867,
+            "p95": 1067
+          }
+        },
+        "mlx/ja": {
+          "utterance_runs": 8,
+          "counts": {
+            "segments": 16,
+            "translated": 16
+          },
+          "error_rate": 0.31521739130434784,
+          "error_metric": "CER",
+          "asr_ms": {
+            "n": 16,
+            "p50": 524,
+            "p95": 545
+          },
+          "translation_ms": {
+            "n": 16,
+            "p50": 265,
+            "p95": 507
+          },
+          "first_zh_ms": {
+            "n": 16,
+            "p50": 2812,
+            "p95": 3707
+          },
+          "tail_ms": {
+            "n": 16,
+            "p50": 1028,
+            "p95": 1372
+          }
+        }
+      },
+      "id": "realtime-coreml-3s",
+      "native_label": "cpp-coreml",
+      "whole_utterance": false,
+      "rows": [
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "queue_ms": 1,
+              "asr_ms": 528,
+              "first_text_ms": 3329,
+              "first_zh_ms": 3649,
+              "tail_ms": 864,
+              "translation_ms": 335
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 2837,
+              "first_zh_ms": 2993,
+              "tail_ms": 948,
+              "translation_ms": 171
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 552,
+              "first_text_ms": 3353,
+              "first_zh_ms": 3674,
+              "tail_ms": 890,
+              "translation_ms": 336
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 504,
+              "first_text_ms": 2806,
+              "first_zh_ms": 2974,
+              "tail_ms": 929,
+              "translation_ms": 184
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 526,
+              "first_text_ms": 3328,
+              "first_zh_ms": 3625,
+              "tail_ms": 840,
+              "translation_ms": 313
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 539,
+              "first_text_ms": 1859,
+              "first_zh_ms": 1949,
+              "tail_ms": 893,
+              "translation_ms": 114
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 530,
+              "first_text_ms": 3333,
+              "first_zh_ms": 3641,
+              "tail_ms": 856,
+              "translation_ms": 323
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 480,
+              "first_text_ms": 1803,
+              "first_zh_ms": 1888,
+              "tail_ms": 832,
+              "translation_ms": 110
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "translated": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 523,
+              "first_text_ms": 3466,
+              "first_zh_ms": 3753,
+              "tail_ms": 828,
+              "translation_ms": 302
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 543,
+              "first_text_ms": 3545,
+              "first_zh_ms": 3720,
+              "tail_ms": 736,
+              "translation_ms": 191
+            },
+            {
+              "queue_ms": 75,
+              "asr_ms": 489,
+              "first_text_ms": 1225,
+              "first_zh_ms": 1300,
+              "tail_ms": 904,
+              "translation_ms": 99
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 529,
+              "first_text_ms": 3330,
+              "first_zh_ms": 3494,
+              "tail_ms": 710,
+              "translation_ms": 179
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 526,
+              "first_text_ms": 2288,
+              "first_zh_ms": 2416,
+              "tail_ms": 920,
+              "translation_ms": 152
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "translated": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 596,
+              "first_text_ms": 3539,
+              "first_zh_ms": 3839,
+              "tail_ms": 914,
+              "translation_ms": 315
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 488,
+              "first_text_ms": 3490,
+              "first_zh_ms": 3663,
+              "tail_ms": 678,
+              "translation_ms": 188
+            },
+            {
+              "queue_ms": 18,
+              "asr_ms": 461,
+              "first_text_ms": 1139,
+              "first_zh_ms": 1211,
+              "tail_ms": 816,
+              "translation_ms": 97
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 491,
+              "first_text_ms": 3294,
+              "first_zh_ms": 3471,
+              "tail_ms": 687,
+              "translation_ms": 193
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 483,
+              "first_text_ms": 2246,
+              "first_zh_ms": 2396,
+              "tail_ms": 900,
+              "translation_ms": 174
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 543,
+              "first_text_ms": 3404,
+              "first_zh_ms": 3707,
+              "tail_ms": 949,
+              "translation_ms": 405
+            },
+            {
+              "queue_ms": 509,
+              "asr_ms": 484,
+              "first_text_ms": 1433,
+              "first_zh_ms": 1505,
+              "tail_ms": 1372,
+              "translation_ms": 140
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 529,
+              "first_text_ms": 3390,
+              "first_zh_ms": 3707,
+              "tail_ms": 951,
+              "translation_ms": 421
+            },
+            {
+              "queue_ms": 509,
+              "asr_ms": 470,
+              "first_text_ms": 1421,
+              "first_zh_ms": 1508,
+              "tail_ms": 1393,
+              "translation_ms": 172
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 524,
+              "first_text_ms": 3324,
+              "first_zh_ms": 3675,
+              "tail_ms": 1030,
+              "translation_ms": 506
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 2474,
+              "first_zh_ms": 2654,
+              "tail_ms": 1039,
+              "translation_ms": 265
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 536,
+              "first_text_ms": 3337,
+              "first_zh_ms": 3704,
+              "tail_ms": 1058,
+              "translation_ms": 522
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 492,
+              "first_text_ms": 2433,
+              "first_zh_ms": 2587,
+              "tail_ms": 971,
+              "translation_ms": 238
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 544,
+              "first_text_ms": 3347,
+              "first_zh_ms": 3667,
+              "tail_ms": 987,
+              "translation_ms": 440
+            },
+            {
+              "queue_ms": 147,
+              "asr_ms": 489,
+              "first_text_ms": 1476,
+              "first_zh_ms": 1559,
+              "tail_ms": 1028,
+              "translation_ms": 152
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 546,
+              "first_text_ms": 3348,
+              "first_zh_ms": 3679,
+              "tail_ms": 998,
+              "translation_ms": 449
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 2833,
+              "first_zh_ms": 3112,
+              "tail_ms": 1067,
+              "translation_ms": 294
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 518,
+              "first_text_ms": 2019,
+              "first_zh_ms": 2160,
+              "tail_ms": 915,
+              "translation_ms": 157
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 525,
+              "first_text_ms": 2826,
+              "first_zh_ms": 3112,
+              "tail_ms": 1067,
+              "translation_ms": 301
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 484,
+              "first_text_ms": 1984,
+              "first_zh_ms": 2132,
+              "tail_ms": 887,
+              "translation_ms": 162
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 524,
+              "first_text_ms": 3186,
+              "first_zh_ms": 3498,
+              "tail_ms": 1206,
+              "translation_ms": 441
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 516,
+              "first_text_ms": 2677,
+              "first_zh_ms": 2807,
+              "tail_ms": 981,
+              "translation_ms": 224
+            }
+          ]
+        },
+        {
+          "repeat": 0,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 529,
+              "first_text_ms": 3191,
+              "first_zh_ms": 3513,
+              "tail_ms": 1221,
+              "translation_ms": 450
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 496,
+              "first_text_ms": 2657,
+              "first_zh_ms": 2804,
+              "tail_ms": 976,
+              "translation_ms": 239
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 495,
+              "first_text_ms": 3298,
+              "first_zh_ms": 3631,
+              "tail_ms": 846,
+              "translation_ms": 348
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 499,
+              "first_text_ms": 2801,
+              "first_zh_ms": 2967,
+              "tail_ms": 923,
+              "translation_ms": 182
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-0",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 17,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 530,
+              "first_text_ms": 3331,
+              "first_zh_ms": 3645,
+              "tail_ms": 861,
+              "translation_ms": 330
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 533,
+              "first_text_ms": 2836,
+              "first_zh_ms": 2987,
+              "tail_ms": 943,
+              "translation_ms": 167
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 559,
+              "first_text_ms": 3359,
+              "first_zh_ms": 3664,
+              "tail_ms": 880,
+              "translation_ms": 321
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 484,
+              "first_text_ms": 1805,
+              "first_zh_ms": 1891,
+              "tail_ms": 835,
+              "translation_ms": 110
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-1",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 10,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 3334,
+              "first_zh_ms": 3630,
+              "tail_ms": 845,
+              "translation_ms": 310
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 513,
+              "first_text_ms": 1835,
+              "first_zh_ms": 1923,
+              "tail_ms": 867,
+              "translation_ms": 112
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "translated": 5
+          },
+          "edits": 2,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 514,
+              "first_text_ms": 3455,
+              "first_zh_ms": 3759,
+              "tail_ms": 834,
+              "translation_ms": 318
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 488,
+              "first_text_ms": 3490,
+              "first_zh_ms": 3668,
+              "tail_ms": 683,
+              "translation_ms": 193
+            },
+            {
+              "queue_ms": 23,
+              "asr_ms": 452,
+              "first_text_ms": 1136,
+              "first_zh_ms": 1207,
+              "tail_ms": 811,
+              "translation_ms": 95
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 482,
+              "first_text_ms": 3283,
+              "first_zh_ms": 3468,
+              "tail_ms": 683,
+              "translation_ms": 200
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 475,
+              "first_text_ms": 2236,
+              "first_zh_ms": 2390,
+              "tail_ms": 893,
+              "translation_ms": 177
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-natural-2",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 5,
+            "translated": 5
+          },
+          "edits": 1,
+          "reference_units": 32,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 538,
+              "first_text_ms": 3479,
+              "first_zh_ms": 3774,
+              "tail_ms": 849,
+              "translation_ms": 310
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 533,
+              "first_text_ms": 3535,
+              "first_zh_ms": 3692,
+              "tail_ms": 707,
+              "translation_ms": 172
+            },
+            {
+              "queue_ms": 46,
+              "asr_ms": 483,
+              "first_text_ms": 1190,
+              "first_zh_ms": 1264,
+              "tail_ms": 867,
+              "translation_ms": 97
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 510,
+              "first_text_ms": 3311,
+              "first_zh_ms": 3478,
+              "tail_ms": 693,
+              "translation_ms": 182
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 513,
+              "first_text_ms": 2274,
+              "first_zh_ms": 2444,
+              "tail_ms": 948,
+              "translation_ms": 195
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 14,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 577,
+              "first_text_ms": 3438,
+              "first_zh_ms": 3751,
+              "tail_ms": 993,
+              "translation_ms": 415
+            },
+            {
+              "queue_ms": 552,
+              "asr_ms": 471,
+              "first_text_ms": 1464,
+              "first_zh_ms": 1550,
+              "tail_ms": 1435,
+              "translation_ms": 171
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-0",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 11,
+          "reference_units": 22,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 533,
+              "first_text_ms": 3395,
+              "first_zh_ms": 3700,
+              "tail_ms": 941,
+              "translation_ms": 407
+            },
+            {
+              "queue_ms": 500,
+              "asr_ms": 482,
+              "first_text_ms": 1423,
+              "first_zh_ms": 1494,
+              "tail_ms": 1362,
+              "translation_ms": 139
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 539,
+              "first_text_ms": 3339,
+              "first_zh_ms": 3705,
+              "tail_ms": 1060,
+              "translation_ms": 520
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 503,
+              "first_text_ms": 2444,
+              "first_zh_ms": 2597,
+              "tail_ms": 982,
+              "translation_ms": 238
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-1",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 8,
+          "reference_units": 23,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 545,
+              "first_text_ms": 3346,
+              "first_zh_ms": 3698,
+              "tail_ms": 1053,
+              "translation_ms": 507
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 517,
+              "first_text_ms": 2458,
+              "first_zh_ms": 2600,
+              "tail_ms": 986,
+              "translation_ms": 228
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 1,
+            "low_confidence": 1
+          },
+          "edits": 5,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 518,
+              "first_text_ms": 3319,
+              "first_zh_ms": 3669,
+              "tail_ms": 993,
+              "translation_ms": 474
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-natural-2",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 9,
+          "reference_units": 20,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 534,
+              "first_text_ms": 3336,
+              "first_zh_ms": 3658,
+              "tail_ms": 975,
+              "translation_ms": 440
+            },
+            {
+              "queue_ms": 134,
+              "asr_ms": 498,
+              "first_text_ms": 1473,
+              "first_zh_ms": 1559,
+              "tail_ms": 1028,
+              "translation_ms": 155
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "cpp",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 496,
+              "first_text_ms": 2798,
+              "first_zh_ms": 3092,
+              "tail_ms": 1047,
+              "translation_ms": 309
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 470,
+              "first_text_ms": 1971,
+              "first_zh_ms": 2074,
+              "tail_ms": 829,
+              "translation_ms": 118
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "en-tts",
+          "backend": "mlx",
+          "language": "en",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 11,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 528,
+              "first_text_ms": 2829,
+              "first_zh_ms": 3113,
+              "tail_ms": 1068,
+              "translation_ms": 298
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 532,
+              "first_text_ms": 2033,
+              "first_zh_ms": 2157,
+              "tail_ms": 912,
+              "translation_ms": 139
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "cpp",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 523,
+              "first_text_ms": 3185,
+              "first_zh_ms": 3503,
+              "tail_ms": 1211,
+              "translation_ms": 446
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 498,
+              "first_text_ms": 2660,
+              "first_zh_ms": 2805,
+              "tail_ms": 979,
+              "translation_ms": 239
+            }
+          ]
+        },
+        {
+          "repeat": 1,
+          "fixture": "ja-tts",
+          "backend": "mlx",
+          "language": "ja",
+          "counts": {
+            "segments": 2,
+            "translated": 2
+          },
+          "edits": 1,
+          "reference_units": 27,
+          "metrics": [
+            {
+              "queue_ms": 0,
+              "asr_ms": 531,
+              "first_text_ms": 3192,
+              "first_zh_ms": 3509,
+              "tail_ms": 1217,
+              "translation_ms": 445
+            },
+            {
+              "queue_ms": 0,
+              "asr_ms": 521,
+              "first_text_ms": 2682,
+              "first_zh_ms": 2812,
+              "tail_ms": 985,
+              "translation_ms": 223
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
