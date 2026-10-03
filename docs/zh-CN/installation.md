@@ -61,7 +61,7 @@ uv run --frozen tingsub serve
 
 ## 本地文件与网络
 
-从仓库根目录运行命令，默认数据目录相对于当前工作目录。`.local/token` 保存配对密钥；`.local/models.json` 指向 Hugging Face 缓存中的模型快照。使用 `tingsub --data-dir PATH pair` 和 `tingsub --data-dir PATH serve` 时，两个命令必须指定同一个目录。
+从仓库根目录运行命令，默认数据目录相对于当前工作目录。`.local/token` 保存配对密钥；`.local/models.json` 记录模型快照路径。新下载统一保存到 TingSub 专用的 `.local/model-cache`，不使用共享 Hugging Face 缓存，其他应用不会自动复用这些文件。旧配置可能仍指向共享缓存；指定 `--data-dir PATH` 后，新下载保存到 `PATH/model-cache`。使用 `tingsub --data-dir PATH pair` 和 `tingsub --data-dir PATH serve` 时，两个命令必须指定同一个目录。
 
 扩展固定连接 **18765** 端口。虽然 CLI 提供 `serve --port`，但仅修改该参数会导致扩展无法连接，请使用默认端口。不要把服务公开监听或通过反向代理暴露到公网。
 

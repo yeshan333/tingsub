@@ -61,7 +61,7 @@ Drag the caption header to move the overlay. It follows webpage fullscreen. Clos
 
 ## Local files and networking
 
-Run commands from the repository root: the default data directory is relative to the working directory. `.local/token` stores the pairing secret; `.local/models.json` points to snapshots in Hugging Face's cache. `tingsub --data-dir PATH pair` and `tingsub --data-dir PATH serve` must use the same directory.
+Run commands from the repository root: the default data directory is relative to the working directory. `.local/token` stores the pairing secret; `.local/models.json` records the snapshot paths. New downloads use TingSub’s private `.local/model-cache`, rather than the shared Hugging Face cache; other applications do not automatically reuse these files. Existing configurations may still point to the shared cache. With `--data-dir PATH`, new downloads use `PATH/model-cache`. `tingsub --data-dir PATH pair` and `tingsub --data-dir PATH serve` must use the same directory.
 
 The extension expects port **18765**. Although the CLI exposes `serve --port`, changing only that option will break the extension connection; use the default port. Never expose this service on a public interface or through a reverse proxy.
 
