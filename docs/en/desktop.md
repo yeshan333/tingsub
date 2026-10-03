@@ -72,7 +72,7 @@ CLI: `tingsub prepare --download-source mirror`, or `tingsub prepare --download-
 
 ## Browser captions
 
-Captions follow the visible video, leave room for bottom player controls, and support same-origin embedded players (including the tested Bilibili live page) and player fullscreen. They disappear when the video scrolls out of view. Cross-origin embedded players remain subject to Chrome active-tab permission limits.
+Captions follow the visible video, leave room for bottom player controls, and support same-origin embedded players (including the tested Bilibili live page) and player fullscreen. They disappear when the video scrolls out of view. For cross-origin embedded players, captions stay in the permitted parent page and follow the iframe bounds; caption text is not injected into the foreign page. Fullscreen of a parent player container remains supported. Fullscreen entered inside the foreign iframe cannot show the parent overlay under Chrome active-tab permission limits.
 
 One bilingual translation remains readable while the next recognition draft is marked as in progress. Each language has its own two-line area for long text, with independent scrolling and an expand button. Hover over captions to drag the toolbar, recenter, open runtime information, or stop captions. Timing and statistics are collapsed by default.
 
