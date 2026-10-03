@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TingSub · 听桥</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <header><span class="mark">听</span><div><h1>TingSub <small>听桥</small></h1><p>让外语直播，更近一点。</p></div></header>
+  <div class="local"><span></span> 本地识别 · 本地翻译 · 无云端回退</div>
+  <main>
+    <label for="language">直播语言</label>
+    <select id="language"><option value="en">英语 English</option><option value="ja">日语 日本語</option><option value="auto">自动识别（可能更慢）</option></select>
+    <label for="display">字幕显示</label>
+    <select id="display"><option value="zh-en">中文＋英文</option><option value="source-zh">中文＋原文</option></select>
+    <p class="hint">日语直播也能显示中英双语；选择「中文＋原文」则保留日文。</p>
+    <label class="check"><input type="checkbox" id="partials" checked> 先显示识别草稿 <span>更快看到原文</span></label>
+    <label for="fontSize">字幕字号 <output id="sizeLabel">26</output></label>
+    <input type="range" id="fontSize" min="18" max="40" value="26">
+    <details><summary>本机配对</summary><label for="token">配对码</label><input id="token" type="password" autocomplete="off" placeholder="粘贴 start.command 显示的配对码"><p class="hint">仅保存在此浏览器，不会同步。首次使用需启动本机服务并下载模型。</p></details>
+    <div id="status" role="status" aria-live="polite">正在检查本地服务…</div>
+    <div class="actions"><button id="start">为当前标签页开启字幕</button><button id="stop" disabled>停止</button></div>
+  </main>
+  <footer>仅捕获你开启的标签页 · 不使用麦克风</footer>
+  <script type="module" src="popup.js"></script>
+</body></html>

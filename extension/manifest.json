@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "TingSub · 听桥",
+  "version": "0.1.0",
+  "description": "英语、日语直播 → 中文与英文字幕。语音识别和翻译全部在你的 Mac 上完成。",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "activeTab",
+    "tabCapture",
+    "offscreen",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "TingSub · 听桥"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src http://127.0.0.1:18765 ws://127.0.0.1:18765"
+  },
+  "homepage_url": "https://github.com/yeshan333/tingsub"
+}
