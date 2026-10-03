@@ -1,43 +1,232 @@
-"""Run translation regressions with the installed local model; no mock or download.
+"""Check translation fidelity with installed local models; no mocks or downloads.
 
-Run while the subtitle service is stopped to avoid competing for the GPU.
+Stop the subtitle service first to avoid competing for the GPU. These authored
+examples guard specific regressions, not general translation quality.
 """
 
+import json
 import re
 import time
+from dataclasses import dataclass
 from pathlib import Path
 
 from live_subs.engine import MLXEngine
 
 
+@dataclass(frozen=True)
+class Case:
+    name: str
+    source: str
+    language: str
+    zh: tuple[str, ...]
+    en: tuple[str, ...] = ()
+    ambiguous_time: bool = False
+    display: str = "zh-en"
+    latin_names: tuple[str, ...] = ()
+
+
+# Match complete numeric values: 8 must not match 18, nor 十点 match 二十点.
+ZH_DIGITS = "零〇一二两三四五六七八九十百千0123456789"
+
+
+def chinese_hour(hour: str) -> str:
+    return rf"(?<![{ZH_DIGITS}]){hour}点(?![{ZH_DIGITS}半刻])"
+
+
+def english_hour(word: str, number: int) -> str:
+    return rf"(?<![\w.])(?:{word}\b|{number}(?:[:.]00)?(?!\d|[:.]\d))"
+
+
+def english_time(word: str, number: int) -> str:
+    # The hour must be in a clock expression, not merely somewhere in the field.
+    hour = english_hour(word, number)
+    return rf"(?:\bat\s+{hour}|{hour}\s+o['’]clock\b)"
+
+
+def english_period(word: str, number: int, period: str) -> str:
+    day_word = "morning" if period == "am" else "afternoon"
+    clock = english_hour(word, number) + r"(?:\s+o['’]clock)?"
+    # Bind both abbreviations and words to this clock expression; a period in
+    # another clause must not repair the wrong time of day in the checked fact.
+    abbreviation = rf"{period[0]}\.?\s*m\.?(?![a-z])"
+    after = rf"{clock}\s*(?:{abbreviation}|(?:in\s+the\s+|this\s+|tomorrow\s+)?{day_word}\b)"
+    before = rf"\b{day_word}\s+at\s+{clock}"
+    return rf"(?:{after}|{before})"
+
+
+def chinese_api_non_use() -> str:
+    # Match the app/verb/API relationship in this authored case, not the noun
+    # phrase '没有使用价值' (no utility) or the API acting on the app.
+    app = r"(?:这个|该)?应用(?:程序)?"
+    api = r"OpenAI\s*(?:的\s*)?API(?:\s*接口)?"
+    active = rf"{app}\s*(?:没有|未|不)\s*(?:在\s*)?使用\s*{api}"
+    passive = rf"{api}\s*(?:没有|未)\s*被\s*{app}\s*使用"
+    return rf"(?:{active}|{passive})(?=\s*(?:[。！？，、；,.!?;]|$))"
+
+
+CASES = [
+    Case("英文单词 you 保留原文并译为中文", "you", "en", ("你",)),
+    Case("英文音乐标记保留原文并译为中文", "Music", "en", ("音乐",)),
+    Case("英文短感叹保留原文并译为中文", "Oh!", "en", ("哦",)),
+    Case(
+        "日语单句会议保留三点且不补时段",
+        "次の会議は三時に始まります。", "ja",
+        ("会议", chinese_hour("三"), "开始"), ("meeting", english_time("three", 3), "start|begin"),
+        ambiguous_time=True,
+    ),
+    Case(
+        "日语请求携带电脑译出完整要求",
+        "パソコンを持ってきてください。", "ja",
+        ("带|拿", "电脑"), ("bring", "computer|laptop"),
+    ),
+    Case(
+        "日语两句会议和电脑要求均译为中英且不补时段",
+        "次の会議は三時に始まります。パソコンを持ってきてください。", "ja",
+        ("会议", chinese_hour("三"), "开始", "带", "电脑"),
+        ("meeting", english_time("three", 3), "start|begin", "bring", "computer|laptop"),
+        ambiguous_time=True,
+    ),
+    Case(
+        "日语明确下午的会议保留下午三点和电脑要求",
+        "会議は午後三時に始まります。パソコンを持ってきてください。", "ja",
+        ("会议", "下午" + chinese_hour("三"), "开始", "带", "电脑"),
+        ("meeting", english_time("three", 3), english_period("three", 3, "pm"),
+         "bring", "computer|laptop"),
+    ),
+    Case(
+        "日语明确明天上午的约定保留日期时段和地点",
+        "明日の午前八時に駅で会いましょう。", "ja",
+        ("明天", "(?:上午|早上)" + chinese_hour("八"), "站", "见|会面"),
+        ("tomorrow", english_time("eight", 8), english_period("eight", 8, "am"), "station", "meet"),
+    ),
+    Case(
+        "日语两句否定保留没有会议和计划未定",
+        "今日は会議はありません。明日の予定はまだ決まっていません。", "ja",
+        ("今天没有会议", "明天", "还没有|尚未|未定", "确定|决定|定"),
+        ("no meeting", "today", "tomorrow", "not.*(?:decided|determined|set|fixed)"),
+    ),
+    Case(
+        "英文两句保留原文并完整译成中文且不补时段",
+        "The next meeting starts at three o'clock. Please bring your laptop.", "en",
+        ("会议", chinese_hour("三"), "开始", "带", "电脑"), ambiguous_time=True,
+    ),
+    Case(
+        "日语商店开门和现金要求均保留且不补时段",
+        "店は十時に開きます。現金を持ってきてください。", "ja",
+        ("店", chinese_hour("十"), "开", "现金", "带"),
+        ("store|shop", english_time("ten", 10), "open", "cash", "bring"), ambiguous_time=True,
+    ),
+    Case(
+        "日语音乐会时间和两张票均保留且不补时段",
+        "コンサートは八時に始まります。チケットは二枚あります。", "ja",
+        ("音乐会|演唱会", chinese_hour("八"), "开始", rf"(?<![{ZH_DIGITS}])(?:两|二)张票"),
+        ("concert", english_time("eight", 8), "start|begin", r"\b(?:two|2)\s+tickets?\b"),
+        ambiguous_time=True,
+    ),
+    Case(
+        "日语技术名称保留拉丁专名且保留未使用的否定",
+        "このアプリはOpenAIのAPIを使っていません。", "ja",
+        (chinese_api_non_use(),),
+        ("app", "OpenAI", "API", r"\b(?:not\s+(?:use|using)|doesn['’]t\s+use)\b"),
+        latin_names=("OpenAI", "API"),
+    ),
+    Case(
+        "日语原文加中文模式也完整翻译两句且不补时段",
+        "次の会議は三時に始まります。パソコンを持ってきてください。", "ja",
+        ("会议", chinese_hour("三"), "开始", "带", "电脑"),
+        ambiguous_time=True, display="source-zh",
+    ),
+]
+
+
+def check_result(case: Case, result: dict) -> list[str]:
+    errors = []
+    for field, patterns in (("zh", case.zh), ("en", case.en)):
+        for pattern in patterns:
+            if not re.search(pattern, result[field], re.IGNORECASE):
+                errors.append(f"{field}: missing content matching {pattern!r}")
+    # Only these authored examples have a known list of allowed Latin names.
+    # This is NOT a production language detector or a general translation score.
+    chinese = result["zh"]
+    for name in case.latin_names:
+        chinese = chinese.replace(name, "")
+    if re.search(r"[a-zA-Z\u3040-\u30ff]", chinese):
+        errors.append("zh: untranslated English/Japanese outside allowed names")
+    if case.language == "en" and result["en"] != case.source:
+        errors.append("en: English source was rewritten")
+    if case.language != "en" and case.display == "zh-en":
+        if re.search(r"[\u3040-\u30ff\u4e00-\u9fff]", result["en"]):
+            errors.append("en: untranslated Japanese/Chinese")
+    if case.ambiguous_time:
+        if re.search("上午|下午|早上|早晨|凌晨|中午|傍晚|晚上|夜里", result["zh"]):
+            errors.append("zh: invented time of day")
+        if re.search(
+            r"(?<![a-z])(?:a\.?\s*m\.?|p\.?\s*m\.?)(?![a-z])"
+            r"|\b(?:morning|afternoon|evening|night|noon|midnight)\b",
+            result["en"], re.IGNORECASE,
+        ):
+            errors.append("en: invented time of day")
+    return errors
+
+
+def prime_translation_caches(engine):
+    # Separate, unscored inputs populate BOTH prompt variants before measured reuse.
+    engine.translation_caches.clear()
+    engine.translate("Hello.", "en", "zh-en")
+    engine.translate("こんにちは。", "ja", "zh-en")
+    if not all(engine.translation_caches.get(key, ([], None))[0] for key in (False, True)):
+        raise AssertionError("Cache warm-up did not populate both prompt variants")
+
+
+def run_cases(engine):
+    rows = []
+    for mode in ("cold", "reuse"):
+        if mode == "reuse":
+            prime_translation_caches(engine)
+        # Reverse the second pass to exercise changed preceding text and both
+        # cache branches; do not require bit-identical text from GPU arithmetic.
+        for case in CASES if mode == "cold" else reversed(CASES):
+            if mode == "cold":
+                engine.translation_caches.clear()
+            bilingual = case.language != "en" and case.display == "zh-en"
+            cached_tokens = len(engine.translation_caches.get(bilingual, ([], None))[0])
+            start = time.perf_counter()
+            try:
+                if mode == "reuse" and not cached_tokens:
+                    raise AssertionError("Reuse case has no populated prompt cache")
+                result = engine.translate(case.source, case.language, case.display)
+                errors = check_result(case, result)
+            except Exception as exc:
+                result, errors = {}, [f"{type(exc).__name__}: {exc}"]
+            elapsed = round((time.perf_counter() - start) * 1000)
+            rows.append(dict(
+                mode=mode, name=case.name, cached_tokens_before=cached_tokens,
+                ms=elapsed, result=result, errors=errors,
+            ))
+            status = "FAIL" if errors else "PASS"
+            print(f"{status} [{mode}] {case.name} ({elapsed}ms): {result}", flush=True)
+            for error in errors:
+                print(f"  {error}", flush=True)
+    return rows
+
+
 def main():
-    engine = MLXEngine(Path(".local/models.json"))
-    cases = [
-        ("直播单词 you 必须返回中文译文及原英文", "you", "en", "你", "you"),
-        ("直播音乐标记必须返回中文译文及原英文", "Music", "en", "音乐", "Music"),
-        ("英文短感叹必须返回中英字幕", "Oh!", "en", "哦", "Oh!"),
-        (
-            "日语会议时间必须保留三点且不擅自补充上午下午",
-            "次の会議は三時に始まります。", "ja", "三点", "three",
-        ),
-        (
-            "日语携带电脑的要求必须译为中文和英文",
-            "パソコンを持ってきてください。", "ja", "电脑", "computer",
-        ),
-    ]
-    for name, source, language, expected_zh, expected_en in cases:
-        start = time.perf_counter()
-        result = engine.translate(source, language, "zh-en")
-        assert expected_zh in result["zh"], (name, result)
-        assert expected_en in result["en"], (name, result)
-        if language == "en":
-            assert result["en"] == source, (name, result)
-        if "時間" in source or "三時" in source:
-            assert "上午" not in result["zh"] and "下午" not in result["zh"], (name, result)
-            assert not re.search(r"\b(?:am|pm)\b", result["en"].lower().replace(".", "")), (
-                name, result,
-            )
-        print(f"PASS {name} ({(time.perf_counter() - start) * 1000:.0f}ms): {result}", flush=True)
+    model_file = Path(".local/models.json")
+    engine = MLXEngine(model_file)
+    rows = run_cases(engine)
+    config = json.loads(model_file.read_text())
+    report = {
+        "translation_model": {k: config["translation"][k] for k in ("repo", "revision")},
+        "reuse_warmup_calls": 2,
+        "rows": rows,
+    }
+    path = Path(".local/benchmark/translation-check.json")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(report, ensure_ascii=False, indent=2))
+    failures = sum(bool(row["errors"]) for row in rows)
+    print(f"{len(rows) - failures}/{len(rows)} passed; report: {path}")
+    if failures:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

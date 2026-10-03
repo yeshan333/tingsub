@@ -13,6 +13,7 @@ from live_subs.engine import MLXEngine
 def main():
     engine = MLXEngine(Path(".local/models.json"))
     cases = [
+        ("次の会議は三時に始まります。パソコンを持ってきてください。", "ja"),
         ("次の会議は三時に始まります。", "ja"),
         ("パソコンを持ってきてください。", "ja"),
         ("The next meeting starts at three.", "en"),
@@ -20,9 +21,16 @@ def main():
     ]
     rows, expected = [], {}
     for mode in ("cold", "reuse"):
+        if mode == "reuse":
+            engine.translation_caches.clear()
+            engine.translate("Hello.", "en", "zh-en")
+            engine.translate("こんにちは。", "ja", "zh-en")
         for source, language in cases:
             if mode == "cold":
                 engine.translation_caches.clear()
+            cached_tokens = len(engine.translation_caches.get(language != "en", ([], None))[0])
+            if mode == "reuse":
+                assert cached_tokens, "复用检查必须已有对应分支的提示缓存"
             started = time.perf_counter()
             progress = []
 
@@ -40,6 +48,7 @@ def main():
                 assert progress[0]["ms"] < elapsed, "中文应在英文生成完成前到达"
             row = dict(
                 mode=mode,
+                cached_tokens_before=cached_tokens,
                 source=source,
                 first_zh_ms=progress[0]["ms"],
                 complete_ms=elapsed,
