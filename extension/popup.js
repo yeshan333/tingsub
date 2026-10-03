@@ -1,18 +1,20 @@
 const $ = id => document.getElementById(id);
-const keys = ['token', 'language', 'display', 'partials', 'fontSize'];
-const settings = await chrome.storage.local.get({ token: '', language: 'en', display: 'zh-en', partials: true, fontSize: 26 });
+const keys = ['token', 'language', 'display', 'translate', 'partials', 'fontSize'];
+const settings = await chrome.storage.local.get({ token: '', language: 'en', display: 'zh-en', translate: true, partials: true, fontSize: 26 });
 for (const key of keys) {
-  if (key === 'partials') $(key).checked = settings[key];
+  if ((key === 'partials' || key === 'translate')) $(key).checked = settings[key];
   else $(key).value = settings[key];
 }
 $('sizeLabel').textContent = settings.fontSize;
+$('display').disabled = !$('translate').checked;
 if (!settings.token) document.querySelector('details').open = true;
 async function save() {
   await chrome.storage.local.set({
     token: $('token').value.trim(), language: $('language').value, display: $('display').value,
-    partials: $('partials').checked, fontSize: Number($('fontSize').value),
+    translate: $('translate').checked, partials: $('partials').checked, fontSize: Number($('fontSize').value),
   });
   $('sizeLabel').textContent = $('fontSize').value;
+  $('display').disabled = !$('translate').checked;
 }
 let saving = Promise.resolve();
 const editVersions = Object.fromEntries(keys.map(key => [key, 0]));
@@ -32,16 +34,16 @@ async function loadShared() {
     const { pendingPreferences } = await chrome.storage.local.get('pendingPreferences');
     if (token !== $('token').value.trim() || versions.token !== editVersions.token) return;
     for (const key of keys.filter(key => key !== 'token')) {
-      if (versions[key] !== editVersions[key]) continue;
+      if (!Object.hasOwn(shared, key) || versions[key] !== editVersions[key]) continue;
       if ([pendingBefore, pendingPreferences].some(pending => pending?.token === token && Object.hasOwn(pending.patch, key))) continue;
-      if (key === 'partials') $(key).checked = shared[key]; else $(key).value = shared[key];
+      if ((key === 'partials' || key === 'translate')) $(key).checked = shared[key]; else $(key).value = shared[key];
     }
     await save();
   } catch { /* Offline editing remains available in browser storage. */ }
 }
 keys.forEach(key => $(key).addEventListener('input', () => {
   editVersions[key]++;
-  const value = key === 'partials' ? $(key).checked : key === 'fontSize' ? Number($(key).value) : $(key).value;
+  const value = (key === 'partials' || key === 'translate') ? $(key).checked : key === 'fontSize' ? Number($(key).value) : $(key).value;
   const token = $('token').value.trim();
   save();
   if (key === 'token') return;

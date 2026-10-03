@@ -27,6 +27,9 @@ class Session {
     if (health.service !== 'tingqiao' || health.protocol !== 1 || !health.ready) {
       throw new Error('端口上的服务不是兼容的听桥字幕服务');
     }
+    if (this.settings.translate === false && health.translation_control !== true) {
+      throw new Error('本机服务版本不支持关闭翻译，请更新并重启 TingSub');
+    }
     this.assertActive();
     this.ws = new WebSocket('ws://127.0.0.1:18765/stream');
     this.ws.binaryType = 'arraybuffer';
@@ -35,7 +38,7 @@ class Session {
       const settle = (error) => { clearTimeout(timeout); error ? reject(error) : resolve(); };
       this.ws.onopen = () => this.ws.send(JSON.stringify({
         token: this.settings.token, language: this.settings.language,
-        display: this.settings.display, partials: this.settings.partials,
+        display: this.settings.display, translate: this.settings.translate !== false, partials: this.settings.partials,
       }));
       this.ws.onerror = () => settle(new Error('无法连接本地服务，请先运行 start.command'));
       this.ws.onclose = event => {

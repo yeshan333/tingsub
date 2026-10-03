@@ -156,3 +156,13 @@ test('同源嵌入播放器随主页面接收字幕，外域框架权限不足�
     assert.equal(startedSettings.length,1);
   }
 });
+
+
+test('用户关闭翻译后，新采集会话保持关闭并保留目标语言选择', async () => {
+  const {save,start,startedSettings,storage} = background({failure:'none'});
+  await save({translate:false});
+  await start();
+  assert.equal(startedSettings[0].translate,false);
+  assert.equal(storage.translate,false);
+  assert.equal(startedSettings[0].display,'zh-en');
+});

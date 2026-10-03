@@ -9,9 +9,9 @@ function preferencesTask(operation) {
 }
 
 async function migratePreferences(token) {
-  const stored = await chrome.storage.local.get({ language: null, display: null, partials: null, fontSize: null, preferencesMigratedToken: null });
+  const stored = await chrome.storage.local.get({ language: null, display: null, translate: null, partials: null, fontSize: null, preferencesMigratedToken: null });
   if (stored.preferencesMigratedToken === token) return;
-  const patch = Object.fromEntries(['language', 'display', 'partials', 'fontSize'].filter(key => stored[key] !== null).map(key => [key, stored[key]]));
+  const patch = Object.fromEntries(['language', 'display', 'translate', 'partials', 'fontSize'].filter(key => stored[key] !== null).map(key => [key, stored[key]]));
   const response = await fetch('http://127.0.0.1:18765/preferences/initialize', {
     method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(patch), signal: AbortSignal.timeout(2000),
@@ -83,7 +83,7 @@ async function handle(message) {
       if (current.state !== 'idle' && current.state !== 'error') {
         throw new Error('请先停止当前字幕，再开启另一个标签页');
       }
-      const settings = await chrome.storage.local.get({ token: '', language: 'en', display: 'zh-en', partials: true, fontSize: 26 });
+      const settings = await chrome.storage.local.get({ token: '', language: 'en', display: 'zh-en', translate: true, partials: true, fontSize: 26 });
       if (!settings.token.trim()) throw new Error('请先填写本地服务配对码');
       // Retry durable local edits before allowing a server GET to replace them.
       await preferencesTask(async () => {
@@ -95,7 +95,7 @@ async function handle(message) {
         });
         if (response.ok) {
           const shared = await response.json();
-          for (const key of ['language', 'display', 'partials', 'fontSize']) settings[key] = shared[key];
+          for (const key of ['language', 'display', 'translate', 'partials', 'fontSize']) if (Object.hasOwn(shared, key)) settings[key] = shared[key];
           await chrome.storage.local.set(settings);
         } else if (response.status !== 404) {
           throw new Error('无法同步字幕设置，请检查本机配对码');
