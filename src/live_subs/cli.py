@@ -31,17 +31,24 @@ def main():
         launch(directory)
         return
 
+    if args.command == "pair":
+        from .server import token_at
+
+        print(token_at(directory))
+        return
+    from .operation import acquire_operation
+
+    with acquire_operation(directory, os.environ.pop("TINGSUB_OPERATION_FD", None)):
+        run_operation(args, directory, parser)
+
+
+def run_operation(args, directory, parser):
     if args.command == "prepare":
         from .model_manager import prepare_models
 
         prepare_models(directory, args.asr, args.translation,
                        force=args.force, validate=args.validate)
     else:
-        from .server import token_at
-
-        if args.command == "pair":
-            print(token_at(directory))
-            return
         if platform.system() != "Darwin" or platform.machine() != "arm64":
             parser.error("此版本的推理后端要求 Apple Silicon Mac")
         if not (directory / "models.json").exists():

@@ -1,8 +1,8 @@
 """Small native WebKit host. Inference remains in an owned, isolated subprocess."""
 
-import fcntl
 import http.client
 import json
+import os
 import platform
 import socket
 import subprocess
@@ -12,6 +12,7 @@ from pathlib import Path
 
 from .catalog import DEFAULT_ASR, DEFAULT_TRANSLATION
 from .model_manager import catalog_at, read_config, selection_at, validate_selection
+from .operation import acquire_operation
 from .preferences import read_preferences, update_preferences
 from .runtime import install_extension, worker_command
 from .server import token_at
@@ -98,15 +99,7 @@ class DesktopController:
             self._operation_lock = None
 
     def _acquire_operation(self):
-        lock = (self.directory / "desktop-operation.lock").open("a")
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as exc:
-            lock.close()
-            raise RuntimeError(
-                "Another TingSub window is already working in this directory"
-            ) from exc
-        return lock
+        return acquire_operation(self.directory)
 
     def _reap(self):
         if self._process is not None and self._process.poll() is not None:
@@ -165,6 +158,8 @@ class DesktopController:
                 with self._log.open("wb") as output:
                     self._process = subprocess.Popen(
                         worker_command(self.directory, job, *arguments),
+                        env={**os.environ,
+                             "TINGSUB_OPERATION_FD": str(self._operation_lock.fileno())},
                         stdout=output,
                         stderr=subprocess.STDOUT,
                         stdin=subprocess.DEVNULL,
