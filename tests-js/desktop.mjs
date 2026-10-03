@@ -19,6 +19,7 @@ try {
   await page.addInitScript(() => {
     window.fixture = {
       state: 'stopped', busy: false, owned: false,
+      model_cache: '/Users/test/Library/Application Support/TingSub/model-cache',
       models: [
         { kind: 'asr', repo: 'mlx-community/whisper-large-v3-turbo-4bit', ready: true, bytes: 863288426 },
         { kind: 'translation', repo: 'mlx-community/Qwen2.5-3B-Instruct-4bit', ready: true, bytes: 1803886264 },
@@ -69,6 +70,9 @@ try {
   await page.waitForFunction(() => document.querySelector('#serviceTitle').textContent === '外部服务已连接');
   assert.equal(await page.locator('#serviceAction').isDisabled(), true);
   await page.locator('[data-page="models"]').click();
+  assert.equal(await page.locator('#modelCachePath').textContent(), '/Users/test/Library/Application Support/TingSub/model-cache');
+  await page.getByRole('button',{name:'在 Finder 中打开',exact:false}).click();
+  assert.equal(await page.evaluate(()=>window.calls.some(call=>call[0]==='resource' && call[1]==='models')),true,'服务运行时可直接打开模型保存目录');
   for (const busy of [false,true]) {
     await page.evaluate(busy=>{window.fixture.busy=busy;},busy);
     await page.locator('#asrModel').selectOption('mlx-community/whisper-small-mlx-4bit');

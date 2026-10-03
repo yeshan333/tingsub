@@ -8,6 +8,7 @@ const words = {
     welcomeModels: "01 选择并准备模型", welcomeBrowser: "02 配对浏览器", welcomeStart: "03 开始字幕",
     chooseModels: "选择模型", activeModels: "当前配置", applyModels: "下载并应用", stopToSwitch: "可先浏览和选择，停止服务后应用", stopToApply: "停止服务后应用",
     switchSafe: "加载校验成功后生效；失败或取消会保留原配置。",
+    modelLocation: "模型保存位置", modelLocationHint: "下载统一保存在此目录，切换下载源不会改变保存位置。", openModelFolder: "在 Finder 中打开",
     downloadSource: "模型下载源", sourceOfficial: "Hugging Face · 官方", sourceMirror: "HF-Mirror · 社区镜像", sourceCustom: "自定义地址", sourceEndpoint: "兼容 Hugging Face 的 HTTPS 地址", downloadSourceHint: "网络较慢时可尝试社区镜像；速度和可用性取决于网络。仅用于下载公开模型，不发送音频或配对码。", resolving: "正在获取模型文件信息…", sizeUnknown: "正在确认文件大小",
     downloading: "正在下载", validating: "正在加载并校验所选模型…", modelComplete: "模型已就绪。下一步：连接浏览器。",
     modelFailed: "模型准备失败，原配置已保留。请查看日志后重试。", openChrome: "打开扩展管理页",
@@ -115,6 +116,7 @@ const words = {
     welcomeModels: "01 Prepare models", welcomeBrowser: "02 Pair your browser", welcomeStart: "03 Start captions",
     chooseModels: "Choose models", activeModels: "Current configuration", applyModels: "Download & apply", stopToSwitch: "Browse and choose now; stop the service to apply", stopToApply: "Stop service to apply",
     switchSafe: "Activated after a successful load check. Failure or cancellation keeps your current configuration.",
+    modelLocation: "Model storage", modelLocationHint: "Downloads stay in this folder, even when you change the download source.", openModelFolder: "Open in Finder",
     downloadSource: "Model download source", sourceOfficial: "Hugging Face · Official", sourceMirror: "HF-Mirror · Community", sourceCustom: "Custom endpoint", sourceEndpoint: "Hugging Face-compatible HTTPS endpoint", downloadSourceHint: "Try the community mirror on slow connections. Speed and availability vary. Only public model files are downloaded; audio and pairing codes are never sent.", resolving: "Getting model file information…", sizeUnknown: "Determining download size",
     downloading: "Downloading", validating: "Loading and validating the selected models…", modelComplete: "Models are ready. Next: connect your browser.",
     modelFailed: "Preparation failed. Your current configuration is unchanged. Check the log and retry.", openChrome: "Open Chrome extensions",
@@ -365,6 +367,7 @@ function render(data) {
   }
 }
 function renderModelChoices(data, allModels) {
+  $("modelCachePath").textContent = data.model_cache || "";
   const selected = data.selection || Object.fromEntries(data.models.map(model => [model.kind, model.repo]));
   const activeKey = JSON.stringify(selected);
   if (!modelDraft || activeSelection !== activeKey) {

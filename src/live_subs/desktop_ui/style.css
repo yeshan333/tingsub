@@ -909,3 +909,10 @@ input.switch:checked:before {
 #switchHint { max-width: 340px; text-align: right; line-height: 1.7; }
 
 .download-options{margin-top:16px}.download-options .model-choice{display:grid;padding:16px 20px;gap:8px}.download-options small{line-height:1.6;color:var(--muted)}.download-options input{font:inherit;padding:9px;border:1px solid #8885;border-radius:6px;background:transparent;color:inherit}.download-progress{margin:20px 0 6px}.download-progress progress{display:block;width:100%;height:8px;accent-color:#69877d}.download-progress div{font-size:12px;margin-top:8px;font-variant-numeric:tabular-nums;opacity:.75}
+
+.model-storage { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; padding: 18px 0 4px; }
+.model-storage > div { flex: 1; min-width: 0; }
+.model-storage strong { font-size: 12px; font-weight: 500; }
+.model-storage code { display: block; margin-top: 7px; color: var(--muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; user-select: text; }
+.model-storage p { margin: 6px 0 0; font-size: 11px; color: var(--muted); line-height: 1.6; }
+.model-storage button { flex-shrink: 0; margin-top: 0; }
