@@ -6,6 +6,8 @@ Keep the current MLX backend for now. On this machine and small corpus, whisper.
 
 The opt-in scripts do not change the service, extension or defaults. [Numeric results](../benchmarks/backend-pilot-2026-10-03.json) include per-run counts, per-clip edit totals, timings, model revisions and audio hashes. Audio, reference transcripts, model output and private paths remain local.
 
+The follow-up [Swift and Rust component pilots](native-routes.md) test the other two implementation routes and document translation content failures.
+
 ## Setup and limits
 
 - Apple M4 Pro, 48 GB RAM, macOS 27.0.1, Python 3.12.11; production code at `eda8e783f916c52239cfe6966439478045421b6f`.
