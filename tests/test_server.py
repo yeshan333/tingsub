@@ -149,3 +149,17 @@ def test_invalid_shared_preferences_do_not_change_the_last_saved_caption_setting
     assert client.patch("/preferences", headers=headers, content=b"invalid").status_code == 422
     assert client.patch("/preferences", headers=headers, content=b"x" * 1025).status_code == 413
     assert client.get("/preferences", headers=headers).json()["fontSize"] == 32
+
+
+def test_browser_upgrade_initializes_preferences_once_without_overwriting_desktop_edits(service):
+    client, token = service
+    url = "/preferences/initialize"
+    assert client.post(url, json={"language": "ja"}).status_code == 401
+    headers = {"authorization": f"Bearer {token}"}
+    original = {"language": "auto", "display": "source-zh", "partials": False, "fontSize": 38}
+    assert client.post(url, headers=headers, json=original).json() == original
+    client.patch("/preferences", headers=headers, json={"fontSize": 32})
+    assert client.post(url, headers=headers, json={"fontSize": 18}).json() == {
+        **original, "fontSize": 32,
+    }
+    assert client.get("/preferences", headers=headers).json()["fontSize"] == 32

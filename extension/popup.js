@@ -21,6 +21,8 @@ async function loadShared() {
   const versions = { ...editVersions };
   if (!token) return;
   try {
+    const migration = await chrome.runtime.sendMessage({ target: 'background', type: 'migratePreferences', token });
+    if (migration?.error) throw new Error(migration.error);
     const { pendingPreferences: pendingBefore } = await chrome.storage.local.get('pendingPreferences');
     const response = await fetch('http://127.0.0.1:18765/preferences', {
       headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(1200),

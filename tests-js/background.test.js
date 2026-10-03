@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 
-function background({ busy = false, failure = 'capture', preferencesStatus = 200, sharedStorage } = {}) {
+function background({ busy = false, failure = 'capture', preferencesStatus = 200, sharedStorage, initialized = true } = {}) {
   const events = [];
   const startedSettings = [];
   const savedSettings = [];
@@ -40,6 +40,7 @@ function background({ busy = false, failure = 'capture', preferencesStatus = 200
   const context = vm.createContext({ chrome, AbortSignal, fetch: async (url, options) => {
     if (!online) throw new Error('offline');
     requests.push(options.method || 'GET');
+    if (options.method === 'POST' && preferencesStatus === 200 && !initialized) { Object.assign(serverPreferences, JSON.parse(options.body)); initialized = true; }
     if (options.method === 'PATCH' && preferencesStatus === 200) Object.assign(serverPreferences, JSON.parse(options.body));
     return { ok: preferencesStatus === 200, status: preferencesStatus, json: async () => ({ ...serverPreferences }) };
   } });
@@ -81,7 +82,7 @@ test('开始采集时使用桌面共享的语言和字号，并同步浏览器�
   assert.equal(startedSettings[0].language, 'ja');
   assert.equal(startedSettings[0].fontSize, 30);
   assert.equal(events[0].fontSize, 30);
-  assert.equal(savedSettings[0].language, 'ja');
+  assert.equal(savedSettings.at(-1).language, 'ja');
 });
 
 test('共享设置认证失败时不注入字幕或启动音频采集', async () => {
@@ -106,7 +107,7 @@ test('离线编辑跨后台重启保留，恢复连接后先重试写入再读�
   assert.deepEqual(first.storage.pendingPreferences.patch, { language: 'en', fontSize: 34 });
   const restarted = background({ failure: 'none', sharedStorage: first.storage });
   await restarted.start();
-  assert.deepEqual(restarted.requests, ['PATCH', 'GET']);
+  assert.deepEqual(restarted.requests, ['POST', 'PATCH', 'GET']);
   assert.equal(restarted.startedSettings[0].language, 'en');
   assert.equal(restarted.startedSettings[0].fontSize, 34);
   assert.equal(restarted.storage.pendingPreferences, undefined);
@@ -120,4 +121,26 @@ test('待同步设置再次提交失败时不采集音频也不丢弃用户编�
   assert.equal(ui.startedSettings.length, 0);
   assert.equal(ui.events.length, 0);
   assert.equal(ui.storage.pendingPreferences.patch.fontSize, 36);
+});
+
+
+test('旧插件首次连接没有共享配置的服务时先迁移所有原设置再开始字幕', async () => {
+  const storage = { token: 'paired', language: 'auto', display: 'source-zh', partials: false, fontSize: 38 };
+  const expected = { ...storage };
+  const ui = background({ failure: 'none', sharedStorage: storage, initialized: false });
+  await ui.start();
+  assert.deepEqual(ui.requests, ['POST', 'GET']);
+  for (const key of ['language', 'display', 'partials', 'fontSize']) {
+    assert.equal(ui.startedSettings[0][key], expected[key]);
+  }
+  assert.equal(storage.preferencesMigratedToken, 'paired');
+  await ui.start();
+  assert.deepEqual(ui.requests, ['POST', 'GET', 'GET']);
+});
+
+test('旧插件的首次迁移不能覆盖桌面已经保存的共享设置', async () => {
+  const ui = background({ failure: 'none', sharedStorage: { token: 'paired', language: 'en', fontSize: 38 } });
+  await ui.start();
+  assert.equal(ui.startedSettings[0].language, 'ja');
+  assert.equal(ui.startedSettings[0].fontSize, 30);
 });

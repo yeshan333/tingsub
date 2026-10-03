@@ -31,11 +31,13 @@ def read_preferences(directory: Path):
     return DEFAULTS | validate(json.loads(path.read_text()))
 
 
-def update_preferences(directory: Path, patch):
+def update_preferences(directory: Path, patch, *, initialize=False):
     validate(patch)
     directory.mkdir(parents=True, exist_ok=True)
     with (directory / "preferences.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
+        if initialize and (directory / "preferences.json").exists():
+            return read_preferences(directory)
         result = read_preferences(directory) | patch
         fd, name = tempfile.mkstemp(dir=directory, prefix="preferences-", suffix=".tmp")
         try:

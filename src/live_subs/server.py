@@ -80,6 +80,7 @@ def create_app(directory: Path, engine_factory=None):
         authorize_preferences(request)
         return read_preferences(directory)
 
+    @app.post("/preferences/initialize")
     @app.patch("/preferences")
     async def save_preferences(request: Request):
         authorize_preferences(request)
@@ -90,7 +91,9 @@ def create_app(directory: Path, engine_factory=None):
         try:
             import json
 
-            return update_preferences(directory, json.loads(body))
+            return update_preferences(
+                directory, json.loads(body), initialize=request.method == "POST"
+            )
         except (ValueError, TypeError) as exc:
             raise HTTPException(422, str(exc)) from exc
 

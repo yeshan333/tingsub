@@ -8,6 +8,19 @@ function preferencesTask(operation) {
   return result;
 }
 
+async function migratePreferences(token) {
+  const stored = await chrome.storage.local.get({ language: null, display: null, partials: null, fontSize: null, preferencesMigratedToken: null });
+  if (stored.preferencesMigratedToken === token) return;
+  const patch = Object.fromEntries(['language', 'display', 'partials', 'fontSize'].filter(key => stored[key] !== null).map(key => [key, stored[key]]));
+  const response = await fetch('http://127.0.0.1:18765/preferences/initialize', {
+    method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(patch), signal: AbortSignal.timeout(2000),
+  });
+  if (response.status === 404) return; // Older servers cannot initialize shared preferences.
+  if (!response.ok) throw new Error('无法迁移原有字幕设置，请检查服务和配对码后重试');
+  await chrome.storage.local.set({ preferencesMigratedToken: token });
+}
+
 async function flushPreferences(token) {
   const { pendingPreferences } = await chrome.storage.local.get('pendingPreferences');
   if (!pendingPreferences || pendingPreferences.token !== token) return;
@@ -24,7 +37,7 @@ async function savePreferences(token, patch) {
     const { pendingPreferences } = await chrome.storage.local.get('pendingPreferences');
     const previous = pendingPreferences?.token === token ? pendingPreferences.patch : {};
     await chrome.storage.local.set({ ...patch, pendingPreferences: { token, patch: { ...previous, ...patch } } });
-    try { await flushPreferences(token); return { ok: true }; }
+    try { await migratePreferences(token); await flushPreferences(token); return { ok: true }; }
     catch { return { error: '设置已保存在浏览器，将在下次开始字幕前重试同步。' }; }
   });
 }
@@ -49,6 +62,7 @@ async function forward(tabId, event) {
 }
 
 async function handle(message) {
+  if (message.type === 'migratePreferences') return preferencesTask(() => migratePreferences(message.token));
   if (message.type === 'savePreferences') return savePreferences(message.token, message.patch);
   if (message.type === 'status') {
     const contexts = await chrome.runtime.getContexts({ contextTypes: ['OFFSCREEN_DOCUMENT'] });
@@ -73,6 +87,7 @@ async function handle(message) {
       if (!settings.token.trim()) throw new Error('请先填写本地服务配对码');
       // Retry durable local edits before allowing a server GET to replace them.
       await preferencesTask(async () => {
+        await migratePreferences(settings.token.trim());
         await flushPreferences(settings.token.trim());
         const response = await fetch('http://127.0.0.1:18765/preferences', {
           headers: { Authorization: `Bearer ${settings.token.trim()}` },

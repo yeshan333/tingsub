@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 
-async function popup() {
+async function popup({ migrationFails = false } = {}) {
   const elements = {};
   const requests = [];
   const saved = [];
@@ -16,7 +16,7 @@ async function popup() {
   }
   const chrome = {
     storage: { local: { get: async () => defaults, set: async value => saved.push({ ...value }) } },
-    runtime: { sendMessage: async () => ({ state: 'idle' }) },
+    runtime: { sendMessage: async message => message.type === 'migratePreferences' && migrationFails ? { error: 'migration unavailable' } : ({ state: 'idle' }) },
   };
   const context = vm.createContext({
     chrome, AbortSignal,
@@ -29,7 +29,9 @@ async function popup() {
     },
   });
   const loaded = vm.runInContext(`(async () => { ${readFileSync('extension/popup.js', 'utf8')} })()`, context);
-  while (!requests.length) await new Promise(resolve => setImmediate(resolve));
+  let finished = false;
+  loaded.finally(() => { finished = true; });
+  while (!requests.length && !finished) await new Promise(resolve => setImmediate(resolve));
   return { elements, requests, saved, loaded, edit: async (id, value) => {
     elements[id].value = value;
     await elements[id].listeners.input();
@@ -61,4 +63,14 @@ test('用户切换配对码后，上一配对请求的旧响应不能覆盖新�
   assert.equal(ui.elements.fontSize.value, 32);
   assert.equal(ui.saved.at(-1).token, 'second-pairing');
   assert.equal(ui.saved.at(-1).language, 'ja');
+});
+
+
+test('旧设置迁移失败时弹窗保留本地值且不读取服务默认值', async () => {
+  const ui = await popup({ migrationFails: true });
+  await ui.loaded;
+  assert.equal(ui.requests.length, 0);
+  assert.equal(ui.elements.language.value, 'en');
+  assert.equal(ui.elements.fontSize.value, 26);
+  assert.equal(ui.saved.length, 0);
 });
