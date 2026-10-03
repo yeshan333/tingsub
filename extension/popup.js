@@ -15,8 +15,10 @@ async function save() {
   $('sizeLabel').textContent = $('fontSize').value;
 }
 let saving = Promise.resolve();
+const editVersions = Object.fromEntries(keys.map(key => [key, 0]));
 async function loadShared() {
   const token = $('token').value.trim();
+  const versions = { ...editVersions };
   if (!token) return;
   try {
     const response = await fetch('http://127.0.0.1:18765/preferences', {
@@ -24,13 +26,16 @@ async function loadShared() {
     });
     if (!response.ok) return;
     const shared = await response.json();
+    if (token !== $('token').value.trim() || versions.token !== editVersions.token) return;
     for (const key of keys.filter(key => key !== 'token')) {
+      if (versions[key] !== editVersions[key]) continue;
       if (key === 'partials') $(key).checked = shared[key]; else $(key).value = shared[key];
     }
     await save();
   } catch { /* Offline editing remains available in browser storage. */ }
 }
 keys.forEach(key => $(key).addEventListener('input', () => {
+  editVersions[key]++;
   const value = key === 'partials' ? $(key).checked : key === 'fontSize' ? Number($(key).value) : $(key).value;
   const token = $('token').value.trim();
   save();
