@@ -13,6 +13,7 @@ from live_subs.engine import MLXEngine
 def main():
     engine = MLXEngine(Path(".local/models.json"))
     cases = [
+        ("次の会議は三時に始まります。パソコンを持ってきてください。", "ja"),
         ("次の会議は三時に始まります。", "ja"),
         ("パソコンを持ってきてください。", "ja"),
         ("The next meeting starts at three.", "en"),
