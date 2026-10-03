@@ -679,8 +679,16 @@ input.switch:checked:before {
 .text-button:hover {
   color: var(--text);
 }
-.logs {
+.log-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
   margin-top: 22px;
+}
+.log-location { flex: none; padding-top: 0; }
+.logs {
+  flex: 1;
+  min-width: 0;
   color: var(--faint);
   font-size: 11px;
 }

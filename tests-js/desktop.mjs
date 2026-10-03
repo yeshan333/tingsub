@@ -89,6 +89,10 @@ try {
   }
   await page.evaluate(() => { window.fixture.state = 'stopped'; });
   await page.locator('[data-page="models"]').click();
+  assert.equal(await page.locator('.logs').getAttribute('open'),null);
+  await page.getByRole('button',{name:'Show log file in Finder'}).click();
+  assert.equal(await page.evaluate(()=>window.calls.some(call=>call[0]==='resource' && call[1]==='logs')),true);
+  assert.equal(await page.locator('.logs').getAttribute('open'),null,'定位日志不应意外展开日志正文');
   await page.waitForFunction(() => !document.querySelector('#translationModel').disabled);
   await page.locator('#asrModel').selectOption('mlx-community/whisper-small-mlx-4bit');
   await page.locator('#translationModel').selectOption('mlx-community/Qwen2.5-1.5B-Instruct-4bit');
