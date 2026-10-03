@@ -2,6 +2,11 @@
 
 [English](CHANGELOG.md) · [简体中文](CHANGELOG.zh-CN.md)
 
+## Unreleased
+
+- Fix observed English sentences in the Chinese translation field with explicit target-language instructions and a two-sentence bilingual example.
+- Expand real-model checks to 14 scenarios with empty/reused caches, preserving ambiguous times and explicitly stated AM/PM, complete sentences, negation and technical names; document remaining semantic errors.
+
 ## 0.1.0 — Initial source publication
 
 - Local Apple Silicon MLX service and Chrome Manifest V3 extension for English/Japanese audio to Chinese/English captions.
