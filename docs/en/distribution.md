@@ -13,7 +13,7 @@ uv sync --frozen --extra desktop --group bundle --python 3.12
 uv run --frozen --extra desktop --group bundle python scripts/build_desktop.py
 ```
 
-Output: `.local/bundle/TingSub.app`, `TingSub-0.1.0-macos-arm64.dmg` and its SHA-256 file. PyInstaller includes the interpreter, native MLX libraries, Metal resources, inference dependencies, desktop assets and Chrome extension. Workers use the embedded executable, not PATH or a system Python. `Desktop bundle` is a manually dispatched GitHub Actions workflow producing unsigned-for-distribution artifacts; it does not publish a GitHub release or download models.
+Output: `.local/bundle/TingSub.app`, `TingSub-0.1.0-macos-<minimum>-arm64.dmg` and its SHA-256 file. PyInstaller includes the interpreter, native MLX libraries, Metal resources, inference dependencies, desktop assets and Chrome extension. Workers use the embedded executable, not PATH or a system Python. `Desktop bundle` is a manually dispatched GitHub Actions workflow producing unsigned-for-distribution artifacts; it does not publish a GitHub release or download models.
 
 ## Signing and notarization
 
@@ -34,3 +34,5 @@ Data lives under `~/Library/Application Support/TingSub`. Updating the App prese
 To uninstall, quit TingSub, remove it from Applications and remove its Chrome extension. Delete its Application Support directory only if you also want to delete cached models, pairing and settings. Source-based runs have a separate `.local` directory and are not migrated automatically.
 
 Model weights retain upstream licenses and are downloaded separately. Third-party distribution metadata/license files are included under the App's resources; see [model and dependency notices](models.md). A successful build is not a licensing review or a quality benchmark.
+
+The builder reads every bundled Mach-O dependency and sets `LSMinimumSystemVersion` to their highest minimum. The DMG filename includes this value. A build on a newer host can select newer MLX wheels and therefore cannot claim macOS 14 compatibility. Build and test on the oldest intended system to provide a compatible artifact; CI results alone are not inference validation.

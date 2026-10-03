@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import os
 import platform
+import plistlib
 import shutil
 import subprocess
 import sys
@@ -50,7 +51,9 @@ def main():
     staging.mkdir()
     subprocess.run(["/usr/bin/ditto", str(app), str(staging / "TingSub.app")], check=True)
     (staging / "Applications").symlink_to("/Applications")
-    disk = output / "TingSub-0.1.0-macos-arm64.dmg"
+    info = plistlib.loads((app / "Contents/Info.plist").read_bytes())
+    minimum = info["LSMinimumSystemVersion"]
+    disk = output / f"TingSub-0.1.0-macos-{minimum}-arm64.dmg"
     subprocess.run(
         [
             "/usr/bin/hdiutil",

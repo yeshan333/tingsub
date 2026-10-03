@@ -13,7 +13,7 @@ uv sync --frozen --extra desktop --group bundle --python 3.12
 uv run --frozen --extra desktop --group bundle python scripts/build_desktop.py
 ```
 
-输出为 `.local/bundle/TingSub.app`、`TingSub-0.1.0-macos-arm64.dmg` 和 SHA-256 文件。PyInstaller 包含解释器、MLX 原生库、Metal 资源、推理依赖、桌面资源和 Chrome 插件。后台进程调用内置可执行文件，不依赖 PATH 或系统 Python。GitHub Actions 的 `Desktop bundle` 工作流可手动触发，只生成尚未签名公证的分发制品，不发布 GitHub Release，也不下载模型。
+输出为 `.local/bundle/TingSub.app`、`TingSub-0.1.0-macos-<minimum>-arm64.dmg` 和 SHA-256 文件。PyInstaller 包含解释器、MLX 原生库、Metal 资源、推理依赖、桌面资源和 Chrome 插件。后台进程调用内置可执行文件，不依赖 PATH 或系统 Python。GitHub Actions 的 `Desktop bundle` 工作流可手动触发，只生成尚未签名公证的分发制品，不发布 GitHub Release，也不下载模型。
 
 ## 签名和公证
 
@@ -34,3 +34,5 @@ uv run --frozen --extra desktop --group bundle python scripts/build_desktop.py
 卸载时退出 TingSub，移除 Applications 中的应用和 Chrome 插件。只有希望一并删除模型缓存、配对和设置时，才删除对应 Application Support 目录。源码运行的 `.local` 目录相互独立，不会自动迁移。
 
 模型权重单独下载并遵循上游许可。第三方发行元数据及许可文件包含在 App 资源中，另见[模型与依赖说明](models.md)。构建成功不等于许可审核或准确率评测通过。
+
+构建脚本读取所有打包的 Mach-O 依赖，以最高最低版本要求设置 `LSMinimumSystemVersion`，并写入 DMG 文件名。新系统可能选择要求更高的 MLX wheel，因此不能笼统宣称本机产物支持 macOS 14。若要分发低版本兼容包，应在目标最低系统构建并实测；仅 CI 构建通过不代表推理验证。
