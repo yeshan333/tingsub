@@ -2,6 +2,8 @@
 
 # 安装与使用
 
+独立 App/DMG 用户不需要安装 Python 或 uv，直接按[桌面指南](desktop.md)操作；下方依赖和命令仅适用于源码安装。构建和签名方式见[分发指南](distribution.md)。
+
 ## 环境要求
 
 - Apple Silicon（M 系列）Mac，macOS 14 或更新版本，建议 16 GB 及以上内存。
@@ -11,6 +13,10 @@
 - 仅开发测试需要 Node.js 22+。
 
 当前不支持 CPU、CUDA、Windows、Linux、Intel Mac 或 Firefox 运行后端。服务与 Chrome 必须运行在同一台 Mac 上。
+
+## 使用桌面窗口
+
+推荐通过 `uv run --frozen --extra desktop tingsub gui` 或 `gui.command` 打开桌面工作空间，在界面中准备模型、启动服务并复制配对码。完整说明见[桌面指南](desktop.md)。下方保留原有终端操作方式。
 
 ## 安装与启动
 
@@ -55,7 +61,7 @@ uv run --frozen tingsub serve
 
 ## 本地文件与网络
 
-从仓库根目录运行命令，默认数据目录相对于当前工作目录。`.local/token` 保存配对密钥；`.local/models.json` 指向 Hugging Face 缓存中的模型快照。使用 `tingsub --data-dir PATH pair` 和 `tingsub --data-dir PATH serve` 时，两个命令必须指定同一个目录。
+从仓库根目录运行命令，默认数据目录相对于当前工作目录。`.local/token` 保存配对密钥；`.local/models.json` 记录模型快照路径。新下载统一保存到 TingSub 专用的 `.local/model-cache`，不使用共享 Hugging Face 缓存，其他应用不会自动复用这些文件。旧配置可能仍指向共享缓存；指定 `--data-dir PATH` 后，新下载保存到 `PATH/model-cache`。使用 `tingsub --data-dir PATH pair` 和 `tingsub --data-dir PATH serve` 时，两个命令必须指定同一个目录。
 
 扩展固定连接 **18765** 端口。虽然 CLI 提供 `serve --port`，但仅修改该参数会导致扩展无法连接，请使用默认端口。不要把服务公开监听或通过反向代理暴露到公网。
 
@@ -75,4 +81,6 @@ uv run --frozen tingsub serve
 
 ## 卸载
 
-Ctrl+C 停止服务，在 `chrome://extensions` 移除扩展。不再需要时删除仓库及其中的 `.venv`、`.local`。模型快照单独保存在 Hugging Face 缓存中，可能被其他应用共享，请只删除确认不再使用的模型。项目不安装后台常驻守护进程或登录启动项。
+Ctrl+C 停止服务，在 `chrome://extensions` 移除扩展。不再需要时删除仓库及其中的 `.venv`、`.local`。新下载的模型位于 `.local/model-cache`，删除 `.local` 会同时删除它们。旧配置可能仍指向共享的 Hugging Face 缓存，请检查 `models.json`，只删除确认不再使用的快照。独立应用另见[卸载说明](distribution.md)。项目不安装后台常驻守护进程或登录启动项。
+
+桌面依赖更新请使用 `uv sync --frozen --extra desktop`。字幕设置共享与离线编辑行为见[桌面指南](desktop.md)。

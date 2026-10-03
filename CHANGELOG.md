@@ -4,6 +4,15 @@
 
 ## Unreleased
 
+- Real model download bytes and progress, separate loading validation, official/community/custom HTTPS download sources.
+- Compact video-anchored bilingual captions, long-text controls, hidden diagnostics and same-origin embedded-player support.
+
+- Standalone macOS App/DMG build with embedded runtime, extension and first-run guidance.
+- Desktop speech/translation selection with download/load validation, failure rollback and offline cached switching.
+
+- Add a macOS WebKit desktop workspace with model preparation, service control, pairing guidance, caption preview, bilingual UI and dark/light appearance.
+- Share caption settings between desktop and extension through paired preference endpoints; add native smoke checks and bilingual desktop documentation.
+
 - Fix observed English sentences in the Chinese translation field with explicit target-language instructions and a two-sentence bilingual example.
 - Expand real-model checks to 14 scenarios with empty/reused caches, preserving ambiguous times and explicitly stated AM/PM, complete sentences, negation and technical names; document remaining semantic errors.
 - Correct real-model reuse checks to prime both prompt variants; reject swapped time/ticket values, ordinary words mistaken for AM/PM, and “not useful” mistaken for “not use.”

@@ -39,3 +39,16 @@ Python 与 JavaScript 依赖分别采用各自许可，具体解析版本和下�
 - [Playwright](https://github.com/microsoft/playwright)，仅用于开发测试。
 
 此列表用于致谢和索引，不能替代每个实际依赖版本的许可。重新分发依赖或模型制品时，请附带对应许可和声明。源码仓库及 Chrome 扩展没有捆绑这些 Python 库或模型权重。
+
+## 桌面界面可选模型
+
+| 用途 | 模型 | 许可 | 选择建议 |
+|---|---|---|---|
+| 识别 | `mlx-community/whisper-large-v3-turbo-4bit` | Apache-2.0 (conversion) / MIT (Whisper) | 默认 |
+| 识别 | `mlx-community/whisper-small-mlx-4bit` | MIT（上游 Whisper） | 更省内存，识别能力有取舍 |
+| 翻译 | `mlx-community/Qwen2.5-3B-Instruct-4bit` | Qwen Research License | 默认 |
+| 翻译 | `mlx-community/Qwen2.5-1.5B-Instruct-4bit` | Apache-2.0 | 实验选项，内存更低，保真度较弱 |
+
+2026-10-04 在 M4 Pro 上，1.5B 通过了 28 项人工编写翻译检查中的 19 项；失败包括擅自补充上午／下午、遗漏信息。这不是普遍准确率评测，因此仍保留 3B 为默认。Small + 1.5B 能正常加载并生成字幕，但兼容性通过不代表翻译质量相同。切换时下载固定 revision 并在激活前验证；缓存版本保持不变，只有显式执行 CLI `prepare --force` 才刷新上游版本。
+
+上游许可：[Whisper](https://github.com/openai/whisper/blob/main/LICENSE)、[Qwen 1.5B](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/blob/main/LICENSE)、[Qwen 3B](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE)。PyInstaller 引导程序使用附带打包例外的 GPL，各项依赖仍遵循各自许可。

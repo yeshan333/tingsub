@@ -22,14 +22,39 @@ TingSub is an early-stage Chrome extension and local MLX service for Apple Silic
 ## What it does
 
 - English / Japanese input, including automatic language detection per segment.
-- Optional recognition drafts, early Chinese output, then complete bilingual captions.
+- Optional recognition drafts, early Chinese output, then complete bilingual captions. Turn translation off to show recognized speech only.
+- Desktop model selection, download progress, official/community/custom download sources, and Finder shortcuts for models and logs.
 - Bounded queues and visible overload/rejection counts, so slow inference cannot silently accumulate an endless backlog.
 - Per-segment first-text, first-Chinese and speech-end latency; a local pairing code protects the inference connection.
 - One active tab at a time, without microphone access.
 
-The current extension UI and most runtime messages are in Simplified Chinese. All user and contributor guides are available in **English and Simplified Chinese**. UI localization is a planned follow-up; documentation languages do not change caption languages.
+The desktop UI supports English and Simplified Chinese. The extension UI and most runtime messages remain Simplified Chinese. All user and contributor guides are available in **English and Simplified Chinese**. Interface languages do not change caption languages.
 
-## Quick start
+## Desktop window
+
+The standalone App/DMG includes its runtime and browser extension: no Python or uv installation needed. Choose and download models, then pair Chrome in the [desktop guide](docs/en/desktop.md). Current builds are not Apple-notarized; maintainers can follow the [distribution guide](docs/en/distribution.md).
+
+### Product screenshots
+
+**Caption workspace** — preview the caption style, choose languages, enable or disable translation, and control the local service.
+
+![TingSub caption workspace in English with bilingual sample text](docs/assets/screenshots/captions-en.png)
+
+**Local models** — browse speech and translation models, choose a download source, see the storage path, and open the model folder in Finder. You can browse while the service runs; stop it before applying a different pair.
+
+![TingSub local model selection, download source and model storage shortcut](docs/assets/screenshots/models-en.png)
+
+These screenshots render the current desktop interface with example model availability and sample captions, not a live transcription or performance result. To refresh them from a development checkout: `node scripts/capture-desktop.mjs` (requires uv, npm dependencies and Playwright Chromium).
+
+For development, run from source:
+
+```sh
+uv run --frozen --extra desktop tingsub gui
+```
+
+You can also double-click `gui.command`. See the [desktop guide](docs/en/desktop.md) for first-time setup, the Dock launcher and shutdown behavior.
+
+## Quick start from source
 
 You need an **Apple Silicon Mac running macOS 14+**, **Chrome 116+**, and [uv](https://docs.astral.sh/uv/getting-started/installation/). 16 GB RAM is recommended; the two default model snapshots total roughly 2.2 GB, plus dependencies and caches. Intel Macs, Windows, Linux and Firefox are not supported inference targets in this version.
 
@@ -49,7 +74,7 @@ Save the pairing code printed by `pair`. Wait for `Application startup complete`
 3. Play a livestream. Select **英语** (English) or **日语** (Japanese), then click **为当前标签页开启字幕** (Start captions for this tab).
 4. Use **停止** (Stop) or the caption panel's × button to stop. Navigating, refreshing or closing the captured tab stops the session too.
 
-The service listens on `127.0.0.1:18765`. See the [installation guide](docs/en/installation.md) for updates, settings and uninstalling, or [troubleshooting](docs/en/troubleshooting.md) if it cannot connect. No Chrome Web Store listing or standalone installer is provided yet.
+The service listens on `127.0.0.1:18765`. See the [installation guide](docs/en/installation.md) for updates, settings and uninstalling, or [troubleshooting](docs/en/troubleshooting.md) if it cannot connect. No Chrome Web Store listing or Apple-notarized release is available yet.
 
 ## How it works
 
@@ -74,6 +99,7 @@ The repository includes deterministic logic tests, isolated browser checks and s
 
 | Guide | English | 简体中文 |
 | --- | --- | --- |
+| Desktop GUI | [Read](docs/en/desktop.md) | [阅读](docs/zh-CN/desktop.md) |
 | Documentation index | [Read](docs/en/README.md) | [阅读](docs/zh-CN/README.md) |
 | Install, settings, update, uninstall | [Read](docs/en/installation.md) | [阅读](docs/zh-CN/installation.md) |
 | Troubleshooting | [Read](docs/en/troubleshooting.md) | [阅读](docs/zh-CN/troubleshooting.md) |

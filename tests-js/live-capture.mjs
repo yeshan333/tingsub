@@ -64,7 +64,7 @@ try {
     const result = await control.evaluate(tabId => chrome.runtime.sendMessage({ target: 'background', type: 'start', tabId }), fixtureTab.id);
     assert.equal(result.ok, true, JSON.stringify(result));
     try {
-      await page.locator('.state').filter({ hasText: '正在聆听' }).waitFor({ timeout: 15000 });
+      await page.waitForFunction(() => document.getElementById('tingqiao-local-captions')?.shadowRoot.querySelector('.state').textContent.includes('正在聆听'), null, { timeout: 15000 });
     } catch (error) {
       throw new Error(`采集未启动：${await control.locator('#status').textContent()}`, { cause: error });
     }

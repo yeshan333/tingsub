@@ -16,6 +16,7 @@ npm run check
 npm test
 npx playwright install chromium
 npm run test:browser
+npm run test:desktop
 ```
 
 These checks do not download model weights and do not need a running inference service. Python tests use explicit fake engines to check contracts; browser rendering tests inject protocol fixtures. Neither measures ASR accuracy. Playwright creates an isolated profile and does not change your daily Chrome profile. Screenshots stay in ignored `.local/`.
@@ -45,3 +46,17 @@ Use `uv lock` for intentional Python changes and `npm install` for JavaScript ch
 ## Documentation i18n
 
 `README.md` and root policy files are English; `.zh-CN.md` files are Simplified Chinese. Guides use matching filenames under `docs/en/` and `docs/zh-CN/`, with a language switch at the top. Both languages must carry the same commands, support matrix, caveats and license information. `scripts/check_docs.py` checks page pairing and repository-local link targets, not translation quality or remote URLs. Documentation i18n currently does not imply localized extension UI.
+
+## Desktop validation
+
+`npm run test:desktop` uses an explicit bridge fixture to check control calls, shared settings, external-service protection, both interface languages/themes and minimum window layout. It does not claim model inference. Screenshots are saved to `.local/desktop-*.png`.
+
+For the native WebKit smoke check, install desktop dependencies, prepare models and stop any existing service:
+
+```sh
+uv run --frozen --extra desktop python scripts/check_desktop_native.py
+```
+
+This opens its own native window, clicks the real start/stop controls, waits for model warm-up, verifies the loopback API and checks that stopping releases the port. It cleans up its owned service and does not capture browser audio. CI does not download models to run this check.
+
+The native check also verifies that navigation to a foreign URL is rejected. Add `--no-inference` to check the WebKit interface and navigation boundary without loading models.

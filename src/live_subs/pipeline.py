@@ -17,6 +17,7 @@ class Pipeline:
         language: str,
         display: str,
         epoch_ms: float,
+        translation_enabled: bool = True,
     ):
         self.engine = engine
         self.executor = executor
@@ -24,6 +25,7 @@ class Pipeline:
         self.language = language
         self.display = display
         self.epoch_ms = epoch_ms
+        self.translation_enabled = translation_enabled
         self.mailbox = Mailbox()
         self.wakeup = asyncio.Event()
         self.finishing = False
@@ -131,6 +133,7 @@ class Pipeline:
                         "language": language,
                         "final": job.final,
                         "display": self.display,
+                        "translate": self.translation_enabled,
                         "speech_end_ms": self.epoch_ms + job.speech_end * 1000,
                         "speech_start_ms": self.epoch_ms
                         + (job.speech_start if job.speech_start is not None else job.start) * 1000,
@@ -145,6 +148,20 @@ class Pipeline:
                         await self.send({"type": "transcript", **base})
                     self.last_text = {job.id: text}
                     if job.final:
+                        if not self.translation_enabled:
+                            self.counts["transcribed"] += 1
+                            self.first_text.pop(job.id, None)
+                            await self.send(
+                                {
+                                    "type": "translation",
+                                    **base,
+                                    "zh": "",
+                                    "en": "",
+                                    "translation_ms": 0,
+                                    "metrics": self.metrics(),
+                                }
+                            )
+                            continue
                         began = time.perf_counter()
                         first_zh_ms = None
 

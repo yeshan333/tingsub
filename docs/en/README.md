@@ -16,3 +16,7 @@ Start with [installation](installation.md), then [troubleshooting](troubleshooti
 Project policies: [contributing](../../CONTRIBUTING.md), [security](../../SECURITY.md), [changelog](../../CHANGELOG.md), [code license](../../LICENSE).
 
 English and Simplified Chinese pages have matching filenames and cross-links. CI checks local links and page parity. Update both languages when behavior or commands change. The extension UI currently uses Simplified Chinese; the installation guide translates its controls.
+
+- [Desktop GUI: service, models, pairing and appearance](desktop.md)
+
+- [Standalone distribution](distribution.md)

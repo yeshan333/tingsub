@@ -37,10 +37,18 @@ This is an internal protocol, not a stable third-party API. Identifiers containi
 - `{"type":"ping"}` returns `pong`. `{"type":"stop"}` drains the final segment and pending work, then sends `done`. Disconnect cancels waiting work rather than guaranteeing a drain.
 - Server events: `ready`, `transcript`, `translation_progress`, `translation`, `rejected`, `dropped`, `notice`, `error`, `pong`, `done`.
 
-Caption events share a segment `id`. `transcript` has `source`, `language`, `final`, display and timing fields. `translation_progress` adds `zh`; `translation` adds the final `zh`, `en`, inference timings and metrics. Rejections have `reason`, while failures include a human-readable `message`. Consumers must ignore older drafts after a final/translated result, and results for expired history. Only the newest two segments are displayed; silent captions are cleared after 15 seconds.
+Caption events share a segment `id`. `transcript` has `source`, `language`, `final`, display and timing fields. `translation_progress` adds `zh`; `translation` adds the final `zh`, `en`, inference timings and metrics. Rejections have `reason`, while failures include a human-readable `message`. Consumers must ignore older drafts after a final/translated result, and results for expired history. The overlay retains at most two segments, displaying one translation and the next recognition draft; silent captions are cleared after 15 seconds.
 
 Metrics contain session counters and rolling P50/P95 values over up to 256 successfully translated segments. See [metric definitions](benchmarks.md). The extension and service must be upgraded together for protocol changes.
 
 ## Boundaries
 
 The service binds loopback only. No cloud fallback or model downloads occur during serving. There is no microphone mode, transcript export, multi-user API, persistent transcript database, speaker diarization or sentence-level accuracy guarantee. GPU backends other than Apple MLX require separate implementation and validation.
+
+## Desktop control and shared settings
+
+The optional `desktop` extra uses macOS WebKit through pywebview. All page assets ship in the package. A limited bridge starts/stops owned subprocesses, prepares models, copies the pairing code and opens fixed resources. There are no remote fonts or scripts. CSP permits `unsafe-eval` because pywebview 6 dynamically constructs bridge methods; inline scripts remain blocked and resources/connections stay same-origin.
+
+`GET /preferences` and `PATCH /preferences` require `Authorization: Bearer <pairing code>`. When Origin is present, only Chrome extension origins are accepted. The schema allows language, display mode, drafts and integer font sizes 18–40; a file lock and atomic replacement preserve independent desktop/extension edits. There are no HTTP administration endpoints for start, stop or model downloads. The extension reads shared preferences before capture; existing WebSocket session parameters do not change.
+
+A native navigation guard allows only the original bundled main document (and its fragments), rejecting other URLs and child frames. The native bridge checks the sending main-frame URL and an exact method allowlist. Capabilities are registered with `window.expose`, without passing the controller object to recursive attribute dispatch, and only after guards install successfully. This integration pins pywebview 6.2.1; dependency updates must rerun native boundary checks.

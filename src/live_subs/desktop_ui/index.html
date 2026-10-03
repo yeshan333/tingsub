@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>TingSub</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <svg class="symbols" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <symbol id="i-wave" viewBox="0 0 24 24">
+          <path d="M4 10v4m4-8v12m4-15v18m4-15v12m4-8v4" />
+        </symbol>
+        <symbol id="i-caption" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="14" rx="3" />
+          <path d="M7 10h4m3 0h3M7 14h10" />
+        </symbol>
+        <symbol id="i-model" viewBox="0 0 24 24">
+          <rect x="6" y="6" width="12" height="12" rx="3" />
+          <path
+            d="M10 10h4v4h-4zM9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"
+          />
+        </symbol>
+        <symbol id="i-link" viewBox="0 0 24 24">
+          <path
+            d="m10 13 4-4m-6 5-1 1a3 3 0 0 0 4 4l4-4a3 3 0 0 0 0-4m1-1 1-1a3 3 0 0 0-4-4l-4 4a3 3 0 0 0 0 4"
+          />
+        </symbol>
+        <symbol id="i-settings" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 17h16" />
+          <circle cx="9" cy="7" r="3" />
+          <circle cx="15" cy="17" r="3" />
+        </symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M7 17 17 7M7 7h10v10" />
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+          <path d="m5 12 4 4L19 6" />
+        </symbol>
+        <symbol id="i-copy" viewBox="0 0 24 24">
+          <rect x="8" y="8" width="12" height="12" rx="2" />
+          <path d="M15 8V4H4v11h4" />
+        </symbol>
+      </defs>
+    </svg>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark"
+            ><svg><use href="#i-wave" /></svg
+          ></span>
+          <div>TingSub<span data-i18n="brandSub">听桥 · 本地字幕</span></div>
+        </div>
+        <div class="nav-label" data-i18n="workspace">工作空间</div>
+        <nav aria-label="Main navigation">
+          <button
+            class="nav-item selected"
+            data-page="captions"
+            aria-current="page"
+          >
+            <svg><use href="#i-caption" /></svg
+            ><span data-i18n="captions">字幕</span>
+          </button>
+          <button class="nav-item" data-page="models">
+            <svg><use href="#i-model" /></svg
+            ><span data-i18n="models">本地模型</span
+            ><span id="modelsDot" class="nav-dot"></span>
+          </button>
+          <button class="nav-item" data-page="connection">
+            <svg><use href="#i-link" /></svg
+            ><span data-i18n="connection">浏览器连接</span>
+          </button>
+          <button class="nav-item" data-page="settings">
+            <svg><use href="#i-settings" /></svg
+            ><span data-i18n="settings">设置</span>
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="local-note">
+            <span class="tiny-dot"></span
+            ><span data-i18n="localNote">声音留在你的电脑</span>
+          </div>
+          <button class="repo-link" data-resource="github">
+            TingSub <span>v0.1.0</span><svg><use href="#i-arrow" /></svg>
+          </button>
+        </div>
+      </aside>
+      <div class="content">
+        <header class="toolbar">
+          <div class="breadcrumb">
+            <span>TingSub</span><span>/</span
+            ><span id="breadcrumbPage">字幕</span>
+          </div>
+          <span class="platform">macOS <span>·</span> Apple Silicon</span>
+        </header>
+        <main>
+          <div class="page-heading">
+            <div>
+              <h1 id="pageTitle">字幕</h1>
+              <p id="pageDescription">英文、日文原声，中文与英文字幕。</p>
+            </div>
+            <span id="serviceBadge" class="badge"><i></i><span>…</span></span>
+          </div>
+          <div id="welcome" class="welcome" hidden>
+            <span class="eyebrow" data-i18n="welcomeEyebrow">初次见面</span>
+            <h2 data-i18n="welcomeTitle">先选模型，再听世界。</h2>
+            <p data-i18n="welcomeHint">运行环境和浏览器插件已包含在应用里。只需下载模型，再按引导连接 Chrome。</p>
+            <div class="welcome-steps"><span data-i18n="welcomeModels">01 选择并准备模型</span><span data-i18n="welcomeBrowser">02 配对浏览器</span><span data-i18n="welcomeStart">03 开始字幕</span></div>
+            <button id="chooseModels" class="secondary" data-i18n="chooseModels">选择模型</button>
+          </div>
+          <section id="page-captions" class="page">
+            <div class="preview">
+              <div class="preview-top">
+                <span><i></i><span data-i18n="preview">样式预览</span></span
+                ><span class="preview-tag">EN → 中 / EN</span>
+              </div>
+              <div class="preview-art" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span
+                ><span></span><span></span><span></span><span></span
+                ><span></span><span></span><span></span><span></span
+                ><span></span><span></span><span></span><span></span>
+              </div>
+              <div id="previewCaptions" class="preview-captions">
+                <div id="previewZh">世界很大，慢慢听。</div>
+                <div id="previewEn">
+                  There's a whole world out there. Take it in.
+                </div>
+              </div>
+              <div class="preview-bottom">
+                <span data-i18n="sampleNote">示例文字 · 非实时转录</span
+                ><span>TingSub</span>
+              </div>
+            </div>
+            <div class="section-heading">
+              <h2 data-i18n="captionOptions">字幕偏好</h2>
+              <span data-i18n="nextSession">下一次开始字幕时生效</span>
+            </div>
+            <div class="group">
+              <label class="row" for="language"
+                ><span
+                  ><strong data-i18n="sourceLanguage">原声语言</strong
+                  ><small data-i18n="sourceHint"
+                    >指定语言通常比自动识别更稳定</small
+                  ></span
+                ><select id="language">
+                  <option value="en" data-i18n="english">英语</option>
+                  <option value="ja" data-i18n="japanese">日语</option>
+                  <option value="auto" data-i18n="automatic">自动识别</option>
+                </select></label
+              >
+              <label class="row" for="translate"><span><strong data-i18n="enableTranslation">启用翻译</strong><small data-i18n="translationHint">关闭后只显示识别原文，跳过字幕翻译</small></span><input id="translate" type="checkbox" class="switch" checked></label>
+              <label class="row" for="display"
+                ><span
+                  ><strong data-i18n="displayLanguage">字幕语言</strong
+                  ><small data-i18n="displayHint"
+                    >翻译与原声识别均在本机完成</small
+                  ></span
+                ><select id="display">
+                  <option value="zh-en" data-i18n="bilingual">
+                    中文 + English
+                  </option>
+                  <option value="source-zh" data-i18n="sourceChinese">
+                    中文 + 原文
+                  </option>
+                </select></label
+              >
+              <label class="row" for="partials"
+                ><span
+                  ><strong data-i18n="partials">实时预览</strong
+                  ><small data-i18n="partialsHint"
+                    >先显示识别草稿，再用完整句子更新</small
+                  ></span
+                ><input id="partials" type="checkbox" class="switch" checked
+              /></label>
+              <label class="row" for="fontSize"
+                ><span><strong data-i18n="fontSize">字幕字号</strong></span
+                ><span class="range-control"
+                  ><span>A</span
+                  ><input
+                    id="fontSize"
+                    type="range"
+                    min="18"
+                    max="40"
+                    value="26"
+                  /><span class="large-a">A</span
+                  ><output id="fontSizeValue">26</output></span
+                ></label
+              >
+            </div>
+          </section>
+          <section id="page-models" class="page" hidden>
+            <div class="section-heading first">
+              <h2 data-i18n="installedModels">推理模型</h2>
+              <span data-i18n="metal">MLX · Metal 加速</span>
+            </div>
+            <div class="group model-choices">
+              <label class="model-choice" for="asrModel"><strong data-i18n="asr">语音识别</strong><select id="asrModel"></select><small id="asrDescription"></small></label>
+              <label class="model-choice" for="translationModel"><strong data-i18n="translation">双语翻译</strong><select id="translationModel"></select><small id="translationDescription"></small></label>
+            </div>
+            <div class="group download-options">
+              <label class="model-choice" for="downloadSource"><strong data-i18n="downloadSource">模型下载源</strong><select id="downloadSource"><option value="official" data-i18n="sourceOfficial">Hugging Face · 官方</option><option value="mirror" data-i18n="sourceMirror">HF-Mirror · 社区镜像</option><option value="custom" data-i18n="sourceCustom">自定义地址</option></select><small data-i18n="downloadSourceHint">网络较慢时可尝试社区镜像；速度和可用性取决于网络。仅用于下载公开模型，不发送音频或配对码。</small></label>
+              <label id="endpointField" class="model-choice" for="downloadEndpoint" hidden><strong data-i18n="sourceEndpoint">兼容 Hugging Face 的 HTTPS 地址</strong><input id="downloadEndpoint" type="url" placeholder="https://your-mirror.example" autocomplete="off" spellcheck="false"></label>
+            </div>
+            <div class="model-storage">
+              <div><strong data-i18n="modelLocation">模型保存位置</strong><code id="modelCachePath"></code><p data-i18n="modelLocationHint">下载统一保存在此目录，切换下载源不会改变保存位置。</p></div>
+              <button class="text-button" data-resource="models"><span data-i18n="openModelFolder">在 Finder 中打开</span> ↗</button>
+            </div>
+            <div id="downloadProgress" class="download-progress" hidden><progress id="modelProgress" max="100" aria-label="Model download"></progress><div id="downloadBytes"></div></div>
+            <div id="preparationStatus" class="preparation-status" role="status" aria-live="polite" hidden></div>
+            <div class="section-heading"><h2 data-i18n="activeModels">当前配置</h2><span id="switchHint"></span></div>
+            <div id="modelList" class="group models-list"></div>
+            <div class="model-actions">
+              <p data-i18n="downloadHint">
+                首次准备需要联网下载模型。完成后，字幕识别和翻译可离线运行。
+              </p>
+              <button id="prepare" class="secondary" data-i18n="prepare">
+                准备模型
+              </button>
+            </div>
+            <div class="note">
+              <svg><use href="#i-model" /></svg>
+              <div>
+                <strong data-i18n="licenseTitle">模型有各自的许可证</strong>
+                <p data-i18n="licenseHint">
+                  默认翻译模型 Qwen2.5-3B 使用 Qwen Research
+                  License，商业使用需另行获得授权。TingSub 代码使用 MIT 许可证。
+                </p>
+                <button class="text-button" data-resource="licenses">
+                  <span data-i18n="licenseLink">查看模型许可</span> ↗
+                </button>
+              </div>
+            </div>
+            <div class="log-section">
+              <details class="logs">
+                <summary data-i18n="logs">运行日志</summary>
+                <pre id="logs"></pre>
+              </details>
+              <button class="text-button log-location" data-resource="logs"><span data-i18n="showLogFile">在 Finder 中显示日志文件</span> ↗</button>
+            </div>
+          </section>
+          <section id="page-connection" class="page" hidden>
+            <div class="connection-intro">
+              <span class="connection-icon"
+                ><svg><use href="#i-link" /></svg
+              ></span>
+              <div>
+                <h2 data-i18n="connectTitle">让浏览器连接本机模型</h2>
+                <p data-i18n="connectHint">只采集你主动开启字幕的标签页。</p>
+              </div>
+            </div>
+            <ol class="steps">
+              <li>
+                <span class="step-number">1</span>
+                <div>
+                  <h3 data-i18n="step1">加载浏览器插件</h3>
+                  <p data-i18n="step1Hint">
+                    在 Chrome
+                    的扩展程序页面打开「开发者模式」，选择「加载已解压的扩展程序」，加载
+                    extension 文件夹。
+                  </p>
+                  <button class="secondary" data-resource="extension">
+                    <span data-i18n="openExtension">打开插件文件夹</span
+                    ><svg><use href="#i-arrow" /></svg></button
+                  ><button class="text-button" data-resource="chrome"><span data-i18n="openChrome">打开扩展管理页</span> ↗</button>
+                </div>
+              </li>
+              <li>
+                <span class="step-number">2</span>
+                <div>
+                  <h3 data-i18n="step2">粘贴配对码</h3>
+                  <p data-i18n="step2Hint">
+                    打开 TingSub
+                    插件，在「本机配对」中粘贴配对码。仅需设置一次。
+                  </p>
+                  <button id="copyPairing" class="secondary">
+                    <svg><use href="#i-copy" /></svg
+                    ><span data-i18n="copyPairing">复制配对码</span>
+                  </button>
+                </div>
+              </li>
+              <li>
+                <span class="step-number">3</span>
+                <div>
+                  <h3 data-i18n="step3">开始听一段直播</h3>
+                  <p data-i18n="step3Hint">
+                    启动下方的本机服务。打开视频或直播，在插件中点击「开始字幕」。字幕会直接显示在视频页面上。
+                  </p>
+                </div>
+              </li>
+            </ol>
+            <button class="text-button" data-resource="guide">
+              <span data-i18n="guide">完整安装指南</span> ↗
+            </button>
+          </section>
+          <section id="page-settings" class="page" hidden>
+            <div class="section-heading first">
+              <h2 data-i18n="appearance">界面</h2>
+            </div>
+            <div class="group">
+              <label class="row" for="locale"
+                ><span><strong data-i18n="uiLanguage">界面语言</strong></span
+                ><select id="locale">
+                  <option value="zh-CN">简体中文</option>
+                  <option value="en">English</option>
+                </select></label
+              ><label class="row" for="theme"
+                ><span><strong data-i18n="theme">外观</strong></span
+                ><select id="theme">
+                  <option value="dark" data-i18n="dark">深色</option>
+                  <option value="light" data-i18n="light">浅色</option>
+                  <option value="system" data-i18n="system">跟随系统</option>
+                </select></label
+              >
+            </div>
+            <div class="section-heading">
+              <h2 data-i18n="about">关于本机运行</h2>
+            </div>
+            <div class="group">
+              <div class="row">
+                <span
+                  ><strong data-i18n="audioPrivacy">音频与字幕</strong
+                  ><small data-i18n="privacyHint"
+                    >保留在内存中，不上传云端，不保存录音</small
+                  ></span
+                ><span class="pill" data-i18n="localOnly">仅本地</span>
+              </div>
+              <div class="row">
+                <span
+                  ><strong data-i18n="closeBehavior">关闭窗口</strong
+                  ><small data-i18n="closeHint"
+                    >会停止由此窗口启动的服务；终端启动的服务不受影响</small
+                  ></span
+                >
+              </div>
+            </div>
+            <div class="about-footer">
+              <span class="brand-mark"
+                ><svg><use href="#i-wave" /></svg></span
+              ><strong>TingSub</strong><span>0.1.0 · MIT</span
+              ><button class="text-button" data-resource="github">
+                GitHub ↗
+              </button>
+            </div>
+          </section>
+          <div id="error" class="error-banner" role="alert" hidden></div>
+        </main>
+        <footer class="service-footer">
+          <div class="service-state">
+            <span id="serviceDot" class="status-dot"></span>
+            <div>
+              <strong id="serviceTitle">…</strong
+              ><small id="serviceHint">…</small>
+            </div>
+          </div>
+          <button id="serviceAction" class="primary" disabled data-i18n="start">
+            启动服务
+          </button>
+        </footer>
+      </div>
+    </div>
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

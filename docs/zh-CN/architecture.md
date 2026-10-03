@@ -37,10 +37,18 @@ Whisper 的语言识别和转写共享一次音频编码。重复异常或低置
 - `{"type":"ping"}` 返回 `pong`。`{"type":"stop"}` 提交尾段并处理待办，随后发送 `done`。直接断连取消等待中的任务，不保证排空。
 - 服务事件：`ready`、`transcript`、`translation_progress`、`translation`、`rejected`、`dropped`、`notice`、`error`、`pong`、`done`。
 
-字幕事件以片段 `id` 关联。`transcript` 包含 `source`、`language`、`final`、显示与时间字段；`translation_progress` 增加 `zh`；`translation` 增加完整 `zh`、`en`、推理耗时及指标。拒绝事件携带 `reason`，错误携带可读的 `message`。客户端必须忽略最终或翻译结果之后的旧草稿，以及超出历史窗口的结果。浮层只显示最新两个片段，15 秒无新字幕后清空。
+字幕事件以片段 `id` 关联。`transcript` 包含 `source`、`language`、`final`、显示与时间字段；`translation_progress` 增加 `zh`；`translation` 增加完整 `zh`、`en`、推理耗时及指标。拒绝事件携带 `reason`，错误携带可读的 `message`。客户端必须忽略最终或翻译结果之后的旧草稿，以及超出历史窗口的结果。浮层最多保留两个片段，显示一组译文和下一句识别草稿，15 秒无新字幕后清空。
 
 指标包含会话累计计数，以及最近最多 256 个成功翻译片段的 P50/P95，见[指标定义](benchmarks.md)。协议变化需要同步升级扩展与服务。
 
 ## 功能边界
 
 服务仅监听本机，运行期间无云端回退或模型下载。没有麦克风模式、字幕导出、多用户 API、持久化转写数据库、说话人分离或整句准确率保证。Apple MLX 之外的 GPU 后端需要单独实现并验证。
+
+## 桌面控制与共享设置
+
+可选 `desktop` 依赖通过 pywebview 使用 macOS WebKit。页面资源全部随包提供，受限桥接 API 负责启动／停止自己创建的子进程、下载模型、复制配对码和打开固定资源。页面不加载远程字体或脚本。CSP 的 `unsafe-eval` 仅因 pywebview 6 动态生成桥接方法所需；不允许内联脚本，资源与连接仍限制在自身来源。
+
+`GET /preferences` 和 `PATCH /preferences` 使用 `Authorization: Bearer <配对码>`。提供 Origin 时，仅接受 Chrome 扩展来源。参数限定为语言、显示模式、草稿开关及 18–40 的整数字号；文件锁和原子替换避免桌面／插件修改不同字段时相互覆盖。启动、停止和模型下载没有 HTTP 管理端点。插件开始采集前读取共享设置，当前 WebSocket 会话的参数不变。
+
+原生导航守卫只允许首次解析的内置主页面（可带片段），其他地址和子框架导航均被拒绝。原生桥接再次检查消息的主框架来源和精确方法白名单；通过 `window.expose` 暴露能力，不把控制器对象交给递归属性分派。守卫安装成功前不暴露任何能力。该集成固定 pywebview 6.2.1，升级时需重新运行原生边界检查。

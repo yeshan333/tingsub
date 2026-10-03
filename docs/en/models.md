@@ -39,3 +39,16 @@ Python and JavaScript packages are separately licensed; exact resolved versions 
 - [Playwright](https://github.com/microsoft/playwright), used for development tests only.
 
 This list is attribution and orientation, not a substitute for every resolved package's license. If you redistribute dependencies or model artifacts, include their applicable licenses and notices. The source checkout and Chrome extension do not bundle those Python libraries or model weights.
+
+## Models selectable in the desktop app
+
+| Role | Checkpoint | License | Guidance |
+|---|---|---|---|
+| Speech | `mlx-community/whisper-large-v3-turbo-4bit` | Apache-2.0 (conversion) / MIT (Whisper) | Default |
+| Speech | `mlx-community/whisper-small-mlx-4bit` | MIT (upstream Whisper) | Lower memory; recognition tradeoff |
+| Translation | `mlx-community/Qwen2.5-3B-Instruct-4bit` | Qwen Research License | Default |
+| Translation | `mlx-community/Qwen2.5-1.5B-Instruct-4bit` | Apache-2.0 | Experimental; lower memory, weaker fidelity |
+
+The 1.5B option passed 19/28 authored translation checks on 2026-10-04 (M4 Pro), with failures including invented time-of-day details and missed content. These checks are not a general quality benchmark; keep 3B as the default. Small + 1.5B successfully loads and produces captions, but compatibility does not imply equal translation quality. Model switching downloads a pinned snapshot and validates before activation; cached versions remain fixed until an explicit CLI `prepare --force` refresh.
+
+Upstream licenses: [Whisper](https://github.com/openai/whisper/blob/main/LICENSE), [Qwen 1.5B](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/blob/main/LICENSE), [Qwen 3B](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE). PyInstaller's bootloader uses a GPL exception permitting bundled applications; dependencies keep their respective licenses.

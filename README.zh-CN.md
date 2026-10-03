@@ -22,14 +22,39 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 ## 功能
 
 - 英语／日语输入，支持逐片段自动识别语言。
-- 可选识别草稿，中文先显示，再补齐双语字幕。
+- 可选识别草稿，中文先显示，再补齐双语字幕；也可关闭翻译，只显示识别原文。
+- 桌面选择模型、查看下载进度，支持官方／社区镜像／自定义下载源，一键定位模型和日志。
 - 有界队列及可见的过载、拒绝计数，避免推理变慢时不断累积延迟。
 - 显示本段首字、首个中文、句尾延迟；通过本机配对码认证推理连接。
 - 一次处理一个标签页，不使用麦克风。
 
-当前扩展界面和大部分运行提示为简体中文；用户与贡献者文档提供完整的**英文和简体中文**版本。界面国际化是后续方向，文档语言不会改变字幕语言。
+桌面界面支持中英文；扩展界面和大部分运行提示仍为简体中文。用户与贡献者文档提供完整的**英文和简体中文**版本。界面语言不会改变字幕语言。
 
-## 快速开始
+## 桌面窗口
+
+独立 App/DMG 内置运行环境和浏览器插件，无需安装 Python 或 uv。首次打开后在界面中选择、下载模型并配对 Chrome，见[桌面指南](docs/zh-CN/desktop.md)。当前构建尚未 Apple 公证；维护者构建方式见[分发指南](docs/zh-CN/distribution.md)。
+
+### 产品截图
+
+**字幕工作台**：预览字幕样式、选择语言、控制是否翻译，以及启动或停止本地服务。
+
+![TingSub 中文字幕工作台，展示双语示例文字和字幕偏好](docs/assets/screenshots/captions-zh-CN.png)
+
+**本地模型**：浏览识别和翻译模型、选择下载源、查看保存路径，并在 Finder 中打开模型目录。服务运行时也能浏览，停止后再应用新模型。
+
+![TingSub 本地模型页面，展示模型选择、下载源和模型目录入口](docs/assets/screenshots/models-zh-CN.png)
+
+截图来自当前桌面界面，模型就绪状态和字幕文字用于展示，不代表真实转录或性能结果。在开发环境运行 `node scripts/capture-desktop.mjs` 可重新生成；需要 uv、npm 依赖及 Playwright Chromium。
+
+下面是开发者从源码启动的方式：
+
+```sh
+uv run --frozen --extra desktop tingsub gui
+```
+
+也可双击 `gui.command`。首次使用、Dock 启动器及服务关闭行为见[桌面指南](docs/zh-CN/desktop.md)。
+
+## 从源码快速开始
 
 需要 **macOS 14+ 的 Apple Silicon Mac**、**Chrome 116+** 和 [uv](https://docs.astral.sh/uv/getting-started/installation/)。建议至少 16 GB 内存；两个默认模型快照约 2.2 GB，还需预留依赖与缓存空间。本版本不支持 Intel Mac、Windows、Linux 推理，也不支持 Firefox。
 
@@ -49,7 +74,7 @@ uv run --frozen tingsub serve
 3. 播放直播，选择**英语**或**日语**，点击**为当前标签页开启字幕**。
 4. 点击**停止**或字幕面板的 × 停止字幕。切换视频、刷新或关闭采集的标签页也会停止本次会话。
 
-服务监听 `127.0.0.1:18765`。[安装指南](docs/zh-CN/installation.md)包含设置、更新和卸载步骤；连接失败可看[故障排查](docs/zh-CN/troubleshooting.md)。当前尚未提供 Chrome 商店版本或独立安装包。
+服务监听 `127.0.0.1:18765`。[安装指南](docs/zh-CN/installation.md)包含设置、更新和卸载步骤；连接失败可看[故障排查](docs/zh-CN/troubleshooting.md)。当前尚未提供 Chrome 商店版本或经过 Apple 公证的发行版。
 
 ## 工作方式
 
@@ -74,6 +99,7 @@ flowchart LR
 
 | 指南 | English | 简体中文 |
 | --- | --- | --- |
+| 桌面 GUI | [Read](docs/en/desktop.md) | [阅读](docs/zh-CN/desktop.md) |
 | 文档索引 | [Read](docs/en/README.md) | [阅读](docs/zh-CN/README.md) |
 | 安装、设置、更新、卸载 | [Read](docs/en/installation.md) | [阅读](docs/zh-CN/installation.md) |
 | 故障排查 | [Read](docs/en/troubleshooting.md) | [阅读](docs/zh-CN/troubleshooting.md) |

@@ -127,3 +127,100 @@ def test_capture_resumes_after_timestamp_gap_without_treating_new_speech_as_expi
     assert [e["id"] for e in events if e["type"] == "translation"] == [2]
     assert sum(e["type"] == "notice" for e in events) == 1
     assert not any(e["type"] == "error" for e in events)
+
+
+def test_caption_preferences_require_pairing_and_reject_ordinary_website_origins(service):
+    client, token = service
+    assert client.get("/preferences").status_code == 401
+    assert client.patch("/preferences", json={"language": "ja"}).status_code == 401
+    headers = {"authorization": f"Bearer {token}", "origin": "https://example.com"}
+    assert client.patch("/preferences", headers=headers, json={"language": "ja"}).status_code == 403
+    headers = {"authorization": f"Bearer {token}", **ORIGIN}
+    assert client.get("/preferences", headers=headers).json()["language"] == "en"
+    assert client.patch("/preferences", headers=headers, json={"language": "ja"}).status_code == 200
+    assert client.get("/preferences", headers=headers).json()["language"] == "ja"
+
+
+def test_invalid_shared_preferences_do_not_change_the_last_saved_caption_settings(service):
+    client, token = service
+    headers = {"authorization": f"Bearer {token}"}
+    client.patch("/preferences", headers=headers, json={"fontSize": 32})
+    assert client.patch("/preferences", headers=headers, json={"fontSize": 100}).status_code == 422
+    assert client.patch("/preferences", headers=headers, content=b"invalid").status_code == 422
+    assert client.patch("/preferences", headers=headers, content=b"x" * 1025).status_code == 413
+    assert client.get("/preferences", headers=headers).json()["fontSize"] == 32
+
+
+def test_browser_upgrade_initializes_preferences_once_without_overwriting_desktop_edits(service):
+    client, token = service
+    url = "/preferences/initialize"
+    assert client.post(url, json={"language": "ja"}).status_code == 401
+    headers = {"authorization": f"Bearer {token}"}
+    original = {"language": "auto", "display": "source-zh", "partials": False, "fontSize": 38}
+    assert client.post(url, headers=headers, json=original).json() == {
+        **original,
+        "translate": True,
+    }
+    client.patch("/preferences", headers=headers, json={"fontSize": 32})
+    assert client.post(url, headers=headers, json={"fontSize": 18}).json() == {
+        **original,
+        "fontSize": 32,
+        "translate": True,
+    }
+    assert client.get("/preferences", headers=headers).json()["fontSize"] == 32
+
+
+@pytest.mark.parametrize(
+    "language,source",
+    [("en", "Keep number 42."), ("zh", "保留42这个数字。"), ("ja", "数字の42を残してください。")],
+)
+def test_disabling_translation_over_websocket_preserves_source_without_calling_translator(
+    tmp_path, monkeypatch, language, source
+):
+    voice = struct.pack("<h", 1000) * 320
+
+    class SpeechVad:
+        def __init__(self, *_):
+            pass
+
+        def is_speech(self, *_):
+            return True
+
+    calls = []
+
+    class SpeechEngine:
+        def transcribe(self, pcm, requested):
+            calls.append("recognize")
+            assert requested == "auto"
+            return source, language
+
+        def translate(self, *_):
+            calls.append("translate")
+            raise AssertionError("User explicitly disabled translation")
+
+    monkeypatch.setattr("live_subs.server.webrtcvad.Vad", SpeechVad)
+    with TestClient(create_app(tmp_path, SpeechEngine)) as client:
+        with client.websocket_connect("/stream", headers=ORIGIN) as ws:
+            ws.send_json(
+                {
+                    "token": token_at(tmp_path),
+                    "language": "auto",
+                    "translate": False,
+                    "partials": False,
+                }
+            )
+            assert ws.receive_json()["type"] == "ready"
+            now = time.time() * 1000
+            for n in range(15):
+                ws.send_bytes(struct.pack("<d", now - 300 + n * 20) + voice)
+            ws.send_json({"type": "stop"})
+            events = []
+            while (event := ws.receive_json())["type"] != "done":
+                events.append(event)
+    assert calls == ["recognize"]
+    assert [event["type"] for event in events] == ["transcript", "translation"]
+    final = events[-1]
+    assert final["translate"] is False
+    assert final["source"] == source and final["zh"] == final["en"] == ""
+    assert final["translation_ms"] == 0
+    assert final["metrics"]["counts"]["transcribed"] == 1

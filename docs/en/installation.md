@@ -2,6 +2,8 @@
 
 # Installation and usage
 
+Standalone App/DMG users do not need Python or uv. Start with the [desktop guide](desktop.md); the requirements and commands below are for source installations. Build/signing details are in [distribution](distribution.md).
+
 ## Requirements
 
 - Apple Silicon (M-series) Mac, macOS 14 or newer; 16 GB RAM recommended.
@@ -11,6 +13,10 @@
 - Node.js 22+ is only needed for development tests.
 
 There is no supported CPU, CUDA, Windows, Linux, Intel Mac or Firefox runtime yet. The service and Chrome run on the same Mac.
+
+## Use the desktop window
+
+Run `uv run --frozen --extra desktop tingsub gui` or open `gui.command` to prepare models, start the service and copy the pairing code in a desktop window. See the [desktop guide](desktop.md). The terminal workflow remains available below.
 
 ## Install and start
 
@@ -55,7 +61,7 @@ Drag the caption header to move the overlay. It follows webpage fullscreen. Clos
 
 ## Local files and networking
 
-Run commands from the repository root: the default data directory is relative to the working directory. `.local/token` stores the pairing secret; `.local/models.json` points to snapshots in Hugging Face's cache. `tingsub --data-dir PATH pair` and `tingsub --data-dir PATH serve` must use the same directory.
+Run commands from the repository root: the default data directory is relative to the working directory. `.local/token` stores the pairing secret; `.local/models.json` records the snapshot paths. New downloads use TingSub’s private `.local/model-cache`, rather than the shared Hugging Face cache; other applications do not automatically reuse these files. Existing configurations may still point to the shared cache. With `--data-dir PATH`, new downloads use `PATH/model-cache`. `tingsub --data-dir PATH pair` and `tingsub --data-dir PATH serve` must use the same directory.
 
 The extension expects port **18765**. Although the CLI exposes `serve --port`, changing only that option will break the extension connection; use the default port. Never expose this service on a public interface or through a reverse proxy.
 
@@ -75,4 +81,6 @@ Click **Reload** for TingSub in `chrome://extensions`, then refresh the video pa
 
 ## Uninstall
 
-Stop the service with Ctrl+C, then remove the extension in `chrome://extensions`. Remove the checkout and its `.venv`/`.local` directories when no longer needed. Model snapshots live separately in the Hugging Face cache: remove only those you no longer use, since other applications may share them. There is no installed background daemon or login item.
+Stop the service with Ctrl+C, then remove the extension in `chrome://extensions`. Remove the checkout and its `.venv`/`.local` directories when no longer needed. New model downloads live in `.local/model-cache`, so deleting `.local` deletes those downloads too. Older configurations may still reference a shared Hugging Face cache: inspect `models.json` and only remove snapshots you no longer use. For the standalone App, follow the separate [uninstall steps](distribution.md). There is no installed background daemon or login item.
+
+Use `uv sync --frozen --extra desktop` when updating desktop dependencies. See the [desktop guide](desktop.md) for shared preferences and offline editing behavior.

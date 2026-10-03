@@ -16,7 +16,7 @@ concurrency:
 jobs:
   python:
     name: Python checks and package
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -43,6 +43,8 @@ jobs:
       - run: python3 scripts/check_docs.py
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
+      - run: npm run test:desktop
+      - run: npm run test:overlay
       - name: Package unpacked extension
         working-directory: extension
         run: zip -r ../tingsub-extension.zip .
