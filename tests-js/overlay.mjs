@@ -1,4 +1,5 @@
 // Layout and update checks use explicit protocol data, not simulated inference.
+import { createServer } from 'node:http';
 import { chromium } from 'playwright';
 import { readFile, mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
@@ -118,6 +119,22 @@ try {
   assert.equal(await child.locator('#tingqiao-local-captions').isVisible(),true);
   assert.ok(await child.locator('#tingqiao-local-captions').evaluate(node=>node.getBoundingClientRect().right <= document.querySelector('video').getBoundingClientRect().right), '字幕必须在视频宽度内，不能覆盖 iframe 内的聊天区');
   await embedded.close();
+  const foreignServer = createServer((request,response)=>response.end('<video style="width:800px;height:450px"></video>'));
+  await new Promise(resolve=>foreignServer.listen(0,'127.0.0.1',resolve));
+  const outerServer = createServer((request,response)=>response.end(`<iframe src="http://127.0.0.1:${foreignServer.address().port}" style="width:1000px;height:600px"></iframe>`));
+  await new Promise(resolve=>outerServer.listen(0,'127.0.0.1',resolve));
+  const foreignPage = await browser.newPage();
+  try {
+    await foreignPage.goto(`http://127.0.0.1:${outerServer.address().port}`);
+    const foreignFrame = foreignPage.frames().find(frame=>frame.parentFrame());
+    await foreignFrame.evaluate(init);
+    await foreignFrame.addScriptTag({content:await readFile('extension/overlay.js','utf8')});
+    assert.equal(await foreignFrame.evaluate(()=>typeof window.receive),'undefined', '即使127.0.0.1有永久权限，跨源嵌入页也不能注册字幕接收器');
+    assert.equal(await foreignFrame.locator('#tingqiao-local-captions').count(),0);
+  } finally {
+    await foreignPage.close();
+    await Promise.all([new Promise(resolve=>foreignServer.close(resolve)),new Promise(resolve=>outerServer.close(resolve))]);
+  }
   assert.deepEqual(errors, []);
   console.log('通过：视频内定位、保留译文等待新草稿、节点复用、滚动跟随、按需信息、拖动边界与归位、窄屏长句、全屏。');
 } finally { await browser.close(); }

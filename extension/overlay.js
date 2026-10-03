@@ -1,4 +1,7 @@
 (() => {
+  // allFrames can also reach hosts covered by permanent permissions (loopback).
+  // Never expose caption text to an embedded page from a different origin.
+  if (window !== window.top && location.ancestorOrigins[location.ancestorOrigins.length - 1] !== location.origin) return;
   if (globalThis.__tingqiaoOverlay) return;
   globalThis.__tingqiaoOverlay = true;
   document.getElementById('tingqiao-local-captions')?.remove();
