@@ -21,8 +21,13 @@ try {
   // Explicit preference protocol fixture; real endpoint auth is checked in Python.
   await worker.evaluate(() => {
     globalThis.preferencePatches = [];
+    globalThis.preferenceMigrations = [];
     const originalFetch = fetch;
     globalThis.fetch = async (url, options) => {
+      if (url.endsWith('/preferences/initialize') && options.method === 'POST') {
+        globalThis.preferenceMigrations.push(JSON.parse(options.body));
+        return new Response('{}', { status: 200 });
+      }
       if (url.endsWith('/preferences') && options.method === 'PATCH') {
         globalThis.preferencePatches.push(JSON.parse(options.body));
         return new Response('{}', { status: 200 });
@@ -38,6 +43,7 @@ try {
   await popup.locator('#token').fill('ui-test-pairing');
   await popup.locator('#token').blur();
   await popup.waitForFunction(() => document.querySelector('#fontSize').value === '30');
+  assert.deepEqual(await worker.evaluate(() => globalThis.preferenceMigrations), [{ language: 'ja', display: 'zh-en', partials: true, fontSize: 26 }]);
   assert.equal(await popup.locator('#display').inputValue(), 'source-zh');
   assert.equal(await popup.locator('#partials').isChecked(), false);
   await popup.locator('#language').selectOption('ja');
