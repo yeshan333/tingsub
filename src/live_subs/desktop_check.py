@@ -27,7 +27,7 @@ def main():
     )
     args = parser.parse_args()
     directory = args.data_dir.resolve()
-    if not args.no_inference and probe(token_at(directory))[0] != "stopped":
+    if probe(token_at(directory))[0] != "stopped":
         raise SystemExit("Stop the existing local service before this check")
     original_start = webview.start
     result = {}

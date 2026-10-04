@@ -129,3 +129,21 @@ def test_native_quit_acknowledges_macos_only_after_service_shutdown(menu):
     assert acknowledged.wait(2)
     menu.controller.close.assert_called_once()
     menu.window.destroy.assert_not_called()
+
+
+@pytest.mark.parametrize("service_state", ["ready", "conflict"])
+def test_native_smoke_rejects_occupied_port_before_opening_window(
+    tmp_path, monkeypatch, service_state
+):
+    import sys
+
+    from live_subs import desktop_check
+
+    launch = Mock()
+    monkeypatch.setitem(sys.modules, "webview", SimpleNamespace())
+    monkeypatch.setattr(sys, "argv", ["native-check", "--no-inference", "--data-dir", str(tmp_path)])
+    monkeypatch.setattr(desktop_check, "probe", lambda _: (service_state, False))
+    monkeypatch.setattr(desktop_check, "launch", launch)
+    with pytest.raises(SystemExit, match="Stop the existing local service"):
+        desktop_check.main()
+    launch.assert_not_called()
