@@ -46,10 +46,29 @@ jobs:
       - run: npm run test:desktop
       - run: npm run test:overlay
       - name: Package unpacked extension
-        working-directory: extension
-        run: zip -r ../tingsub-extension.zip .
+        run: python3 scripts/package_extension.py
+      - name: Verify packaged extension in Chromium
+        run: node tests-js/extension-package.mjs
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: tingsub-extension
-          path: tingsub-extension.zip
-          retention-days: 14
+          path: |
+            dist/extension/*.zip
+            dist/extension/*.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Describe extension artifact
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Browser extension
+
+          Download `tingsub-extension` from this run's Artifacts, then extract the inner versioned ZIP.
+          In Chrome 116+, enable Developer mode in `chrome://extensions`, choose Load unpacked,
+          and select the extracted folder containing `manifest.json`. Pair it with the TingSub app.
+          SHA-256 and a real Chromium load check are included. This is not a Chrome Web Store release.
+          EOF
+  desktop:
+    name: macOS distribution
+    needs: [python, extension]
+    uses: ./.github/workflows/desktop.yml
