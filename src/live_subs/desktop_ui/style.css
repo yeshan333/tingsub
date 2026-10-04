@@ -116,18 +116,10 @@ svg {
   margin-top: 5px;
 }
 .brand-mark {
-  display: grid;
-  place-items: center;
+  display: block;
   width: 34px;
   height: 34px;
-  border: 1px solid #8c92825c;
-  border-radius: 10px;
-  background: #9da58a13;
-  color: var(--accent);
-}
-.brand-mark svg {
-  width: 23px;
-  height: 23px;
+  flex-shrink: 0;
 }
 .nav-label {
   font-size: 10px;

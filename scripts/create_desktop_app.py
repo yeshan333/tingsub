@@ -2,6 +2,7 @@
 
 import plistlib
 import shlex
+import shutil
 import sys
 import tomllib
 from pathlib import Path
@@ -14,6 +15,9 @@ def main():
     contents = app / "Contents"
     binary = contents / "MacOS" / "TingSub"
     binary.parent.mkdir(parents=True, exist_ok=True)
+    resources = contents / "Resources"
+    resources.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(ROOT / "assets/brand/TingSub.icns", resources / "TingSub.icns")
     version = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
     info = {
         "CFBundleName": "TingSub",
@@ -23,6 +27,7 @@ def main():
         "CFBundleShortVersionString": version,
         "CFBundlePackageType": "APPL",
         "CFBundleExecutable": "TingSub",
+        "CFBundleIconFile": "TingSub.icns",
         "NSHighResolutionCapable": True,
     }
     (contents / "Info.plist").write_bytes(plistlib.dumps(info))

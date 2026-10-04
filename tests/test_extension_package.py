@@ -18,6 +18,7 @@ def test_extension_archive_excludes_local_files_and_has_valid_checksum(tmp_path)
     source = tmp_path / "extension"
     source.mkdir()
     for name in packager.FILES:
+        (source / name).parent.mkdir(parents=True, exist_ok=True)
         (source / name).write_bytes((ROOT / "extension" / name).read_bytes())
     (source / ".DS_Store").write_text("local metadata")
     (source / "token").write_text("not extension code")
@@ -42,6 +43,7 @@ def test_extension_packaging_fails_when_audio_worklet_is_missing(tmp_path):
     source.mkdir()
     for name in packager.FILES:
         if name != "pcm-worklet.js":
+            (source / name).parent.mkdir(parents=True, exist_ok=True)
             (source / name).write_bytes((ROOT / "extension" / name).read_bytes())
     output = tmp_path / "dist"
     with pytest.raises(FileNotFoundError, match="pcm-worklet"):

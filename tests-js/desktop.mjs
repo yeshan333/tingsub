@@ -7,8 +7,8 @@ const root = 'src/live_subs/desktop_ui';
 const version = JSON.parse(await readFile('extension/manifest.json', 'utf8')).version;
 const server = createServer(async (request, response) => {
   const name = request.url === '/' ? 'index.html' : request.url.slice(1);
-  if (!['index.html', 'style.css', 'app.js'].includes(name)) { response.writeHead(404).end(); return; }
-  response.setHeader('Content-Type', name.endsWith('.js') ? 'text/javascript' : name.endsWith('.css') ? 'text/css' : 'text/html');
+  if (!['index.html', 'style.css', 'app.js', 'brand.svg'].includes(name)) { response.writeHead(404).end(); return; }
+  response.setHeader('Content-Type', name.endsWith('.js') ? 'text/javascript' : name.endsWith('.css') ? 'text/css' : name.endsWith('.svg') ? 'image/svg+xml' : 'text/html');
   response.end(await readFile(`${root}/${name}`));
 });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -52,6 +52,10 @@ try {
   assert.equal(await page.locator('.repo-link span').textContent(), `v${version}`);
   assert.match(await page.locator('.about-footer').textContent(), new RegExp(version.replaceAll('.', '\\.')));
   await mkdir('.local', { recursive: true });
+  assert.equal(await page.locator('.brand .brand-mark').evaluate(async image => {
+    await image.decode();
+    return image.naturalWidth > 0;
+  }), true, 'Desktop header displays the brand icon');
   await page.screenshot({ path: '.local/desktop-dark.png' });
   await page.locator('#language').selectOption('ja');
   await page.locator('#fontSize').fill('32');

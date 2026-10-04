@@ -2,6 +2,7 @@
 
 import logging
 import threading
+from pathlib import Path
 
 WORDS = {
     "zh-CN": {
@@ -83,6 +84,12 @@ class MenuBar:
         from webview.platforms.cocoa import BrowserView
 
         self.cocoa, self.dispatch = AppKit, AppHelper.callAfter
+        self.brand_icon = AppKit.NSImage.alloc().initWithContentsOfFile_(
+            str(Path(__file__).with_name("desktop_ui") / "menubar.png")
+        )
+        if self.brand_icon:
+            self.brand_icon.setTemplate_(True)
+            self.brand_icon.setSize_((18, 18))
         owner = self
 
         class TingSubMenuTarget(AppKit.NSObject):
@@ -135,9 +142,11 @@ class MenuBar:
             item.setTitle_(view[action] if action in {"status", "service"} else words[action])
             item.setEnabled_(action != "status" and (action != "service" or view["enabled"]))
         button = self.item.button()
-        icon = self.cocoa.NSImage.imageWithSystemSymbolName_accessibilityDescription_(
-            view["symbol"], "TingSub"
-        )
+        icon = self.brand_icon
+        if not icon or status["state"] in {"error", "conflict"}:
+            icon = self.cocoa.NSImage.imageWithSystemSymbolName_accessibilityDescription_(
+                view["symbol"], "TingSub"
+            )
         if icon:
             icon.setTemplate_(True)
             icon.setSize_((18, 18))

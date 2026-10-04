@@ -35,13 +35,19 @@ await test('Downloaded extension ZIP passes its checksum and loads its popup and
     assert.equal(await page.locator('#start').isVisible(), true);
     // Exercise Chrome's extension resource loader without starting tab capture or a service.
     const status = await page.evaluate(async () => {
-      const paths = ['offscreen.html', 'offscreen.js', 'pcm-worklet.js', 'overlay.js', 'LICENSE'];
+      const manifest = chrome.runtime.getManifest();
+      const paths = ['offscreen.html', 'offscreen.js', 'pcm-worklet.js', 'overlay.js', 'LICENSE',
+        ...Object.values(manifest.icons), ...Object.values(manifest.action.default_icon)];
       return Promise.all(paths.map(async name => {
         const response = await fetch(chrome.runtime.getURL(name));
         return { name, ok: response.ok, size: (await response.text()).length };
       }));
     });
     assert.ok(status.every(resource => resource.ok && resource.size > 0), JSON.stringify(status));
+    assert.equal(await page.locator('.mark').evaluate(async image => {
+      await image.decode();
+      return image.naturalWidth;
+    }), 128, 'Downloaded popup displays the brand icon');
     assert.deepEqual(errors, []);
   } finally {
     await context?.close();

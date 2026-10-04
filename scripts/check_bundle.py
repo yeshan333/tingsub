@@ -35,6 +35,9 @@ def verify(directory: Path):
             timeout=60,
         )
         resources = app / "Contents/Resources"
+        icon = resources / info.get("CFBundleIconFile", "")
+        if not icon.is_file() or icon.read_bytes()[:4] != b"icns":
+            raise ValueError("Packaged app is missing its macOS brand icon")
         manifest = json.loads((resources / "extension/manifest.json").read_text())
         if manifest["version"] != info["CFBundleShortVersionString"]:
             raise ValueError("App and bundled extension versions differ")
