@@ -193,8 +193,23 @@ try {
     await page.close();
   });
 
-  await test("Without JavaScript, visitors can read both screenshots, open FAQs and switch languages", async () => {
+  await test("Without JavaScript, visitors in either language can download the app and extension, read screenshots and switch languages", async () => {
     const page = await browser.newPage({ javaScriptEnabled: false });
+    for (const path of ["", "en/"]) {
+      await page.goto(base + path);
+      for (const [selector, asset] of [
+        [".hero .primary", "TingSub-macos-arm64.dmg"],
+        [".hero a[href$='TingSub-extension.zip']", "TingSub-extension.zip"],
+        [".setup .primary", "TingSub-macos-arm64.dmg"],
+        [".setup a[href$='TingSub-extension.zip']", "TingSub-extension.zip"],
+      ]) {
+        const link = page.locator(selector);
+        assert.equal(await link.isVisible(), true);
+        assert.equal(await link.getAttribute("href"),
+          `https://github.com/yeshan333/tingsub/releases/latest/download/${asset}`);
+      }
+      assert.equal(await page.locator(".setup a[href$='/releases/latest']").isVisible(), true);
+    }
     await page.goto(base);
     assert.equal(await page.locator(".demo-controls").isVisible(), false);
     assert.equal(await page.locator(".screen-controls").isVisible(), false);
@@ -212,7 +227,7 @@ try {
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
     assert.match(
       await page.locator(".hero .primary").getAttribute("href"),
-      /docs\/en\/installation.md$/,
+      /releases\/latest\/download\/TingSub-macos-arm64.dmg$/,
     );
     await page.close();
   });

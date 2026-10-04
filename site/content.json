@@ -13,9 +13,9 @@
     "hero_line1": "直播听不懂？",
     "hero_line2": "让字幕搭座桥。",
     "hero_body": "给英语、日语原声添上中文与英文字幕。识别和翻译都在你的 Mac 上完成，跟上直播，也留住原话。",
-    "cta": "查看安装指南",
+    "cta": "下载 macOS 应用",
     "demo_cta": "试试字幕样例",
-    "compat": "Apple Silicon · Chrome 116+ · 开源早期预览",
+    "compat": "Apple Silicon · macOS 15+ · Chrome 116+ · 早期版本",
     "demo_label": "字幕交互样例",
     "demo_tag": "一段旅途，两种语言",
     "demo_hint": "切换原声语言，看看字幕怎么呈现。",
@@ -75,10 +75,10 @@
     "detail_control_body": "桌面端与扩展共享字幕设置。选好原声和显示语言，下次开启字幕时生效。",
     "setup_kicker": "从这里开始",
     "setup_title": "下一场直播，\n试着打开听桥。",
-    "setup_body": "CI 提供 macOS 应用和浏览器插件预览包，也可从源码运行。下载预览包需要登录 GitHub；当前版本尚未经过 Apple 公证。",
+    "setup_body": "下载应用，拖入 Applications，即可打开桌面工作台。运行环境已包含，无需安装 Python 或 uv；首次使用在界面下载模型。下载无需 GitHub 账号。",
     "requirements_title": "开始前确认一下",
     "requirements": [
-      "Apple Silicon Mac，源码运行需 macOS 14+",
+      "Apple Silicon Mac，应用需 macOS 15+",
       "Chrome 116+，允许加载解压扩展",
       "仅源码安装需 uv；建议 16 GB 内存",
       "默认模型约 2.2 GB，另需依赖与缓存空间"
@@ -86,7 +86,7 @@
     "steps": [
       {
         "title": "启动桌面工作台",
-        "body": "按指南获取源码和依赖，打开 TingSub。首次准备模型需要联网。"
+        "body": "下载 DMG，将 TingSub 拖入 Applications 后打开。当前版本未经 Apple 公证，系统可能提示无法验证开发者；详见安装指南。"
       },
       {
         "title": "选择并准备模型",
@@ -97,7 +97,7 @@
         "body": "加载扩展、粘贴配对码。播放视频后，在扩展中为当前标签页开启字幕。"
       }
     ],
-    "build_link": "独立 App 构建说明",
+    "build_link": "从源码构建",
     "faq_kicker": "还有几个问题",
     "faq_title": "打开之前，你可能想知道。",
     "faq": [
@@ -119,7 +119,7 @@
       },
       {
         "q": "现在能直接下载安装吗？",
-        "a": "可以从成功的 main CI 构建下载预览包，文件保留 30 天，需要登录 GitHub；安装指南提供下载入口。还没有正式 Release 或 Chrome 商店版本，扩展需在开发者模式加载。App 已包含运行环境，但尚未经过 Apple 公证。"
+        "a": "可以。页面上的按钮直接下载 GitHub Release 附件，无需登录。App 已包含运行环境，模型通过界面单独下载。当前版本未经 Apple 公证；Chrome 插件需解压后在开发者模式加载，尚未上架商店。"
       },
       {
         "q": "开源许可是什么？",
@@ -133,7 +133,11 @@
     "footer_privacy": "隐私说明",
     "footer_license": "模型许可",
     "footer_feedback": "反馈问题",
-    "footer_note": "代码 MIT · 模型遵循各自许可"
+    "footer_note": "代码 MIT · 模型遵循各自许可",
+    "extension_cta": "下载 Chrome 插件",
+    "guide_cta": "安装指南",
+    "release_cta": "版本说明与全部下载",
+    "download_note": "Apple Silicon · macOS 15+ · 未经 Apple 公证"
   },
   "en": {
     "title": "TingSub · Local bilingual captions for livestreams",
@@ -149,9 +153,9 @@
     "hero_line1": "Follow the stream.",
     "hero_line2": "Find the words.",
     "hero_body": "Add Chinese and English captions to English or Japanese audio. TingSub transcribes and translates on your Mac, so you can follow along and keep the original words close.",
-    "cta": "Read the setup guide",
+    "cta": "Download for macOS",
     "demo_cta": "Try the caption sample",
-    "compat": "Apple Silicon · Chrome 116+ · Open-source preview",
+    "compat": "Apple Silicon · macOS 15+ · Chrome 116+ · Early release",
     "demo_label": "Interactive caption sample",
     "demo_tag": "One journey, two languages",
     "demo_hint": "Switch the spoken language to explore the captions.",
@@ -211,10 +215,10 @@
     "detail_control_body": "The desktop app and extension share caption preferences. Your language and translation choices apply when you start the next caption session.",
     "setup_kicker": "GET STARTED",
     "setup_title": "Try TingSub\non your next stream.",
-    "setup_body": "CI provides preview builds of the macOS app and browser extension. Source setup is also available. Downloads require a GitHub login; current builds are not Apple-notarized.",
+    "setup_body": "Download the app, drag it to Applications and open your workspace. The runtime is included: no Python or uv setup. Download models through the app on first use. No GitHub account needed to download.",
     "requirements_title": "Before you start",
     "requirements": [
-      "Apple Silicon Mac; macOS 14+ for source runs",
+      "Apple Silicon Mac; app requires macOS 15+",
       "Chrome 116+ with unpacked extensions allowed",
       "uv for source setup only; 16 GB RAM recommended",
       "About 2.2 GB for default models, plus dependencies and caches"
@@ -222,7 +226,7 @@
     "steps": [
       {
         "title": "Open the desktop workspace",
-        "body": "Follow the guide to get the source and dependencies, then launch TingSub. Initial model preparation needs internet access."
+        "body": "Download the DMG, drag TingSub to Applications and open it. The app is not Apple-notarized; macOS may show an unverified-developer prompt. See the setup guide."
       },
       {
         "title": "Choose and prepare models",
@@ -233,7 +237,7 @@
         "body": "Load the extension and paste your pairing code. Play a video, then start captions for that tab from the extension."
       }
     ],
-    "build_link": "Build a standalone app",
+    "build_link": "Build from source",
     "faq_kicker": "A FEW MORE THINGS",
     "faq_title": "Good to know before you start.",
     "faq": [
@@ -255,7 +259,7 @@
       },
       {
         "q": "Can I download an installer today?",
-        "a": "Preview installers are available from successful main CI builds, with a GitHub login and 30-day retention. The setup guide links to download instructions. There is no formal Release or Chrome Web Store listing yet. The app includes its runtime but is not Apple-notarized; load the extension in Developer mode."
+        "a": "Yes. The buttons download GitHub Release assets directly, without signing in. The app includes its runtime; download models through the app separately. Current builds are not Apple-notarized. Extract the Chrome extension and load it in Developer mode; it is not listed in the Web Store."
       },
       {
         "q": "What is the license?",
@@ -269,6 +273,10 @@
     "footer_privacy": "Privacy",
     "footer_license": "Model licenses",
     "footer_feedback": "Report an issue",
-    "footer_note": "Code MIT · Models have separate licenses"
+    "footer_note": "Code MIT · Models have separate licenses",
+    "extension_cta": "Download Chrome extension",
+    "guide_cta": "Setup guide",
+    "release_cta": "Release notes & all downloads",
+    "download_note": "Apple Silicon · macOS 15+ · Not Apple-notarized"
   }
 }

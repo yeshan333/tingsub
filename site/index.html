@@ -58,13 +58,14 @@
           <h1 id="hero-title">$hero_line1<br /><em>$hero_line2</em></h1>
           <p class="lead">$hero_body</p>
           <div class="actions">
-            <a class="button primary" href="$install_url"
+            <a class="button primary" href="$download_url"
               >$cta <span aria-hidden="true">↗</span></a
+            ><a class="text-link" href="$extension_url">$extension_cta <span aria-hidden="true">↓</span></a
             ><a class="text-link" href="#demo"
               >$demo_cta <span aria-hidden="true">↓</span></a
             >
           </div>
-          <p class="compat">$compat</p>
+          <p class="compat">$compat<br />$download_note · <a href="$install_url">$guide_cta</a></p>
         </div>
         <div class="demo" id="demo" aria-label="$demo_label">
           <div class="demo-top">
@@ -222,9 +223,13 @@
           <ol class="steps">
             $steps_html
           </ol>
-          <a class="button primary" href="$install_url"
+          <a class="button primary" href="$download_url"
             >$cta <span aria-hidden="true">↗</span></a
-          ><a class="build-link" href="$distribution_url"
+          ><a class="build-link" href="$extension_url">$extension_cta ↓</a>
+          <p class="compat">$download_note</p>
+          <a class="build-link" href="$install_url">$guide_cta ↗</a>
+          <a class="build-link" href="$release_url">$release_cta ↗</a>
+          <a class="build-link" href="$distribution_url"
             >$build_link <span aria-hidden="true">↗</span></a
           >
         </div>
@@ -243,7 +248,7 @@
             <h2>$end_title_html</h2>
             <p>$end_body</p>
           </div>
-          <a class="button light" href="$install_url"
+          <a class="button light" href="$download_url"
             >$cta <span aria-hidden="true">↗</span></a
           >
         </div>
