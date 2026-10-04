@@ -21,8 +21,8 @@ const fixture = {
 };
 const server = createServer(async (request, response) => {
   const name = request.url === '/' ? 'index.html' : request.url.slice(1);
-  if (!['index.html', 'style.css', 'app.js'].includes(name)) { response.writeHead(404).end(); return; }
-  response.setHeader('Content-Type', name.endsWith('.js') ? 'text/javascript' : name.endsWith('.css') ? 'text/css' : 'text/html');
+  if (!['index.html', 'style.css', 'app.js', 'brand.svg'].includes(name)) { response.writeHead(404).end(); return; }
+  response.setHeader('Content-Type', name.endsWith('.js') ? 'text/javascript' : name.endsWith('.css') ? 'text/css' : name.endsWith('.svg') ? 'image/svg+xml' : 'text/html');
   response.end(await readFile(`src/live_subs/desktop_ui/${name}`));
 });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -40,6 +40,8 @@ try {
     await page.goto(`http://127.0.0.1:${server.address().port}`);
     await page.waitForFunction(() => !document.querySelector('#serviceAction').disabled);
     await page.evaluate(() => document.fonts.ready);
+    // Fail the capture rather than publishing a screenshot with a broken brand image.
+    await page.locator('.brand .brand-mark').evaluate(image => image.decode());
     for (const view of ['captions', 'models']) {
       await page.locator(`[data-page="${view}"]`).click();
       await page.mouse.move(1190, 20);
