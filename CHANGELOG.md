@@ -2,6 +2,10 @@
 
 [English](CHANGELOG.md) · [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.2.1
+
+- Replace generic symbols with a shared ear-and-captions mark across the macOS app, menu bar, extension and homepage.
+
 ## Unreleased
 
 - Real model download bytes and progress, separate loading validation, official/community/custom HTTPS download sources.
