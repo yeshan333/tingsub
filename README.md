@@ -34,6 +34,8 @@ The desktop UI supports English and Simplified Chinese. The extension UI and mos
 
 ## Desktop window
 
+Download the app and extension from a successful main [CI build](https://github.com/yeshan333/tingsub/actions/workflows/ci.yml). See [artifact download and installation](docs/en/distribution.md#download-a-ci-preview). These previews require a GitHub login, expire after 30 days, and are not Apple-notarized.
+
 The standalone App/DMG includes its runtime and browser extension: no Python or uv installation needed. Choose and download models, then pair Chrome in the [desktop guide](docs/en/desktop.md). Current builds are not Apple-notarized; maintainers can follow the [distribution guide](docs/en/distribution.md).
 
 ### Product screenshots

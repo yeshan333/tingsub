@@ -38,4 +38,4 @@ npm run test:site
 
 `.agents/product-marketing.md` 记录了受众、事实依据和当前限制。本次采用了 [product-marketing](https://github.com/coreyhaines31/marketingskills/tree/main/skills/product-marketing)、[copywriting](https://github.com/coreyhaines31/marketingskills/tree/main/skills/copywriting) 和 [cro](https://github.com/coreyhaines31/marketingskills/tree/main/skills/cro) 的指导。
 
-当前主按钮指向源码安装指南。公开安装包发布后，应同时更新两种语言的入口、系统要求和 FAQ。代码的 MIT 许可不涵盖模型权重，不添加虚构用户数、评价、准确率或通用延迟承诺。
+当前主按钮指向安装指南，包含源码安装和 CI 预览包下载入口。公开安装包发布后，应同时更新两种语言的入口、系统要求和 FAQ。代码的 MIT 许可不涵盖模型权重，不添加虚构用户数、评价、准确率或通用延迟承诺。

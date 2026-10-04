@@ -27,9 +27,18 @@
     "source_label": "原声",
     "scene_label": "沿海旅行 · 字幕样例",
     "facts": [
-      { "value": "英 / 日 → 中英", "label": "也可保留日语原文" },
-      { "value": "在你的 Mac 上", "label": "音频在本机识别、翻译" },
-      { "value": "由你开启", "label": "只捕获选中的浏览器标签页" }
+      {
+        "value": "英 / 日 → 中英",
+        "label": "也可保留日语原文"
+      },
+      {
+        "value": "在你的 Mac 上",
+        "label": "音频在本机识别、翻译"
+      },
+      {
+        "value": "由你开启",
+        "label": "只捕获选中的浏览器标签页"
+      }
     ],
     "product_kicker": "专心看内容",
     "product_title": "字幕跟着画面，\n节奏留给自己。",
@@ -66,7 +75,7 @@
     "detail_control_body": "桌面端与扩展共享字幕设置。选好原声和显示语言，下次开启字幕时生效。",
     "setup_kicker": "从这里开始",
     "setup_title": "下一场直播，\n试着打开听桥。",
-    "setup_body": "目前提供源码安装，也可自行构建独立 App。尚无公开安装包或 Chrome 商店版本；安装前请先查看完整指南。",
+    "setup_body": "CI 提供 macOS 应用和浏览器插件预览包，也可从源码运行。下载预览包需要登录 GitHub；当前版本尚未经过 Apple 公证。",
     "requirements_title": "开始前确认一下",
     "requirements": [
       "Apple Silicon Mac，源码运行需 macOS 14+",
@@ -110,7 +119,7 @@
       },
       {
         "q": "现在能直接下载安装吗？",
-        "a": "还没有公开 Release 安装包。当前请按指南从源码启动，或自行构建包含运行环境的独立 App。扩展需要在 Chrome 开发者模式中加载；当前 App 构建未经过 Apple 公证。"
+        "a": "可以从成功的 main CI 构建下载预览包，文件保留 30 天，需要登录 GitHub；安装指南提供下载入口。还没有正式 Release 或 Chrome 商店版本，扩展需在开发者模式加载。App 已包含运行环境，但尚未经过 Apple 公证。"
       },
       {
         "q": "开源许可是什么？",
@@ -162,7 +171,10 @@
         "value": "On your Mac",
         "label": "Local transcription and translation"
       },
-      { "value": "You start it", "label": "Capture only the tab you choose" }
+      {
+        "value": "You start it",
+        "label": "Capture only the tab you choose"
+      }
     ],
     "product_kicker": "STAY WITH THE STORY",
     "product_title": "Captions in the picture.\nYou set the pace.",
@@ -199,7 +211,7 @@
     "detail_control_body": "The desktop app and extension share caption preferences. Your language and translation choices apply when you start the next caption session.",
     "setup_kicker": "GET STARTED",
     "setup_title": "Try TingSub\non your next stream.",
-    "setup_body": "Available from source, or build a standalone app yourself. There is no public installer or Chrome Web Store release yet. Start with the full setup guide.",
+    "setup_body": "CI provides preview builds of the macOS app and browser extension. Source setup is also available. Downloads require a GitHub login; current builds are not Apple-notarized.",
     "requirements_title": "Before you start",
     "requirements": [
       "Apple Silicon Mac; macOS 14+ for source runs",
@@ -243,7 +255,7 @@
       },
       {
         "q": "Can I download an installer today?",
-        "a": "There is no public Release installer yet. Follow the source setup guide, or build a standalone app with its runtime included. Chrome requires loading the unpacked extension in Developer mode. Current app builds are not Apple-notarized."
+        "a": "Preview installers are available from successful main CI builds, with a GitHub login and 30-day retention. The setup guide links to download instructions. There is no formal Release or Chrome Web Store listing yet. The app includes its runtime but is not Apple-notarized; load the extension in Developer mode."
       },
       {
         "q": "What is the license?",
