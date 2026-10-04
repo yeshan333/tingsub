@@ -44,7 +44,13 @@ uv run --frozen --extra desktop tingsub gui
 - **Browser connection:** extension folder, pairing code and installation guide. Copying a pairing code puts it on the system clipboard; the desktop does not display it in its page or logs.
 - **Settings:** interface language and appearance. These preferences do not change speech or caption languages.
 
-Closing the window stops the service or download **started by that window**, including an active caption session. A compatible service already started in a terminal is shown as external; this window never stops it. A service using a different pairing code, an older service without shared preferences, or another program on port 18765 is shown as a conflict. Stop it in its original window first. Preparing models after a cancelled download reuses the model cache.
+Closing the window hides it in the menu bar; the owned service, active captions and model downloads keep running. Use **Open TingSub** in the menu bar or click the Dock icon to restore the window. **Quit TingSub** (including Cmd+Q or Dock Quit) stops only the service or download started by this app before exiting. Compatible terminal services are shown as externally managed and are never stopped by the menu. A different pairing code, an old service without shared settings or another process on port 18765 appears as a port conflict; stop it in its original window. Cancelled model downloads reuse the cache on retry.
+### Menu bar
+
+The captions icon stays in the macOS menu bar while TingSub is open. Its menu shows whether the service is stopped, preparing models, starting, ready, generating captions or needs attention. From here you can open the main window, start or stop the owned service, cancel model preparation, open the model folder, reveal logs in Finder, or quit. Menu text follows the desktop language setting. Service operations run in the background; status refresh does not read model weights or logs.
+
+Starting the service does not start browser capture. To caption a video, use the Chrome extension on the selected tab. Closing the main window keeps existing work running; choose **Quit TingSub** to stop it and exit.
+
 
 Standalone app data lives in `~/Library/Application Support/TingSub`; source runs default to `.local`. Within that directory, settings live in `preferences.json` (captions) and `interface.json` (appearance); process output goes to `desktop.log`, replaced at the next start/preparation. Errors can include local file paths, so review logs before sharing. To use a custom data directory, place the global option before `gui`: `tingsub --data-dir PATH gui`. It must match the service's pairing and model directory.
 
