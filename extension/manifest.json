@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TingSub · 听桥",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "英语、日语直播 → 中文与英文字幕。语音识别和翻译全部在你的 Mac 上完成。",
   "minimum_chrome_version": "116",
   "permissions": [
@@ -20,7 +20,17 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "TingSub · 听桥"
+    "default_title": "TingSub · 听桥",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; connect-src http://127.0.0.1:18765 ws://127.0.0.1:18765"
