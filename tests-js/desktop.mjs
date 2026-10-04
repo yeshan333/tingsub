@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const root = 'src/live_subs/desktop_ui';
+const version = JSON.parse(await readFile('extension/manifest.json', 'utf8')).version;
 const server = createServer(async (request, response) => {
   const name = request.url === '/' ? 'index.html' : request.url.slice(1);
   if (!['index.html', 'style.css', 'app.js'].includes(name)) { response.writeHead(404).end(); return; }
@@ -47,6 +48,9 @@ try {
   });
   await page.goto(`http://127.0.0.1:${server.address().port}`);
   await page.waitForFunction(() => !document.querySelector('#serviceAction').disabled);
+  assert.match(await page.locator('[data-i18n=closeHint]').textContent(), /隐藏到菜单栏后继续运行.*退出 TingSub/);
+  assert.equal(await page.locator('.repo-link span').textContent(), `v${version}`);
+  assert.match(await page.locator('.about-footer').textContent(), new RegExp(version.replaceAll('.', '\\.')));
   await mkdir('.local', { recursive: true });
   await page.screenshot({ path: '.local/desktop-dark.png' });
   await page.locator('#language').selectOption('ja');
@@ -98,6 +102,7 @@ try {
   await page.waitForFunction(() => window.calls.filter(call => call[0] === 'interface').length === 2);
   assert.deepEqual(await page.evaluate(() => window.calls.filter(call => call[0] === 'interface').at(-1)[1]), { locale: 'en', theme: 'light' });
   await page.locator('[data-page="captions"]').click();
+  assert.match(await page.locator('[data-i18n=closeHint]').textContent(), /Keeps running in the menu bar.*Quit TingSub/);
   await page.screenshot({ path: '.local/desktop-light-en.png' });
   await page.setViewportSize({ width: 880, height: 660 });
   for (const name of ['captions', 'models', 'connection', 'settings']) {

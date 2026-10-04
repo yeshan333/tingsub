@@ -23,6 +23,7 @@ TingSub is an early-stage Chrome extension and local MLX service for Apple Silic
 
 ## What it does
 
+- macOS menu bar: service status and controls, model/log shortcuts, and background operation after closing the window.
 - English / Japanese input, including automatic language detection per segment.
 - Optional recognition drafts, early Chinese output, then complete bilingual captions. Turn translation off to show recognized speech only.
 - Desktop model selection, download progress, official/community/custom download sources, and Finder shortcuts for models and logs.

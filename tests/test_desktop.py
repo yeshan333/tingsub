@@ -267,3 +267,15 @@ def test_model_folder_shortcut_opens_the_displayed_cache_and_preserves_downloads
         assert weights.read_bytes() == b"existing model"
     else:
         assert list(folder.iterdir()) == []
+
+
+def test_menu_status_does_not_scan_models_or_read_desktop_logs(controller, monkeypatch):
+    monkeypatch.setattr(controller, "_models", Mock(side_effect=AssertionError("model scan")))
+    monkeypatch.setattr("live_subs.desktop.catalog_at", Mock(side_effect=AssertionError("catalog")))
+    controller._log.mkdir()  # Attempting to open this as a log file would fail.
+    assert controller.service_status() == {
+        "state": "stopped",
+        "owned": False,
+        "busy": False,
+        "error": "",
+    }
