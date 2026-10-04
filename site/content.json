@@ -80,7 +80,7 @@
     "requirements": [
       "Apple Silicon Mac，源码运行需 macOS 14+",
       "Chrome 116+，允许加载解压扩展",
-      "安装 uv；建议 16 GB 内存",
+      "仅源码安装需 uv；建议 16 GB 内存",
       "默认模型约 2.2 GB，另需依赖与缓存空间"
     ],
     "steps": [
@@ -216,7 +216,7 @@
     "requirements": [
       "Apple Silicon Mac; macOS 14+ for source runs",
       "Chrome 116+ with unpacked extensions allowed",
-      "uv installed; 16 GB RAM recommended",
+      "uv for source setup only; 16 GB RAM recommended",
       "About 2.2 GB for default models, plus dependencies and caches"
     ],
     "steps": [
