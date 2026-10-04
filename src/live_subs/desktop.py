@@ -115,7 +115,7 @@ class DesktopController:
             self._job = None
             self._release_operation()
 
-    def snapshot(self):
+    def service_status(self):
         with self._lock:
             self._reap()
             state, busy = probe(self._token)
@@ -128,15 +128,18 @@ class DesktopController:
                 state = "starting"
             elif self._error and state == "stopped":
                 state = "error"
+            return {"state": state, "busy": busy, "owned": owned, "error": self._error}
+
+    def snapshot(self):
+        with self._lock:
+            status = self.service_status()
             logs = ""
             if self._log.exists():
                 with self._log.open("rb") as stream:
                     stream.seek(max(0, self._log.stat().st_size - 6000))
                     logs = stream.read().decode("utf-8", errors="replace")
             return {
-                "state": state,
-                "busy": busy,
-                "owned": owned,
+                **status,
                 "models": self._models(),
                 "catalog": catalog_at(self.directory),
                 "selection": selection_at(self.directory),
@@ -343,6 +346,10 @@ def launch(directory):
         text_select=False,
     )
     api = DesktopAPI(controller)
+    from .menubar import MenuBar
+
+    menubar = MenuBar(window, controller, api)
+    window._tingsub_menubar = menubar
 
     def secure_window():
         from .desktop_security import install_cocoa_guards
@@ -361,10 +368,12 @@ def launch(directory):
             api.copy_pairing,
             api.open_resource,
         )
+        menubar.install()
 
     window.events.before_show += secure_window
     window.events.closed += controller.close
     try:
         webview.start(gui="cocoa", debug=False)
     finally:
+        menubar.dispose()
         controller.close()
