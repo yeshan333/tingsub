@@ -37,6 +37,9 @@ def build(output: Path, site_url: str) -> None:
         for key in ("product_title", "workspace_title", "setup_title", "end_title"):
             values[f"{key}_html"] = values[key].replace("\n", "<br>")
         values.update(
+            download_url=f"{REPO_URL}/releases/latest/download/TingSub-macos-arm64.dmg",
+            extension_url=f"{REPO_URL}/releases/latest/download/TingSub-extension.zip",
+            release_url=f"{REPO_URL}/releases/latest",
             lang=lang,
             other_lang="en" if lang == "zh-CN" else "zh-CN",
             prefix="" if lang == "zh-CN" else "../",

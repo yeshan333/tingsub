@@ -2,7 +2,7 @@
 
 # Desktop workspace
 
-Download a preview App/DMG from a successful main CI run: see [CI download instructions](distribution.md#download-a-ci-preview).
+Download the App/DMG from [GitHub Releases](https://github.com/yeshan333/tingsub/releases/latest) without signing in: see [Release download instructions](distribution.md#download-a-release).
 
 TingSub offers a lightweight macOS window using the system WebKit renderer. The Python/MLX service still performs inference in a separate process. The desktop interface is available in English and Simplified Chinese, with dark, light and system appearance.
 
@@ -12,7 +12,7 @@ The caption preview uses authored sample text, not live transcription. Real capt
 
 ## Standalone app: no development tools required
 
-Open `TingSub-0.1.0-macos-<minimum>-arm64.dmg`, drag TingSub to Applications, then open it. The app includes Python, MLX, WebKit integration and the browser extension. No Python, uv, Homebrew or source checkout is required. Use Apple Silicon and Chrome 116+. The minimum macOS version is included in the DMG filename and App metadata; the current locally tested build requires **macOS 26.2+**, and was tested on macOS 27. Models are downloaded on first use; an internet connection and several GB of free disk space are needed. Inference stays local after preparation.
+Open `TingSub-macos-arm64.dmg`, drag TingSub to Applications, then open it. The app includes Python, MLX, WebKit integration and the browser extension. No Python, uv, Homebrew or source checkout is required. Use Apple Silicon, **macOS 15+** and Chrome 116+. Check the Release notes or App metadata for the requirements of each version. Locally built packages can require a newer macOS version; see [build instructions](distribution.md#build-locally). Models are downloaded on first use; an internet connection and several GB of free disk space are needed. Inference stays local after preparation.
 
 1. **Local models:** choose one speech model and one translation model, then **Prepare models**. The app downloads, loads and warms up the pair before activating it. Cancel or retry from the same window.
 2. **Browser connection:** open the extension folder and Chrome extensions. Enable Developer mode, choose Load unpacked and select the exported `extension` folder. Paste the pairing code into TingSub's extension.

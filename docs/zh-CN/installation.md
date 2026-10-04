@@ -2,7 +2,7 @@
 
 # 安装与使用
 
-使用独立应用可先按 [CI 预览版下载说明](distribution.md#下载-ci-预览版)获取安装包，再阅读[桌面指南](desktop.md)；不需要执行下面的源码安装命令。
+使用独立应用可先按 [Release 下载说明](distribution.md#下载-release)获取安装包，再阅读[桌面指南](desktop.md)；不需要执行下面的源码安装命令。
 
 独立 App/DMG 用户不需要安装 Python 或 uv，直接按[桌面指南](desktop.md)操作；下方依赖和命令仅适用于源码安装。构建和签名方式见[分发指南](distribution.md)。
 

@@ -1,0 +1,39 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful main CI run ID containing both tested artifacts
+        required: true
+        type: string
+      tag:
+        description: Release version matching the app and extension (e.g. v0.1.0)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Publish verified CI artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_RUN_ID: ${{ inputs.run_id }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: python3 scripts/publish_release.py --run-id "$RELEASE_RUN_ID" --tag "$RELEASE_TAG"

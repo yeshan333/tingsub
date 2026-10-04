@@ -4,6 +4,24 @@
 
 End users open the DMG and drag TingSub to Applications. They do not install Python, uv, Homebrew or a source checkout. The first-run workflow downloads models and guides Chrome pairing. See [desktop setup](desktop.md). The app is about 1 GB before DMG compression; model caches are additional and are not bundled.
 
+## Download a Release
+
+Download the [macOS app (DMG)](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg) and [browser extension](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip), or open [all Release assets and notes](https://github.com/yeshan333/tingsub/releases/latest). Public Release downloads need no GitHub login and are not subject to the 30-day Actions artifact retention period.
+
+The app requires **Apple Silicon / macOS 15+** and includes its runtime: no Python, uv or Homebrew setup. Open the DMG and drag TingSub to Applications, or use the App ZIP. This is an early release **without Apple Developer ID signing or notarization**; macOS may show an unverified-developer prompt. Download models through the app on first use.
+
+Extract the extension ZIP to a stable folder. In `chrome://extensions`, enable Developer mode and load the folder containing `manifest.json`. Alternatively, use **Open extension folder** in the app. Keep the same folder and reload on updates to preserve pairing. There is no Chrome Web Store listing yet.
+
+Download all three archives and `SHA256SUMS` into one folder, then run `shasum -a 256 -c SHA256SUMS`. For individual downloads, run `shasum -a 256 <filename>` and compare the matching line in the manifest.
+
+## Publish a version (maintainers)
+
+1. Keep the versions in `pyproject.toml` and `extension/manifest.json` aligned, merge to main and wait for the complete CI run to pass.
+2. Open [Publish Release](https://github.com/yeshan333/tingsub/actions/workflows/release.yml), select main and enter that successful CI run ID and matching `vX.Y.Z` tag.
+3. The workflow checks provenance, versions and checksums, uploads the tested artifacts to a draft, verifies uploaded sizes and SHA-256 values, then publishes it. It never rebuilds binaries, replaces a published version or moves an existing tag. A failed upload can be retried for a draft targeting the same commit.
+
+Each version uses the same asset names, so the homepage's `releases/latest/download/...` links follow the latest published version. Latest does not mean Apple-notarized or model-quality-certified. Routine CI continues to upload test artifacts without publishing every commit.
+
 ## Build
 
 ### Download a CI preview
