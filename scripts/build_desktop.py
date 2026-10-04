@@ -13,6 +13,21 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def checksum(path: Path):
+    with path.open("rb") as stream:
+        digest = hashlib.file_digest(stream, "sha256").hexdigest()
+    path.with_suffix(path.suffix + ".sha256").write_text(f"{digest}  {path.name}\n")
+
+
+def archive_app(app: Path, target: Path):
+    # ditto preserves bundle symlinks, executable permissions and resource metadata.
+    subprocess.run(
+        ["/usr/bin/ditto", "-c", "-k", "--sequesterRsrc", "--keepParent", str(app), str(target)],
+        check=True,
+    )
+    checksum(target)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--no-dmg", action="store_true")
@@ -40,10 +55,16 @@ def main():
     subprocess.run(
         [str(app / "Contents/MacOS/TingSub"), "--worker", "--help"],
         check=True,
+        timeout=60,
         cwd="/tmp",
         env={"HOME": str(Path.home()), "PATH": "/usr/bin:/bin"},
     )
+    info = plistlib.loads((app / "Contents/Info.plist").read_bytes())
+    stem = (
+        f"TingSub-{info['CFBundleShortVersionString']}-macos-{info['LSMinimumSystemVersion']}-arm64"
+    )
     if args.no_dmg:
+        archive_app(app, output / f"{stem}.app.zip")
         return
     staging = output / "dmg-staging"
     if staging.exists():
@@ -51,9 +72,7 @@ def main():
     staging.mkdir()
     subprocess.run(["/usr/bin/ditto", str(app), str(staging / "TingSub.app")], check=True)
     (staging / "Applications").symlink_to("/Applications")
-    info = plistlib.loads((app / "Contents/Info.plist").read_bytes())
-    minimum = info["LSMinimumSystemVersion"]
-    disk = output / f"TingSub-0.1.0-macos-{minimum}-arm64.dmg"
+    disk = output / f"{stem}.dmg"
     subprocess.run(
         [
             "/usr/bin/hdiutil",
@@ -87,9 +106,9 @@ def main():
             check=True,
         )
         subprocess.run(["/usr/bin/xcrun", "stapler", "staple", str(disk)], check=True)
-    with disk.open("rb") as stream:
-        checksum = hashlib.file_digest(stream, "sha256").hexdigest()
-    disk.with_suffix(".dmg.sha256").write_text(f"{checksum}  {disk.name}\n")
+        subprocess.run(["/usr/bin/xcrun", "stapler", "staple", str(app)], check=True)
+    checksum(disk)
+    archive_app(app, output / f"{stem}.app.zip")
     shutil.rmtree(staging)
     print(disk)
 

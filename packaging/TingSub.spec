@@ -1,11 +1,13 @@
 # Build on Apple Silicon with the locked desktop + bundle environment.
 import os
+import tomllib
 from importlib.metadata import distributions
 from pathlib import Path
 from macholib.MachO import MachO
 from PyInstaller.utils.hooks import collect_all, collect_data_files, collect_submodules, copy_metadata
 
 root = Path(SPECPATH).parent
+version = tomllib.loads((root / 'pyproject.toml').read_text())['project']['version']
 binaries, datas, hidden = [], [], []
 for package in ('mlx', 'mlx_whisper', 'mlx_lm', 'tiktoken', 'tokenizers', 'webview'):
     data, binary, modules = collect_all(package)
@@ -53,5 +55,6 @@ minimum_text = '.'.join(map(str, minimum[:2] if minimum[2] == 0 else minimum))
 print('Bundled native minimum macOS version:', minimum_text)
 app = BUNDLE(collection, name='TingSub.app', bundle_identifier='io.github.yeshan333.tingsub',
              info_plist={'CFBundleName': 'TingSub', 'CFBundleDisplayName': 'TingSub',
-                         'CFBundleShortVersionString': '0.1.0', 'LSMinimumSystemVersion': minimum_text,
+                         'CFBundleShortVersionString': version, 'CFBundleVersion': version,
+                         'LSMinimumSystemVersion': minimum_text,
                          'NSHighResolutionCapable': True})
