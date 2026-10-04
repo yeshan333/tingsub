@@ -2,7 +2,11 @@
 <title id="title">TingSub · 听桥</title><desc id="desc">Local bilingual live captions for English and Japanese browser audio.</desc>
 <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102c31"/><stop offset="1" stop-color="#173e38"/></linearGradient></defs>
 <rect width="960" height="260" rx="24" fill="url(#bg)"/>
-<g stroke="#70e0b5" stroke-width="7" stroke-linecap="round"><path d="M64 116v28m17-48v68m17-83v98m17-62v26m17-43v60"/></g>
+<svg id="brand-mark" x="46" y="74" width="96" height="96" viewBox="0 0 64 64" fill="none">
+  <path d="M44 17C38 10 27 9 19 16C11 23 11 34 18 42L23 49C27 55 35 55 39 49" stroke="#eff1e5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28 29H49M28 40H40" stroke="#eff1e5" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="50" cy="40" r="3" fill="#df9678"/>
+</svg>
 <text x="165" y="125" fill="#f2fff9" font-family="system-ui,sans-serif" font-size="59" font-weight="700">TingSub</text>
 <text x="165" y="167" fill="#c5e5d9" font-family="system-ui,sans-serif" font-size="23">Local bilingual live captions.</text>
 <text x="165" y="208" fill="#81b5a2" font-family="system-ui,sans-serif" font-size="15" letter-spacing="2">ENGLISH / JAPANESE → CHINESE + ENGLISH</text>
