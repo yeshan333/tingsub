@@ -90,12 +90,13 @@ def release_notes(repo: str, tag: str, run_id: str, sha: str, minimum: str) -> s
 
 ### 简体中文
 
-首个可直接下载的 TingSub 版本：本地语音识别、双语字幕、模型管理与 Chrome 扩展。
+TingSub：本地语音识别、双语字幕、模型管理与 Chrome 扩展。
 
 - **macOS 应用**：下载 `TingSub-macos-arm64.dmg`，拖入 Applications。
   Apple Silicon，macOS {minimum}+；无需安装 Python、uv 或 Homebrew。也提供 App ZIP。
 - **浏览器插件**：下载 `TingSub-extension.zip`，解压到固定目录，
   在 `chrome://extensions` 开启开发者模式并加载。App 内也有配套插件入口。
+- 菜单栏可查看状态、开关服务、打开模型和日志目录；关闭窗口后继续运行，选择退出才结束。
 - 首次使用在界面下载模型，然后配对浏览器；模型权重不在安装包内。
 - **早期版本，尚未经过 Apple Developer ID 签名或公证**，
   macOS 可能提示无法验证开发者。不是 Chrome 商店版本。
@@ -109,6 +110,8 @@ Local transcription, bilingual captions, model management and a Chrome extension
   and macOS {minimum}+. No Python, uv or Homebrew installation needed.
 - Extract the extension ZIP to a stable folder and load it in Chrome Developer mode. The app
   also includes the matching extension.
+- Menu bar status and service controls keep work running after closing the window;
+  choose Quit to exit.
 - Download models through the app on first use, then pair Chrome. Model weights are not bundled.
 - **Early release, without Apple Developer ID signing or notarization.** macOS may show an
   unverified-developer prompt. No Chrome Web Store distribution yet.
