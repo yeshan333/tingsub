@@ -54,6 +54,7 @@ for source in {entry[1] for entry in a.binaries} | {exe.name}:
 minimum_text = '.'.join(map(str, minimum[:2] if minimum[2] == 0 else minimum))
 print('Bundled native minimum macOS version:', minimum_text)
 app = BUNDLE(collection, name='TingSub.app', bundle_identifier='io.github.yeshan333.tingsub',
+             icon=str(root / 'assets/brand/TingSub.icns'),
              info_plist={'CFBundleName': 'TingSub', 'CFBundleDisplayName': 'TingSub',
                          'CFBundleShortVersionString': version, 'CFBundleVersion': version,
                          'LSMinimumSystemVersion': minimum_text,
