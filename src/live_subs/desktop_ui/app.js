@@ -80,7 +80,7 @@ const words = {
     privacyHint: "保留在内存中，不上传云端，不保存录音",
     localOnly: "仅本地",
     closeBehavior: "关闭窗口",
-    closeHint: "会停止由此窗口启动的服务；终端启动的服务不受影响",
+    closeHint: "隐藏到菜单栏后继续运行；选择「退出 TingSub」才停止本应用启动的任务",
     start: "启动服务",
     stop: "停止服务",
     cancel: "取消",
@@ -191,7 +191,7 @@ const words = {
     localOnly: "Local only",
     closeBehavior: "Closing this window",
     closeHint:
-      "Stops services started here. Services started in a terminal are unaffected.",
+      "Keeps running in the menu bar. Choose Quit TingSub to stop tasks started by this app.",
     start: "Start service",
     stop: "Stop service",
     cancel: "Cancel",
