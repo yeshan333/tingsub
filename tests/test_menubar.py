@@ -141,7 +141,9 @@ def test_native_smoke_rejects_occupied_port_before_opening_window(
 
     launch = Mock()
     monkeypatch.setitem(sys.modules, "webview", SimpleNamespace())
-    monkeypatch.setattr(sys, "argv", ["native-check", "--no-inference", "--data-dir", str(tmp_path)])
+    monkeypatch.setattr(
+        sys, "argv", ["native-check", "--no-inference", "--data-dir", str(tmp_path)]
+    )
     monkeypatch.setattr(desktop_check, "probe", lambda _: (service_state, False))
     monkeypatch.setattr(desktop_check, "launch", launch)
     with pytest.raises(SystemExit, match="Stop the existing local service"):
