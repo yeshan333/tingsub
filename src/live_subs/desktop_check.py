@@ -94,6 +94,13 @@ def main():
                     raise output["error"]
                 return output.get("value")
 
+            def check_brand_icon():
+                assert menu.brand_icon and menu.brand_icon.isValid(), "Brand icon did not load"
+                assert menu.brand_icon.isTemplate(), "Menu icon must adapt to macOS appearance"
+                assert menu.item.button().image() == menu.brand_icon
+
+            on_main(check_brand_icon)
+            result["native_menu_brand_icon"] = "passed"
             native = BrowserView.instances[window.uid].window
             on_main(lambda: native.performClose_(None))
             # Closing the window must keep both the app and status item alive.
