@@ -34,7 +34,7 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 
 ## 桌面窗口
 
-可从成功的 main [CI 构建](https://github.com/yeshan333/tingsub/actions/workflows/ci.yml)下载应用与插件，见[制品下载和安装说明](docs/zh-CN/distribution.md#下载-ci-预览版)。下载需要登录 GitHub，文件保留 30 天；预览版尚未经过 Apple 公证。
+直接下载 [macOS 应用](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg) · [Chrome 插件](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip) · [版本说明](https://github.com/yeshan333/tingsub/releases/latest)。无需登录 GitHub；应用支持 Apple Silicon / macOS 15+，内嵌运行环境，尚未经过 Apple 公证。见[下载和安装说明](docs/zh-CN/distribution.md#下载-release)。
 
 独立 App/DMG 内置运行环境和浏览器插件，无需安装 Python 或 uv。首次打开后在界面中选择、下载模型并配对 Chrome，见[桌面指南](docs/zh-CN/desktop.md)。当前构建尚未 Apple 公证；维护者构建方式见[分发指南](docs/zh-CN/distribution.md)。
 
