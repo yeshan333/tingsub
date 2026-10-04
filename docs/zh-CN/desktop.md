@@ -12,7 +12,7 @@ TingSub 提供使用系统 WebKit 渲染的轻量 macOS 窗口，推理仍由独
 
 ## 独立应用：不需要开发环境
 
-打开 `TingSub-0.1.0-macos-<minimum>-arm64.dmg`，将 TingSub 拖入 Applications，再打开应用。安装包包含 Python、MLX、WebKit 集成和浏览器插件，不需要另装 Python、uv、Homebrew 或下载源码。需要 Apple Silicon 和 Chrome 116+。最低 macOS 版本写在 DMG 文件名和应用元数据中；当前本机验证的构建要求 **macOS 26.2+**，实测系统为 macOS 27。首次使用需要联网下载模型，并预留数 GB 磁盘空间；准备后推理完全在本机运行。
+打开 `TingSub-macos-arm64.dmg`，将 TingSub 拖入 Applications，再打开应用。安装包包含 Python、MLX、WebKit 集成和浏览器插件，不需要另装 Python、uv、Homebrew 或下载源码。需要 Apple Silicon、**macOS 15+** 和 Chrome 116+；每个版本的具体系统要求见 Release 说明或应用元数据。本机构建的包可能要求更高系统版本，见[构建说明](distribution.md#本地构建)。首次使用需要联网下载模型，并预留数 GB 磁盘空间；准备后推理完全在本机运行。
 
 1. **本地模型：** 分别选择识别和翻译模型，点击**准备模型**。应用下载后会实际加载、预热，通过后才激活；过程中可取消，失败可重试。
 2. **浏览器连接：** 打开插件文件夹和 Chrome 扩展管理页，开启开发者模式，点击「加载已解压的扩展程序」并选择导出的 `extension` 文件夹，再在插件中粘贴配对码。
