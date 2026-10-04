@@ -125,6 +125,19 @@ Download `SHA256SUMS` beside the three archives and run `shasum -a 256 -c SHA256
 """
 
 
+def validate_version_order(releases: list[dict], tag: str) -> None:
+    requested = tuple(map(int, tag[1:].split(".")))
+    for release in releases:
+        name = release["tag_name"]
+        if (
+            not release["draft"]
+            and not release["prerelease"]
+            and re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", name)
+            and requested < tuple(map(int, name[1:].split(".")))
+        ):
+            raise ValueError(f"Refusing to make {tag} Latest: newer release {name} exists")
+
+
 def publish(repo: str, run_id: str, tag: str) -> None:
     if not run_id.isdecimal() or not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", tag):
         raise ValueError("Expected a numeric CI run ID and a vX.Y.Z release tag")
@@ -135,7 +148,9 @@ def publish(repo: str, run_id: str, tag: str) -> None:
         if api(repo, f"commits/{tag}")["sha"] != sha:
             raise ValueError("Existing release tag points to a different commit")
     releases = json.loads(gh("api", f"repos/{repo}/releases", "--paginate", "--slurp"))
-    existing = next((r for page in releases for r in page if r["tag_name"] == tag), None)
+    published = [r for page in releases for r in page]
+    validate_version_order(published, tag)
+    existing = next((r for r in published if r["tag_name"] == tag), None)
     if existing and (not existing["draft"] or existing["target_commitish"] != sha):
         raise ValueError("Refusing to replace a published release or a different draft")
     with tempfile.TemporaryDirectory(prefix="tingsub-release-") as temporary:

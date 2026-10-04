@@ -96,3 +96,23 @@ def test_release_rejects_damaged_missing_or_mismatched_artifacts(artifacts, tmp_
     with pytest.raises(ValueError):
         release.prepare_assets(artifacts, output, "v0.2.0" if fault == "version" else "v0.1.0")
     assert not output.exists()
+
+
+@pytest.mark.parametrize("requested,current", [("v1.1.0", "v1.2.0"), ("v1.9.0", "v1.10.0")])
+def test_older_release_cannot_redirect_homepage_downloads(requested, current):
+    with pytest.raises(ValueError, match="newer release"):
+        release.validate_version_order(
+            [{"tag_name": current, "draft": False, "prerelease": False}], requested
+        )
+
+
+def test_first_or_newer_release_can_become_latest_ignoring_future_drafts():
+    release.validate_version_order([], "v0.1.0")
+    release.validate_version_order(
+        [
+            {"tag_name": "v1.9.0", "draft": False, "prerelease": False},
+            {"tag_name": "v2.0.0", "draft": True, "prerelease": False},
+            {"tag_name": "v3.0.0", "draft": False, "prerelease": True},
+        ],
+        "v1.10.0",
+    )
