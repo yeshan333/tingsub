@@ -10,6 +10,7 @@ Start with [installation](installation.md), then [troubleshooting](troubleshooti
 | [Architecture](architecture.md) | Audio path, scheduling, WebSocket protocol and module map |
 | [Development](development.md) | Reproducible setup, CI checks and contribution workflow |
 | [Benchmarks](benchmarks.md) | Metric definitions, real-model checks and evidence limits |
+| [ASR evaluation report](asr-comparison-2026-10-05.md) | Whisper / Qwen3-ASR measurements, failures and integration status |
 | [Models](models.md) | Model choices, versions and license boundaries |
 | [Privacy](privacy.md) | Data flow, permissions, storage and token handling |
 

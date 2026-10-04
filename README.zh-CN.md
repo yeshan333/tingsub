@@ -100,6 +100,8 @@ flowchart LR
 
 仓库提供确定性的逻辑测试、独立浏览器检查，以及单独运行的**真实模型冒烟测试**。合成语音用例通过不能代表自然直播准确率。我们不承诺统一延迟或未经评测的词错率。详见[测量方法与当前限制](docs/zh-CN/benchmarks.md)。
 
+**最近实测（2026-10-05）：** 在 M4 Pro 的 6 段英日真人朗读上，Whisper Turbo 的识别／完整双语中位耗时为 **527 / 906 ms**，Qwen3-ASR 0.6B 为 **234 / 672 ms**。0.6B 更快，但这组日语错误更多；Whisper 继续默认，Qwen3-ASR 尚未接入应用。数据不含采集与浏览器显示时间，详见[速度、质量和失败案例报告](docs/zh-CN/asr-comparison-2026-10-05.md)。
+
 ## 文档
 
 | 指南 | English | 简体中文 |
@@ -111,6 +113,7 @@ flowchart LR
 | 架构与协议 | [Read](docs/en/architecture.md) | [阅读](docs/zh-CN/architecture.md) |
 | 开发与测试 | [Read](docs/en/development.md) | [阅读](docs/zh-CN/development.md) |
 | 性能与验证 | [Read](docs/en/benchmarks.md) | [阅读](docs/zh-CN/benchmarks.md) |
+| 识别模型实测报告 | [Read](docs/en/asr-comparison-2026-10-05.md) | [阅读](docs/zh-CN/asr-comparison-2026-10-05.md) |
 | 模型与第三方许可 | [Read](docs/en/models.md) | [阅读](docs/zh-CN/models.md) |
 | 隐私 | [Read](docs/en/privacy.md) | [阅读](docs/zh-CN/privacy.md) |
 | 贡献指南 | [Read](CONTRIBUTING.md) | [阅读](CONTRIBUTING.zh-CN.md) |

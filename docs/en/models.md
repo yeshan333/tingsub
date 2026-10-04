@@ -13,6 +13,12 @@ TingSub's [MIT license](../../LICENSE) applies to its own source code. It does *
 
 The default stack is local, but its weights do not all have a permissive open-source license. Read the actual terms for your intended usage. Other Qwen sizes can have different licenses; do not infer this 3B checkpoint's terms from the family name. An alternative translation model requires compatibility, quality and performance validation before it can replace this default.
 
+## Evaluated recognition models, not yet integrated
+
+Qwen3-ASR 0.6B / 1.7B have been tested separately with MLX Audio. **They are not selectable in the desktop app and cannot be enabled directly through `prepare --asr`.** They need recognition-backend integration; a repository name alone does not establish compatibility.
+
+The [2026-10-05 report](asr-comparison-2026-10-05.md) records speed, memory, human-speech errors and translation failures together. 0.6B is faster but made more Japanese errors in this sample, making it a candidate for a future optional fast mode. Whisper Turbo remains the default. 1.7B did not consistently win and is not the immediate integration priority. This is an experimental finding, not a delivery commitment.
+
 ## Revisions and downloads
 
 `tingsub prepare` resolves the selected repository to its current commit, downloads a snapshot, and records `repo`, `revision` and absolute local `path` in `.local/models.json`. A completed prior selection is reused. `--force` intentionally resolves it again. Thus versions are pinned **per installation**, not globally hardcoded in the CLI.

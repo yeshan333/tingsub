@@ -100,6 +100,8 @@ Latency depends on speech length, drafts, language, GPU load and the machine. En
 
 The repository includes deterministic logic tests, isolated browser checks and separate **real-model smoke tests**. Passing synthetic speech fixtures does not establish natural-livestream accuracy. We do not advertise a universal latency number or WER score. See [measurement methods and current limits](docs/en/benchmarks.md).
 
+**Latest measurement (2026-10-05):** On six English/Japanese human read-speech clips on an M4 Pro, median recognition / complete bilingual time was **527 / 906 ms** for Whisper Turbo and **234 / 672 ms** for Qwen3-ASR 0.6B. 0.6B was faster but made more Japanese errors in this sample. Whisper remains the default; Qwen3-ASR is not yet integrated. Capture and browser display time are excluded. Read the [speed, quality and failure report](docs/en/asr-comparison-2026-10-05.md).
+
 ## Documentation
 
 | Guide | English | 简体中文 |
@@ -111,6 +113,7 @@ The repository includes deterministic logic tests, isolated browser checks and s
 | Architecture and protocol | [Read](docs/en/architecture.md) | [阅读](docs/zh-CN/architecture.md) |
 | Development and testing | [Read](docs/en/development.md) | [阅读](docs/zh-CN/development.md) |
 | Performance and validation | [Read](docs/en/benchmarks.md) | [阅读](docs/zh-CN/benchmarks.md) |
+| ASR evaluation report | [Read](docs/en/asr-comparison-2026-10-05.md) | [阅读](docs/zh-CN/asr-comparison-2026-10-05.md) |
 | Models and third-party licenses | [Read](docs/en/models.md) | [阅读](docs/zh-CN/models.md) |
 | Privacy | [Read](docs/en/privacy.md) | [阅读](docs/zh-CN/privacy.md) |
 | Contributing | [Read](CONTRIBUTING.md) | [阅读](CONTRIBUTING.zh-CN.md) |

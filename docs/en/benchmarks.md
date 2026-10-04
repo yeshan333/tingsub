@@ -2,6 +2,16 @@
 
 # Performance and validation
 
+## Test reports
+
+Reports distinguish model-only experiments from browser end-to-end validation and retain failures and untested conditions. Check [models](models.md) separately for integration status.
+
+| Date | Report | Scope | Current guidance |
+| --- | --- | --- | --- |
+| 2026-10-05 | [Whisper vs Qwen3-ASR](asr-comparison-2026-10-05.md) | M4 Pro; 6 human read-speech clips, 6 synthetic controls, 2 synthetic-accompaniment variants and silence | Keep Whisper default; 0.6B is a candidate for a future optional fast mode |
+
+The report includes [sanitized per-call timings and aggregates](../benchmarks/asr-2026-10-05.json). Add dated reports for future tests and retain historical measurements rather than replacing them with faster rechecks.
+
 ## What the numbers mean
 
 | Metric | Definition |
@@ -55,8 +65,8 @@ These are authored text regressions, not unseen evaluation data or a livestream 
 
 ## Evidence boundaries
 
-The initial implementation was exercised locally on an Apple M4 Pro with 48 GB RAM using real English/Japanese synthesized speech, including browser audio capture. The historical tested model revisions are listed in [models](models.md). Raw local recordings, transcripts and machine-specific logs are intentionally not published. Re-run the scripts on your own checkout; these notes are not a reproducible public benchmark dataset or a CI performance guarantee.
+The initial implementation was exercised locally on an Apple M4 Pro with 48 GB RAM using real English/Japanese synthesized speech, including browser audio capture. The historical tested model revisions are listed in [models](models.md). Raw local recordings, full transcripts and machine-specific logs are intentionally not published; the new report shares sanitized measurements and public dataset sample identifiers. Re-run the scripts on your own checkout; these notes are not a reproducible public benchmark dataset or a CI performance guarantee.
 
-There is not yet a licensed natural-speech evaluation set, human translation scoring, WER/CER report or long-session reliability benchmark. Synthetic smoke tests establish that specific content survives the pipeline; they do not establish robustness to real livestreams. Typical failure cases include music, multiple speakers, proper nouns, short clips and words cut by the 3-second segment boundary.
+The [2026-10-05 ASR comparison](asr-comparison-2026-10-05.md) adds a small FLEURS human read-speech sample with WER/CER. There is still no large natural-livestream evaluation, systematic human translation scoring or long-session reliability benchmark. Synthetic smoke tests establish that specific content survives the pipeline; neither those checks nor the small read-speech sample establish robustness to real livestreams. Typical failure cases include music, multiple speakers, proper nouns, short clips and words cut by the 3-second segment boundary.
 
 When sharing results, include commit, chip/RAM, macOS/Chrome, model revisions, draft/language/display settings, warm-up, sample count, all rejection/drop/error counts, and latency P50/P95. Use audio you are allowed to share and redact tokens/private paths. Compare the same audio and settings; lower latency caused by missing more speech is not an improvement.

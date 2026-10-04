@@ -10,6 +10,7 @@
 | [架构](architecture.md) | 音频链路、调度、WebSocket 协议与模块位置 |
 | [开发](development.md) | 可复现的安装、CI 检查与贡献流程 |
 | [性能验证](benchmarks.md) | 指标定义、真实模型检查与证据范围 |
+| [识别模型测试报告](asr-comparison-2026-10-05.md) | Whisper / Qwen3-ASR 实测、失败案例与接入状态 |
 | [模型](models.md) | 模型选择、版本与许可边界 |
 | [隐私](privacy.md) | 数据流、权限、存储与配对码管理 |
 
