@@ -27,7 +27,7 @@ def main():
     )
     args = parser.parse_args()
     directory = args.data_dir.resolve()
-    if probe(token_at(directory))[0] != "stopped":
+    if not args.no_inference and probe(token_at(directory))[0] != "stopped":
         raise SystemExit("Stop the existing local service before this check")
     original_start = webview.start
     result = {}
@@ -70,6 +70,52 @@ def main():
             )
             assert window.get_current_url() == entry
             result["native_navigation_guard"] = "passed"
+            from PyObjCTools import AppHelper
+            from webview.platforms.cocoa import BrowserView
+
+            menu = window._tingsub_menubar
+            assert menu.item is not None, "Native status item was not installed"
+
+            def on_main(function):
+                done = threading.Event()
+                output = {}
+
+                def run():
+                    try:
+                        output["value"] = function()
+                    except Exception as exc:
+                        output["error"] = exc
+                    finally:
+                        done.set()
+
+                AppHelper.callAfter(run)
+                assert done.wait(10), "Native menu action timed out"
+                if "error" in output:
+                    raise output["error"]
+                return output.get("value")
+
+            native = BrowserView.instances[window.uid].window
+            on_main(lambda: native.performClose_(None))
+            # Closing the window must keep both the app and status item alive.
+            deadline = time.monotonic() + 5
+            while on_main(native.isVisible) and time.monotonic() < deadline:
+                time.sleep(0.1)
+            assert not on_main(native.isVisible)
+            assert window in webview.windows and menu.item is not None
+            on_main(lambda: menu.menu.performActionForItemAtIndex_(1))
+            deadline = time.monotonic() + 5
+            while not on_main(native.isVisible) and time.monotonic() < deadline:
+                time.sleep(0.1)
+            assert on_main(native.isVisible), "Open menu action did not restore the window"
+            window.evaluate_js(
+                "document.getElementById('locale').value = 'en';"
+                "document.getElementById('locale').dispatchEvent(new Event('change'))"
+            )
+            deadline = time.monotonic() + 6
+            while on_main(lambda: str(menu.items["show"].title())) != "Open TingSub":
+                assert time.monotonic() < deadline, "Menu locale did not follow desktop settings"
+                time.sleep(0.2)
+            result["native_menu_close_reopen_and_locale"] = "passed"
             if args.no_inference:
                 return
             if args.asr or args.translation:
@@ -103,7 +149,13 @@ def main():
         except Exception as exc:
             result["error"] = str(exc)
         finally:
-            window.destroy()
+            menu = getattr(window, "_tingsub_menubar", None)
+            if menu and menu.item is not None:
+                from PyObjCTools import AppHelper
+
+                AppHelper.callAfter(menu.request_quit)
+            else:
+                window.destroy()
 
     def start(**kwargs):
         original_start(exercise, **kwargs)
