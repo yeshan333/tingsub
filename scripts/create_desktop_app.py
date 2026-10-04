@@ -3,6 +3,7 @@
 import plistlib
 import shlex
 import sys
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,12 +14,13 @@ def main():
     contents = app / "Contents"
     binary = contents / "MacOS" / "TingSub"
     binary.parent.mkdir(parents=True, exist_ok=True)
+    version = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
     info = {
         "CFBundleName": "TingSub",
         "CFBundleDisplayName": "TingSub",
         "CFBundleIdentifier": "io.github.yeshan333.tingsub",
-        "CFBundleVersion": "0.1.0",
-        "CFBundleShortVersionString": "0.1.0",
+        "CFBundleVersion": version,
+        "CFBundleShortVersionString": version,
         "CFBundlePackageType": "APPL",
         "CFBundleExecutable": "TingSub",
         "NSHighResolutionCapable": True,
