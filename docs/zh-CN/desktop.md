@@ -2,6 +2,8 @@
 
 # 桌面工作空间
 
+可从成功的 main CI 构建下载 App/DMG 预览版，见 [CI 下载说明](distribution.md#下载-ci-预览版)。
+
 TingSub 提供使用系统 WebKit 渲染的轻量 macOS 窗口，推理仍由独立的 Python／MLX 服务进程完成。桌面界面支持简体中文、英文，以及深色、浅色和跟随系统的外观。
 
 ![TingSub 桌面界面，字幕为示例文字](../assets/screenshots/captions-zh-CN.png)

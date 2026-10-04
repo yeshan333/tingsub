@@ -38,4 +38,4 @@ Expected URL: <https://shansan.top/tingsub/>. If the repository or domain change
 
 The product context in `.agents/product-marketing.md` records audience, evidence and current limitations. The original guidance was [product-marketing](https://github.com/coreyhaines31/marketingskills/tree/main/skills/product-marketing), [copywriting](https://github.com/coreyhaines31/marketingskills/tree/main/skills/copywriting) and [cro](https://github.com/coreyhaines31/marketingskills/tree/main/skills/cro).
 
-The current primary action links to source installation, not a nonexistent download. When a public installer becomes available, update both languages, requirements and FAQs together. Code is MIT; model licenses remain separate. Never add invented customer counts, testimonials, accuracy or universal latency claims.
+The current primary action links to the installation guide, which covers source setup and CI preview downloads. When a public installer becomes available, update both languages, requirements and FAQs together. Code is MIT; model licenses remain separate. Never add invented customer counts, testimonials, accuracy or universal latency claims.

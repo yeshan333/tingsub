@@ -1,10 +1,15 @@
 name: Desktop bundle
 
 on:
+  workflow_call:
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   bundle:
@@ -13,13 +18,23 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+      - name: Check build architecture
+        run: test "$(uname -m)" = arm64
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          enable-cache: true
       - run: uv sync --frozen --extra desktop --group bundle --python 3.12
       - run: uv run --frozen --extra desktop --group bundle python scripts/build_desktop.py
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - name: Verify packaged App and DMG
+        run: uv run --frozen --extra desktop --group bundle python scripts/check_bundle.py .local/bundle
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: TingSub-macos-arm64-unsigned
+          name: TingSub-macos-arm64
           path: |
             .local/bundle/*.dmg
+            .local/bundle/*.app.zip
             .local/bundle/*.sha256
-          retention-days: 14
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30

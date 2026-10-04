@@ -8,6 +8,7 @@ import json
 import threading
 import time
 from pathlib import Path
+from urllib.parse import urljoin
 
 from live_subs import desktop_security
 from live_subs.desktop import launch, probe
@@ -32,16 +33,18 @@ def main():
     result = {}
     rejected_navigation = threading.Event()
     original_policy = desktop_security.trusted_document
+    foreign_url = None
 
     def observed_policy(url, expected, main_frame):
         allowed = original_policy(url, expected, main_frame)
-        if url == "http://127.0.0.1:9/untrusted" and not allowed:
+        if url == foreign_url and not allowed:
             rejected_navigation.set()
         return allowed
 
     desktop_security.trusted_document = observed_policy
 
     def exercise():
+        nonlocal foreign_url
         window = webview.windows[0]
 
         def wait_for(expression, seconds=90):
@@ -57,8 +60,14 @@ def main():
                 raise AssertionError("Native page did not load")
             wait_for("!document.getElementById('serviceAction').disabled", 15)
             entry = window.get_current_url()
-            window.evaluate_js("location.href = 'http://127.0.0.1:9/untrusted'")
-            assert rejected_navigation.wait(timeout=3), "Native navigation guard did not reject"
+            # Use the working local server's port. Port 9 is browser-blocked and
+            # can fail before WebKit calls our navigation-policy delegate.
+            foreign_url = urljoin(entry, "__tingsub_untrusted_check__.html")
+            window.evaluate_js(f"location.href = {json.dumps(foreign_url)}")
+            assert rejected_navigation.wait(timeout=5), (
+                f"Native navigation guard did not reject {foreign_url}; "
+                f"current document: {window.get_current_url()}"
+            )
             assert window.get_current_url() == entry
             result["native_navigation_guard"] = "passed"
             if args.no_inference:
