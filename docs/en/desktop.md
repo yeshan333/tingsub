@@ -2,7 +2,7 @@
 
 # Desktop workspace
 
-Download a preview App/DMG from a successful main CI run: see [CI download instructions](distribution.md#download-a-ci-preview).
+Download the App/DMG from [GitHub Releases](https://github.com/yeshan333/tingsub/releases/latest) without signing in: see [Release download instructions](distribution.md#download-a-release).
 
 TingSub offers a lightweight macOS window using the system WebKit renderer. The Python/MLX service still performs inference in a separate process. The desktop interface is available in English and Simplified Chinese, with dark, light and system appearance.
 
