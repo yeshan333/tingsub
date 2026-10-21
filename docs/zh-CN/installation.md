@@ -2,19 +2,19 @@
 
 # 安装与使用
 
-使用独立应用可先按 [Release 下载说明](distribution.md#下载-release)获取安装包，再阅读[桌面指南](desktop.md)；不需要执行下面的源码安装命令。
+普通用户推荐使用独立桌面应用：请直接按 [Release 下载说明](distribution.md#下载-release)下载并参考[桌面指南](desktop.md)使用，无需安装 Python 或 uv，也不需要下载源码。
 
-独立 App/DMG 用户不需要安装 Python 或 uv，直接按[桌面指南](desktop.md)操作；下方依赖和命令仅适用于源码安装。构建和签名方式见[分发指南](distribution.md)。
+下述依赖与步骤仅适用于**从源码安装与运行**；构建与打包细节详见[分发指南](distribution.md)。
 
 ## 环境要求
 
-- Apple Silicon（M 系列）Mac，macOS 14 或更新版本，建议 16 GB 及以上内存。
-- Chrome 116+，允许加载已解压扩展。
-- [uv](https://docs.astral.sh/uv/getting-started/installation/)，项目指定 Python 3.12。
-- 安装依赖和首次从 Hugging Face 下载模型时需要网络。默认权重约 2.2 GB，另需依赖与缓存空间。
-- 仅开发测试需要 Node.js 22+。
+- Apple Silicon（M 系列）Mac，macOS 14 或更新版本（建议 16 GB 及以上内存）。
+- Chrome 116+，具备加载已解压扩展的权限。
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) 包管理器，项目指定 Python 3.12。
+- 联网环境：用于安装依赖及首次从 Hugging Face 下载模型权重（默认权重约 2.2 GB，另需依赖与缓存空间）。
+- Node.js 22+：仅开发测试需要。
 
-当前不支持 CPU、CUDA、Windows、Linux、Intel Mac 或 Firefox 运行后端。服务与 Chrome 必须运行在同一台 Mac 上。
+系统目前不支持 CPU、CUDA、Windows、Linux、Intel Mac 或 Firefox。服务与 Chrome 必须运行在同一台 Mac 上。
 
 ## 使用桌面窗口
 
@@ -39,12 +39,13 @@ uv run --frozen tingsub serve
 
 ## 加载 Chrome 扩展并配对
 
-1. 打开 `chrome://extensions`，开启开发者模式，点击**加载已解压的扩展程序**，选择 `tingsub/extension`。
-2. 将 **TingSub · 听桥** 固定到工具栏。
-3. 打开**本机配对**，在**配对码**里粘贴配对码。设置自动保存到当前浏览器的扩展本地存储中。
-4. 打开正常的 HTTPS 视频网页并播放，点击**为当前标签页开启字幕**。
+1. 在 Chrome 地址栏打开 `chrome://extensions`，开启右上角「开发者模式」。
+2. 点击**加载已解压的扩展程序**，选择项目中的 `tingsub/extension` 目录。
+3. 在 Chrome 工具栏将 **TingSub · 听桥** 扩展图标固定，方便随时开启。
+4. 点击工具栏的 TingSub 图标展开**本机配对**，在**配对码**输入框中粘贴终端输出的配对码（配置会自动保存至扩展本地存储）。
+5. 在 Chrome 中打开正常的 HTTPS 视频标签页并播放人声，点击**为当前标签页开启字幕**。
 
-点击工具栏扩展按钮后才获得当前页面访问权限。Chrome 内部页面或禁止采集的页面无法生成字幕。插件不申请麦克风权限。
+点击工具栏扩展图标即可授予当前标签页访问权限；系统不会申请麦克风权限。Chrome 内部管理页及禁止采集的页面无法显示字幕。
 
 ## 控件
 

@@ -13,11 +13,11 @@
 
 [产品主页](https://shansan.top/tingsub/) · [主页维护说明](docs/zh-CN/website.md)
 
-把浏览器中播放的英语、日语实时变成**中文＋英文字幕**，识别与翻译都在你的 Mac 上完成。也可选择**中文＋原文**，保留日语原文。
+为浏览器中播放的英语与日语视频实时生成**中文＋英文字幕**，语音识别与翻译完全在 Apple Silicon Mac 本地运行。观看日语时也可选择**中文＋原文**，保留日语转录。
 
-TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。它采集你选定的标签页，保持原声播放，在网页上显示可拖动的字幕，支持 YouTube 网页全屏，无需直播自带字幕。
+TingSub 是早期版本，配合本地 MLX 服务和 Chrome 扩展使用。它采集你选定的标签页，保留原声播放，并在视频上显示可拖动字幕。支持 YouTube 网页全屏，无需播放器自带字幕。
 
-**准备完成后，推理完全本地运行。** 无云 API、账号、音频上传、遥测或自动录音。安装依赖和首次下载模型需要联网；视频网站仍使用自己的网络连接。
+**环境与模型准备完成后，推理完全本地运行。** 无需云 API 或账号；不上传音频、不收集遥测数据，也不自动录音。初次安装依赖与下载模型需要联网；视频网站本身继续使用浏览器的网络连接。
 
 > **许可范围：** TingSub 代码采用 MIT。默认 Qwen2.5-3B 翻译权重采用 **Qwen Research License**，有独立的使用限制，不属于 MIT 授权范围。使用或分发模型前请阅读[模型许可](docs/zh-CN/models.md)。
 
@@ -35,9 +35,15 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 
 ## 桌面窗口
 
-直接下载 [macOS 应用](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg) · [Chrome 插件](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip) · [版本说明](https://github.com/yeshan333/tingsub/releases/latest)。无需登录 GitHub；应用支持 Apple Silicon / macOS 15+，内嵌运行环境，尚未经过 Apple 公证。见[下载和安装说明](docs/zh-CN/distribution.md#下载-release)。
+直接下载 [macOS 应用](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg) · [Chrome 插件](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip) · [版本说明](https://github.com/yeshan333/tingsub/releases/latest)。无需登录 GitHub；支持 Apple Silicon，最低 macOS 版本以所下载版本的说明为准。应用内置运行环境，尚未经过 Apple 公证。详见[下载和安装说明](docs/zh-CN/distribution.md#下载-release)。
 
-独立 App/DMG 内置运行环境和浏览器插件，无需安装 Python 或 uv。首次打开后在界面中选择、下载模型并配对 Chrome，见[桌面指南](docs/zh-CN/desktop.md)。当前构建尚未 Apple 公证；维护者构建方式见[分发指南](docs/zh-CN/distribution.md)。
+独立 App/DMG 内置运行环境和浏览器插件，无需安装 Python 或 uv。首次使用流程如下：
+
+1. **安装应用**：下载 DMG 镜像，将 TingSub 拖入 `/Applications` 目录并打开。
+2. **准备模型并启动服务**：在「本地模型」页面选择下载源，下载并验证模型，点击**启动服务**，再到「浏览器连接」复制配对码。
+3. **加载扩展并开启字幕**：在 Chrome（`chrome://extensions` 开发者模式）加载已解压扩展，粘贴配对码，播放视频后，在扩展中点击**为当前标签页开启字幕**。
+
+界面详情见[桌面指南](docs/zh-CN/desktop.md)；维护者从源码构建见[分发指南](docs/zh-CN/distribution.md)。
 
 ### 产品截图
 
@@ -98,9 +104,9 @@ flowchart LR
 
 ## 性能与限制
 
-延迟受讲话长度、草稿开关、语言、GPU 负载和机器配置影响。句尾延迟**不等于**从开始讲话到看见字幕的等待时间。日语长句、多人重叠和背景音乐会降低准确率；强制切段可能切在词中间。被拒绝或过载跳过的片段会有提示，但不会生成译文。
+延迟受讲话长度、草稿开关、语言、GPU 负载和机器配置影响。句尾延迟**不等于**从开始讲话到看见字幕的等待时间。日语长句、多人同时说话和背景音乐会降低准确率；强制切段可能切在词中间。被拒绝或过载跳过的片段在调试面板中可见，但不会生成译文。
 
-仓库提供确定性的逻辑测试、独立浏览器检查，以及单独运行的**真实模型冒烟测试**。合成语音用例通过不能代表自然直播准确率。我们不承诺统一延迟或未经评测的词错率。详见[测量方法与当前限制](docs/zh-CN/benchmarks.md)。
+仓库提供确定性的逻辑测试、独立浏览器检查，以及单独运行的**真实模型冒烟测试**。合成语音用例通过不能代表自然直播准确率。已在登录后的 Chrome 中短时确认 DW News 的 YouTube 直播连续显示双语字幕和识别草稿；独立浏览器的 YouTube 自动化测试仍被登录校验阻断。长期稳定性与自然直播准确率尚未验证；英语译成中文时仍可能擅自补充上午／下午。曾记录到一次启动卡死在重新加载扩展后恢复，具体原因尚未查明。我们不承诺统一延迟或未经评测的词错率。详见[测量方法与当前限制](docs/zh-CN/benchmarks.md)。
 
 ## 文档
 

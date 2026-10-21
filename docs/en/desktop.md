@@ -2,9 +2,9 @@
 
 # Desktop workspace
 
-Download the App/DMG from [GitHub Releases](https://github.com/yeshan333/tingsub/releases/latest) without signing in: see [Release download instructions](distribution.md#download-a-release).
+Download the App/DMG from [GitHub Releases](https://github.com/yeshan333/tingsub/releases/latest) without signing in (see [Release download instructions](distribution.md#download-a-release)).
 
-TingSub offers a lightweight macOS window using MyGo and the system WebKit renderer. The Python/MLX service still performs inference in a separate process. The desktop interface is available in English and Simplified Chinese, with dark, light and system appearance.
+TingSub uses MyGo and the system WebKit renderer for its macOS desktop interface. The Python/MLX service performs local inference in a separate process. The desktop UI supports English and Simplified Chinese, with dark, light, and system appearance modes.
 
 ![TingSub desktop interface, showing sample captions](../assets/screenshots/captions-en.png)
 
@@ -12,11 +12,11 @@ The caption preview uses authored sample text, not live transcription. Real capt
 
 ## Standalone app: no development tools required
 
-Open `TingSub-macos-arm64.dmg`, drag TingSub to Applications, then open it. The app includes Python, MLX, WebKit integration and the browser extension. No Python, uv, Homebrew or source checkout is required. Use Apple Silicon, **macOS 15+** and Chrome 116+. Check the Release notes or App metadata for the requirements of each version. Locally built packages can require a newer macOS version; see [build instructions](distribution.md#build-locally). Models are downloaded on first use; an internet connection and several GB of free disk space are needed. Inference stays local after preparation.
+Open `TingSub-macos-arm64.dmg`, drag TingSub to Applications, and launch it. The bundle includes Python, MLX, WebKit integration, and the browser extension—no Python, uv, Homebrew, or source checkout required. Requires an Apple Silicon Mac and Chrome 116+. Check the downloaded Release notes or App metadata for its minimum macOS version. Locally built packages may require a newer system; see [build instructions](distribution.md#build-locally). Download models through the app on first use. This requires internet access and several gigabytes of free disk space. Inference stays local after preparation.
 
-1. **Local models:** choose one speech model and one translation model, then **Prepare models**. The app downloads, loads and warms up the pair before activating it. Cancel or retry from the same window.
-2. **Browser connection:** open the extension folder and Chrome extensions. Enable Developer mode, choose Load unpacked and select the exported `extension` folder. Paste the pairing code into TingSub's extension.
-3. **Start service:** wait for readiness, open your video tab and click Start captions in the extension.
+1. **Prepare models:** In **Local models**, select one speech model and one translation model, then click **Prepare models**. The app downloads, loads, and warms up the pair before activating it. You can cancel or retry from the same window.
+2. **Pair extension:** In **Browser connection**, click **Open extension folder**. In Chrome, open `chrome://extensions`, enable **Developer mode**, click **Load unpacked**, and select the exported `extension` directory. Pin TingSub to the toolbar. Copy the code from the desktop app and paste it under **本机配对** (Local pairing) in the extension.
+3. **Start captions:** Click **Start service** in the desktop window. Once status shows ready, play a video in your browser, click the TingSub toolbar icon, and click **为当前标签页开启字幕** (Start captions for this tab).
 
 Chrome requires explicit extension installation and a user gesture to capture a tab. Those steps cannot be silently automated. No Chrome Web Store listing is available yet. Exported extensions live outside the app and keep the same path across updates, preserving Chrome’s extension ID, pairing and settings. After replacing the App, click **Open extension folder** once to refresh the files, then click **Reload** on the existing TingSub entry in `chrome://extensions`; do not remove it or load a second copy. Older preview export folders are refreshed in place as well.
 

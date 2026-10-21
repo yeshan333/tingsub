@@ -1,7 +1,7 @@
 {
   "zh-CN": {
-    "title": "TingSub 听桥 · 让直播多一行你看得懂的字幕",
-    "description": "为英语、日语直播生成中文与英文字幕。TingSub 在 Apple Silicon Mac 上本地识别和翻译，提供桌面模型管理与 Chrome 字幕扩展。",
+    "title": "TingSub 听桥 · 浏览器视频本地双语字幕",
+    "description": "为浏览器中播放的英语与日语视频生成中文和英文字幕。TingSub 在 Apple Silicon Mac 本地运行语音识别与翻译，通过 Chrome 扩展为选定标签页开启字幕。",
     "skip": "跳到正文",
     "nav_product": "产品",
     "nav_setup": "开始使用",
@@ -9,13 +9,13 @@
     "nav_docs": "使用文档",
     "switch_label": "Read in English",
     "switch_text": "EN",
-    "eyebrow": "本地运行的直播双语字幕",
-    "hero_line1": "直播听不懂？",
-    "hero_line2": "让字幕搭座桥。",
-    "hero_body": "给英语、日语原声添上中文与英文字幕。识别和翻译都在你的 Mac 上完成，跟上直播，也留住原话。",
+    "eyebrow": "本地运行的浏览器视频双语字幕",
+    "hero_line1": "浏览器视频，",
+    "hero_line2": "本地双语字幕。",
+    "hero_body": "为浏览器里的英语、日语视频加上中文和英文字幕。识别和翻译都在你的 Apple Silicon Mac 上完成，在 Chrome 扩展中为当前标签页开启。",
     "cta": "下载 macOS 应用",
     "demo_cta": "试试字幕样例",
-    "compat": "Apple Silicon · macOS 15+ · Chrome 116+ · 早期版本",
+    "compat": "Apple Silicon · Chrome 116+ · 早期版本",
     "demo_label": "字幕交互样例",
     "demo_tag": "一段旅途，两种语言",
     "demo_hint": "切换原声语言，看看字幕怎么呈现。",
@@ -29,7 +29,7 @@
     "facts": [
       {
         "value": "英 / 日 → 中英",
-        "label": "也可保留日语原文"
+        "label": "支持中文＋英文或保留原文"
       },
       {
         "value": "在你的 Mac 上",
@@ -37,64 +37,64 @@
       },
       {
         "value": "由你开启",
-        "label": "只捕获选中的浏览器标签页"
+        "label": "只采集你选中的标签页"
       }
     ],
-    "product_kicker": "专心看内容",
-    "product_title": "字幕跟着画面，\n节奏留给自己。",
-    "product_body": "播放器没有字幕，也可以继续看。用 TingSub 开启当前标签页的字幕，调整字号和位置，按需要保留原文或关闭翻译。",
+    "product_kicker": "字幕体验",
+    "product_title": "字幕跟着视频，\n原文与翻译由你选。",
+    "product_body": "不需要播放器自带字幕。在 Chrome 扩展中开启当前标签页的字幕，再按需要调整字号和位置，或选择只看识别原文。",
     "features": [
       {
         "number": "01",
-        "title": "听原话，也看懂意思",
-        "body": "中文与英文并排理解。看日语内容时，可选择「中文＋原文」；只想练听力，就关掉翻译。"
+        "title": "对照双语，也能保留原文",
+        "body": "同时查看中文和英文字幕。看日语内容时可选「中文＋原文」；关闭翻译后，只显示识别原文。"
       },
       {
         "number": "02",
-        "title": "少一点遮挡",
-        "body": "字幕跟随视频区域，拖到舒服的位置。长句可展开查看，调试数据默认收起。"
+        "title": "调整位置，少挡画面",
+        "body": "字幕跟随视频区域，可拖动位置、调整字号，也支持 YouTube 网页全屏。长句可展开查看，调试信息默认收起。"
       },
       {
         "number": "03",
         "title": "音频留在本机",
-        "body": "Whisper 识别，Qwen 翻译。模型准备好后本地推理，无需云 API 账号，也不申请麦克风权限。"
+        "body": "Whisper 识别，Qwen 翻译。模型下载好后，推理在本机完成，无需云 API 账号，也不申请麦克风权限。"
       }
     ],
-    "workspace_kicker": "一个安静的工作台",
-    "workspace_title": "模型、字幕、连接。\n都在手边。",
-    "workspace_body": "在桌面窗口预览字幕、管理模型、配对浏览器。下载多少、存在哪里、遇到问题看什么日志，都有入口。",
+    "workspace_kicker": "桌面工作台",
+    "workspace_title": "准备模型、调整字幕，\n连接浏览器。",
+    "workspace_body": "在桌面窗口预览字幕、下载模型、启动服务和复制配对码。下载进度、模型文件和运行日志也都能在这里查看。",
     "workspace_legend": "查看桌面界面",
     "workspace_captions": "字幕工作台",
     "workspace_models": "本地模型",
     "caption_alt": "TingSub 中文桌面字幕工作台：语言、翻译开关与字幕样例",
     "model_alt": "TingSub 中文模型管理界面：模型选择、下载源与存储位置",
     "screenshot_note": "真实桌面界面，使用示例字幕与模型状态；不代表实时转录或性能测量。",
-    "detail_download_title": "下载有进度，模型能选择",
-    "detail_download_body": "查看实际下载进度，选择 Whisper / Qwen 模型。网络较慢时，可尝试社区镜像或自定义 HTTPS 下载源。",
-    "detail_control_title": "翻不翻译，你说了算",
-    "detail_control_body": "桌面端与扩展共享字幕设置。选好原声和显示语言，下次开启字幕时生效。",
-    "setup_kicker": "从这里开始",
-    "setup_title": "下一场直播，\n试着打开听桥。",
-    "setup_body": "下载应用，拖入 Applications，即可打开桌面工作台。运行环境已包含，无需安装 Python 或 uv；首次使用在界面下载模型。下载无需 GitHub 账号。",
+    "detail_download_title": "选择模型，查看下载进度",
+    "detail_download_body": "选择 Whisper 识别模型和 Qwen 翻译模型，查看实际下载进度。网络较慢时，可尝试社区镜像或自定义 HTTPS 下载源。",
+    "detail_control_title": "桌面和扩展共用字幕设置",
+    "detail_control_body": "在任一处选择原声语言、字幕语言和翻译开关，下次开启字幕时生效。",
+    "setup_kicker": "快速上手",
+    "setup_title": "三步完成配置，\n开启实时字幕。",
+    "setup_body": "应用已包含运行环境，无需另装 Python 或 uv。安装后下载模型，再配对 Chrome 扩展。应用和插件都可直接下载，无需登录 GitHub。",
     "requirements_title": "开始前确认一下",
     "requirements": [
-      "Apple Silicon Mac，应用需 macOS 15+",
-      "Chrome 116+，允许加载解压扩展",
-      "仅源码安装需 uv；建议 16 GB 内存",
-      "默认模型约 2.2 GB，另需依赖与缓存空间"
+      "Apple Silicon Mac，最低 macOS 版本见所下载版本的说明",
+      "Chrome 116+，允许在开发者模式加载解压扩展",
+      "默认模型约 2.2 GB，另需依赖与缓存空间",
+      "建议 16 GB 内存；源码运行另需 uv"
     ],
     "steps": [
       {
-        "title": "启动桌面工作台",
-        "body": "下载 DMG，将 TingSub 拖入 Applications 后打开。当前版本未经 Apple 公证，系统可能提示无法验证开发者；详见安装指南。"
+        "title": "安装并打开应用",
+        "body": "下载 DMG 镜像，将 TingSub 拖入 Applications 目录并启动。当前构建未经 Apple 公证，首次打开遇系统提示请参考安装指南处理。"
       },
       {
-        "title": "选择并准备模型",
-        "body": "在「本地模型」下载并验证模型。按网络情况选择下载源，再启动服务。"
+        "title": "下载模型，启动服务",
+        "body": "在「本地模型」选择下载源，下载并验证模型，然后启动服务。在「浏览器连接」中复制配对码。"
       },
       {
         "title": "配对 Chrome，开启字幕",
-        "body": "加载扩展、粘贴配对码。播放视频后，在扩展中为当前标签页开启字幕。"
+        "body": "在 Chrome 开发者模式中加载已解压的扩展，粘贴配对码。播放视频后，在扩展中点击「为当前标签页开启字幕」。"
       }
     ],
     "build_link": "从源码构建",
@@ -102,28 +102,28 @@
     "faq_title": "打开之前，你可能想知道。",
     "faq": [
       {
-        "q": "支持哪些设备和浏览器？",
-        "a": "当前支持 Apple Silicon Mac 与 Chrome 116+。源码运行要求 macOS 14+；独立 App 的最低系统版本取决于构建产物。暂不支持 Intel Mac、Windows、Linux 或 Firefox。"
+        "q": "支持哪些设备和系统？",
+        "a": "支持 Apple Silicon Mac 和 Chrome 116+。独立应用的最低 macOS 版本请查看所下载版本的说明；源码运行要求 macOS 14+。暂不支持 Intel Mac、Windows、Linux 或 Firefox。"
       },
       {
-        "q": "音频会上传吗？能离线使用吗？",
-        "a": "识别和翻译都在本机完成，TingSub 不上传音频，不遥测，也不自动录音。安装依赖和首次下载模型需要网络；模型就绪后推理可离线运行，直播网站本身仍需联网。"
+        "q": "音频会上传吗？能否离线使用？",
+        "a": "识别和翻译都在本机完成。TingSub 不上传音频、不收集遥测数据，也不自动录音。安装依赖和首次下载模型需要联网；模型就绪后推理可离线运行，直播网站本身仍需联网。"
       },
       {
         "q": "只能用在 YouTube 上吗？",
-        "a": "不限于 YouTube。Chrome 能捕获的普通视频标签页都可尝试，包括 Bilibili 直播。无需视频自带字幕；部分受限页面、跨域嵌入播放器的内部全屏模式可能无法显示字幕。"
+        "a": "不限于 YouTube。Chrome 能捕获音频的普通视频标签页都可尝试，包括 Bilibili 直播。无需播放器自带字幕；部分受限页面、跨域嵌入播放器的内部全屏模式可能无法显示字幕。"
       },
       {
-        "q": "字幕会不会有延迟或翻错？",
-        "a": "会。延迟和准确率受语句长度、语言、模型与 GPU 负载影响；多人同时说话、背景音乐和较长日语句子更容易出错。字幕用于辅助理解，不承诺固定延迟或准确率。"
+        "q": "字幕延迟与准确率表现如何？",
+        "a": "延迟和准确率受语句长度、语言、模型与 GPU 负载影响。多人同时说话、背景音乐和较长日语句子更容易出错。字幕用于辅助理解，不承诺固定延迟或准确率。"
       },
       {
-        "q": "现在能直接下载安装吗？",
-        "a": "可以。页面上的按钮直接下载 GitHub Release 附件，无需登录。App 已包含运行环境，模型通过界面单独下载。当前版本未经 Apple 公证；Chrome 插件需解压后在开发者模式加载，尚未上架商店。"
+        "q": "现在可以直接下载使用吗？",
+        "a": "可以。官网按钮直链 GitHub Release 附件，无需登录即可下载。独立 App 已包含运行环境，模型通过客户端单独下载。当前版本未经 Apple 公证；Chrome 扩展需下载解压后在开发者模式中加载，尚未上架 Chrome Web Store。"
       },
       {
-        "q": "开源许可是什么？",
-        "a": "TingSub 代码采用 MIT 许可。模型权重有各自的许可，默认 Qwen 2.5 3B 使用 Qwen Research License，不能将代码的 MIT 许可当作模型授权。使用或分发前请阅读模型许可说明。"
+        "q": "开源许可协议是什么？",
+        "a": "TingSub 源代码采用 MIT 许可证。各 AI 模型权重遵循各自的许可协议（例如默认使用的 Qwen 2.5 3B 遵循 Qwen Research License），不可将代码的 MIT 许可视为模型权重授权。使用或分发前请参阅模型许可说明。"
       }
     ],
     "end_title": "想看的内容，\n值得听明白。",
@@ -137,11 +137,11 @@
     "extension_cta": "下载 Chrome 插件",
     "guide_cta": "安装指南",
     "release_cta": "版本说明与全部下载",
-    "download_note": "Apple Silicon · macOS 15+ · 未经 Apple 公证"
+    "download_note": "macOS 要求见版本说明 · 未经 Apple 公证"
   },
   "en": {
-    "title": "TingSub · Local bilingual captions for livestreams",
-    "description": "Turn English and Japanese browser audio into Chinese and English captions. Local speech recognition and translation on Apple Silicon, with a desktop app and Chrome extension.",
+    "title": "TingSub · Local bilingual captions for browser video",
+    "description": "Add Chinese and English captions to English or Japanese browser videos. Transcription and translation run on your Apple Silicon Mac, with a Chrome extension to start captions.",
     "skip": "Skip to content",
     "nav_product": "Product",
     "nav_setup": "Get started",
@@ -149,13 +149,13 @@
     "nav_docs": "Docs",
     "switch_label": "切换到简体中文",
     "switch_text": "中文",
-    "eyebrow": "LOCAL BILINGUAL LIVE CAPTIONS",
-    "hero_line1": "Follow the stream.",
-    "hero_line2": "Find the words.",
-    "hero_body": "Add Chinese and English captions to English or Japanese audio. TingSub transcribes and translates on your Mac, so you can follow along and keep the original words close.",
+    "eyebrow": "LOCAL BILINGUAL CAPTIONS FOR BROWSER VIDEO",
+    "hero_line1": "Browser videos,",
+    "hero_line2": "local bilingual captions.",
+    "hero_body": "Add Chinese and English captions to English or Japanese videos in your browser. Your Apple Silicon Mac handles recognition and translation. Start captions for the current tab from the Chrome extension.",
     "cta": "Download for macOS",
     "demo_cta": "Try the caption sample",
-    "compat": "Apple Silicon · macOS 15+ · Chrome 116+ · Early release",
+    "compat": "Apple Silicon · Chrome 116+ · Early release",
     "demo_label": "Interactive caption sample",
     "demo_tag": "One journey, two languages",
     "demo_hint": "Switch the spoken language to explore the captions.",
@@ -169,7 +169,7 @@
     "facts": [
       {
         "value": "EN / JA → ZH + EN",
-        "label": "Or keep the Japanese original"
+        "label": "Bilingual view or original text"
       },
       {
         "value": "On your Mac",
@@ -180,29 +180,29 @@
         "label": "Capture only the tab you choose"
       }
     ],
-    "product_kicker": "STAY WITH THE STORY",
-    "product_title": "Captions in the picture.\nYou set the pace.",
-    "product_body": "Keep watching even when the player has no captions. Start TingSub for the current tab, adjust the text and position, and choose whether to translate.",
+    "product_kicker": "CAPTION EXPERIENCE",
+    "product_title": "Captions follow the video.\nChoose what to read.",
+    "product_body": "No built-in player captions needed. Start captions from the Chrome extension, adjust their size and position, or turn off translation to read just the transcript.",
     "features": [
       {
         "number": "01",
-        "title": "Keep the original close",
-        "body": "Read Chinese alongside English. For Japanese content, choose Chinese + original. Turn translation off when you just want the transcript."
+        "title": "Read both languages or keep the original",
+        "body": "Read Chinese and English captions together. For Japanese content, choose Chinese + original. Turn translation off to see only the transcript."
       },
       {
         "number": "02",
         "title": "Leave room for the video",
-        "body": "Captions follow the video area. Drag them where they feel right, expand long lines, and keep diagnostics tucked away."
+        "body": "Captions follow the video area. Drag to reposition them, adjust the text size, or use YouTube fullscreen. Expand long lines when needed; diagnostics stay tucked away."
       },
       {
         "number": "03",
         "title": "Keep audio on your Mac",
-        "body": "Whisper transcribes; Qwen translates. Once models are ready, inference runs locally. No cloud API account or microphone permission needed."
+        "body": "Whisper transcribes; Qwen translates. Once models are downloaded, inference runs locally. No cloud API account or microphone permission is needed."
       }
     ],
-    "workspace_kicker": "A QUIET WORKSPACE",
-    "workspace_title": "Models, captions, connection.\nAll within reach.",
-    "workspace_body": "Preview captions, manage models and pair your browser in the desktop window. See download progress, find model files and open logs when you need them.",
+    "workspace_kicker": "DESKTOP WORKSPACE",
+    "workspace_title": "Prepare models. Adjust captions.\nConnect your browser.",
+    "workspace_body": "Preview captions, download models, start the service and copy your pairing code in the desktop app. Check download progress, find model files and open logs from the same window.",
     "workspace_legend": "Explore the desktop interface",
     "workspace_captions": "Caption workspace",
     "workspace_models": "Local models",
@@ -210,31 +210,31 @@
     "model_alt": "TingSub English model manager showing model selection, download sources and storage location",
     "screenshot_note": "Actual desktop interface with sample captions and model states; not a live transcription or performance result.",
     "detail_download_title": "Choose models. See download progress.",
-    "detail_download_body": "Pick your Whisper and Qwen models and track actual download progress. On slower connections, try the community mirror or a custom HTTPS source.",
-    "detail_control_title": "Translation is your choice.",
-    "detail_control_body": "The desktop app and extension share caption preferences. Your language and translation choices apply when you start the next caption session.",
+    "detail_download_body": "Choose a Whisper model for recognition and a Qwen model for translation, then track download progress. On slower connections, try the community mirror or a custom HTTPS source.",
+    "detail_control_title": "Shared settings for desktop and Chrome",
+    "detail_control_body": "Choose the spoken language, caption language and translation setting in either place. Changes apply when you start your next caption session.",
     "setup_kicker": "GET STARTED",
-    "setup_title": "Try TingSub\non your next stream.",
-    "setup_body": "Download the app, drag it to Applications and open your workspace. The runtime is included: no Python or uv setup. Download models through the app on first use. No GitHub account needed to download.",
+    "setup_title": "Three steps to set up\nand start captions.",
+    "setup_body": "The app includes its runtime, so there is no separate Python or uv setup. Install the app, download models, then pair the Chrome extension. No GitHub account is needed to download the app or extension.",
     "requirements_title": "Before you start",
     "requirements": [
-      "Apple Silicon Mac; app requires macOS 15+",
-      "Chrome 116+ with unpacked extensions allowed",
-      "uv for source setup only; 16 GB RAM recommended",
-      "About 2.2 GB for default models, plus dependencies and caches"
+      "Apple Silicon Mac; check the release notes for the minimum macOS version",
+      "Chrome 116+ with permission to load unpacked extensions in Developer mode",
+      "About 2.2 GB for default models, plus dependencies and caches",
+      "16 GB RAM recommended; source setup also requires uv"
     ],
     "steps": [
       {
-        "title": "Open the desktop workspace",
-        "body": "Download the DMG, drag TingSub to Applications and open it. The app is not Apple-notarized; macOS may show an unverified-developer prompt. See the setup guide."
+        "title": "Install and open the app",
+        "body": "Download the DMG, drag TingSub to Applications, and launch it. Current releases are not Apple-notarized; follow the setup guide for first-launch gatekeeper prompts."
       },
       {
-        "title": "Choose and prepare models",
-        "body": "Download and validate a pair in Local models. Choose a download source for your connection, then start the service."
+        "title": "Download models and start the service",
+        "body": "Choose a download source in Local models, download and validate your models, then start the service. Copy your pairing code from Browser connection."
       },
       {
-        "title": "Pair Chrome. Start captions.",
-        "body": "Load the extension and paste your pairing code. Play a video, then start captions for that tab from the extension."
+        "title": "Pair Chrome and start captions",
+        "body": "Load the unpacked extension in Chrome Developer mode and paste your pairing code. Play a video, then start captions for that tab from the extension."
       }
     ],
     "build_link": "Build from source",
@@ -243,7 +243,7 @@
     "faq": [
       {
         "q": "Which devices and browsers work?",
-        "a": "Apple Silicon Macs with Chrome 116+. Source runs need macOS 14+; standalone app requirements depend on the build. Intel Macs, Windows, Linux and Firefox are not supported yet."
+        "a": "Apple Silicon Macs and Chrome 116+ are supported. Check the release notes for the minimum macOS version of the app you download. Source runs require macOS 14+. Intel Macs, Windows, Linux and Firefox are not supported yet."
       },
       {
         "q": "Is audio uploaded? Can it work offline?",
@@ -251,7 +251,7 @@
       },
       {
         "q": "Is it only for YouTube?",
-        "a": "No. Try it on ordinary video tabs Chrome can capture, including Bilibili livestreams. Existing player captions are not required. Some restricted pages and fullscreen entered inside cross-origin embedded players cannot show the overlay."
+        "a": "No. Try it on ordinary video tabs Chrome can capture, including Bilibili livestreams. Existing player captions are not required. Some restricted pages and fullscreen entered inside cross-origin embedded players may not show the overlay."
       },
       {
         "q": "How fast and accurate are the captions?",
@@ -263,7 +263,7 @@
       },
       {
         "q": "What is the license?",
-        "a": "TingSub code is MIT. Model weights have separate licenses: the default Qwen 2.5 3B uses the Qwen Research License. MIT does not cover those weights. Read the model license guide before using or distributing them."
+        "a": "TingSub source code is MIT. Model weights have separate licenses: the default Qwen 2.5 3B uses the Qwen Research License. MIT does not cover those weights. Review the model license guide before using or distributing them."
       }
     ],
     "end_title": "A little closer\nto what’s being said.",
@@ -277,6 +277,6 @@
     "extension_cta": "Download Chrome extension",
     "guide_cta": "Setup guide",
     "release_cta": "Release notes & all downloads",
-    "download_note": "Apple Silicon · macOS 15+ · Not Apple-notarized"
+    "download_note": "See release notes for macOS requirements · Not Apple-notarized"
   }
 }

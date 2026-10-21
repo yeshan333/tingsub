@@ -2,19 +2,19 @@
 
 # Installation and usage
 
-For a bundled app instead of source setup, follow the [Release download instructions](distribution.md#download-a-release), then the [desktop guide](desktop.md).
+For the standalone desktop app, follow the [Release download instructions](distribution.md#download-a-release) and [desktop guide](desktop.md); no Python, uv or source checkout is required.
 
-Standalone App/DMG users do not need Python or uv. Start with the [desktop guide](desktop.md); the requirements and commands below are for source installations. Build/signing details are in [distribution](distribution.md).
+The requirements and instructions below apply strictly to **running from source**. Build and packaging workflows are documented in [distribution](distribution.md).
 
 ## Requirements
 
-- Apple Silicon (M-series) Mac, macOS 14 or newer; 16 GB RAM recommended.
-- Chrome 116+ and permission to load unpacked extensions.
-- [uv](https://docs.astral.sh/uv/getting-started/installation/); Python 3.12 is selected by the project.
-- Network access for dependencies and the first Hugging Face model download. Allow roughly 2.2 GB for default weights and additional space for dependencies/caches.
-- Node.js 22+ is only needed for development tests.
+- Apple Silicon (M-series) Mac running macOS 14 or newer (16 GB RAM recommended).
+- Chrome 116+ with permission to load unpacked extensions.
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) package manager (Python 3.12 pinned by the project).
+- Internet connection for initial dependency installation and model downloads (default weights require about 2.2 GB, plus space for dependencies and caches).
+- Node.js 22+ (only required for development tests).
 
-There is no supported CPU, CUDA, Windows, Linux, Intel Mac or Firefox runtime yet. The service and Chrome run on the same Mac.
+There is currently no support for CPU, CUDA, Windows, Linux, Intel Mac, or Firefox. Both the background service and Chrome must run on the same Mac.
 
 ## Use the desktop window
 
@@ -39,12 +39,13 @@ The equivalent convenience scripts are `./setup.command` (dependencies and model
 
 ## Load and pair Chrome
 
-1. Open `chrome://extensions`, enable Developer mode, click **Load unpacked** and select `tingsub/extension`.
-2. Pin **TingSub · 听桥** to the toolbar.
-3. Open **本机配对** (Local pairing). Paste the code into **配对码** (Pairing code). Settings save automatically to this browser's local extension storage.
-4. Open a normal HTTPS video page, start playback and click **为当前标签页开启字幕** (Start captions for this tab).
+1. In Chrome, navigate to `chrome://extensions` and enable **Developer mode** in the top-right corner.
+2. Click **Load unpacked** and select the `tingsub/extension` directory from your checkout.
+3. Pin **TingSub · 听桥** to your browser toolbar for easy access.
+4. Click the TingSub toolbar icon, expand **本机配对** (Local pairing), and paste your pairing code into **配对码** (Pairing code). Settings save automatically to local extension storage.
+5. Open a standard HTTPS video page playing audible speech, then click **为当前标签页开启字幕** (Start captions for this tab).
 
-A toolbar click grants access to the selected page. Chrome internal pages and pages blocking capture cannot be captioned. No microphone permission is requested.
+Clicking the extension icon grants access to the selected page; no microphone permission is ever requested. Internal Chrome URLs and pages blocking capture cannot be captioned.
 
 ## Controls
 

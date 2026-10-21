@@ -2,7 +2,9 @@
 
 # Documentation
 
-Start with [installation](installation.md), then [troubleshooting](troubleshooting.md).
+TingSub adds real-time bilingual (Chinese and English) subtitles to English and Japanese videos in your browser. Speech recognition and translation run locally on your Apple Silicon Mac. Use the Chrome extension to start captions for the current tab.
+
+Start with the [installation guide](installation.md) (the standalone desktop app is recommended for most users), and consult [troubleshooting](troubleshooting.md) if you encounter issues.
 
 | Topic | Contents |
 | --- | --- |

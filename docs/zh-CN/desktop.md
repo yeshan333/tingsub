@@ -2,9 +2,9 @@
 
 # 桌面工作空间
 
-从 [GitHub Release](https://github.com/yeshan333/tingsub/releases/latest) 下载 App/DMG，无需登录，见 [Release 下载说明](distribution.md#下载-release)。
+从 [GitHub Release](https://github.com/yeshan333/tingsub/releases/latest) 直接下载 App/DMG 无需登录，详见 [Release 下载说明](distribution.md#下载-release)。
 
-TingSub 提供使用 MyGo 和系统 WebKit 渲染的轻量 macOS 窗口，推理仍由独立的 Python／MLX 服务进程完成。桌面界面支持简体中文、英文，以及深色、浅色和跟随系统的外观。
+TingSub 使用 MyGo 和系统 WebKit 显示 macOS 桌面界面，Python／MLX 服务在独立进程中完成本地推理。桌面界面支持简体中文与英文，提供深色、浅色及跟随系统的外观。
 
 ![TingSub 桌面界面，字幕为示例文字](../assets/screenshots/captions-zh-CN.png)
 
@@ -12,11 +12,11 @@ TingSub 提供使用 MyGo 和系统 WebKit 渲染的轻量 macOS 窗口，推理
 
 ## 独立应用：不需要开发环境
 
-打开 `TingSub-macos-arm64.dmg`，将 TingSub 拖入 Applications，再打开应用。安装包包含 Python、MLX、WebKit 集成和浏览器插件，不需要另装 Python、uv、Homebrew 或下载源码。需要 Apple Silicon、**macOS 15+** 和 Chrome 116+；每个版本的具体系统要求见 Release 说明或应用元数据。本机构建的包可能要求更高系统版本，见[构建说明](distribution.md#本地构建)。首次使用需要联网下载模型，并预留数 GB 磁盘空间；准备后推理完全在本机运行。
+打开 `TingSub-macos-arm64.dmg`，将 TingSub 拖入 Applications，再打开应用。安装包包含 Python、MLX、系统 WebKit 集成和浏览器扩展，无需配置 Python、uv、Homebrew 或源码。需要 Apple Silicon Mac 与 Chrome 116+；最低 macOS 系统版本以所下载 Release 的版本说明或应用元数据为准。本机构建包可能要求更高系统版本，见[构建说明](distribution.md#本地构建)。首次使用需联网下载模型并预留数 GB 磁盘空间；准备完成后推理全程在本地进行。
 
-1. **本地模型：** 分别选择识别和翻译模型，点击**准备模型**。应用下载后会实际加载、预热，通过后才激活；过程中可取消，失败可重试。
-2. **浏览器连接：** 打开插件文件夹和 Chrome 扩展管理页，开启开发者模式，点击「加载已解压的扩展程序」并选择导出的 `extension` 文件夹，再在插件中粘贴配对码。
-3. **启动服务：** 等待模型就绪，打开视频标签页，在插件中点击「开始字幕」。
+1. **准备模型：** 在「本地模型」页分别选择识别与翻译模型，点击**准备模型**。应用会下载、加载并预热所选模型，通过校验后才激活；期间可取消，失败可重试。
+2. **配对扩展：** 在「浏览器连接」页点击「打开插件文件夹」。在 Chrome 打开 `chrome://extensions` 开启「开发者模式」，点击「加载已解压的扩展程序」选择导出的 `extension` 文件夹，将扩展固定到工具栏，复制桌面应用中的配对码并粘贴到扩展的「本机配对」中。
+3. **开启字幕：** 在桌面端点击**启动服务**，等待服务就绪后，打开视频标签页并播放，点击工具栏 TingSub 图标并点击「为当前标签页开启字幕」。
 
 Chrome 要求用户主动安装插件、开启标签页采集，这两步不能静默代办。目前没有 Chrome 商店版本。导出的插件位于应用外部，更新时保持原路径，保留 Chrome 插件 ID、配对和设置。替换 App 后点击一次「打开插件文件夹」更新导出文件，再到 `chrome://extensions` 对已有 TingSub 点击「重新加载」，不要移除旧条目或另装一份。早期预览版导出的版本目录也会原地更新。
 

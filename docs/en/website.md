@@ -36,6 +36,8 @@ Expected URL: <https://shansan.top/tingsub/>. If the repository or domain change
 
 ## Copy and positioning
 
-The product context in `.agents/product-marketing.md` records audience, evidence and current limitations. The original guidance was [product-marketing](https://github.com/coreyhaines31/marketingskills/tree/main/skills/product-marketing), [copywriting](https://github.com/coreyhaines31/marketingskills/tree/main/skills/copywriting) and [cro](https://github.com/coreyhaines31/marketingskills/tree/main/skills/cro).
+Lead with what the product does: real-time bilingual (Chinese and English) subtitles for English and Japanese browser videos, powered by local speech recognition and translation on Apple Silicon Mac and activated via a Chrome extension. Audience definition and factual constraints are maintained in `.agents/product-marketing.md`.
 
-The primary action downloads the latest Release DMG, with a separate Chrome extension download. Setup instructions, release notes and the notarization limitation remain visible. Keep asset names stable; update both languages and FAQs when minimum system requirements change. Code is MIT; model licenses remain separate. Never add invented customer counts, testimonials, accuracy or universal latency claims.
+The primary call to action downloads the latest Release DMG, with a separate Chrome extension download. Keep installation steps, release notes and the lack of Apple notarization visible. Asset filenames remain stable across versions; minimum system requirements are updated across both languages and FAQs. Project source code is MIT-licensed (excluding model weights), and copy strictly avoids fabricated user numbers, fake testimonials, or unsubstantiated latency and accuracy claims.
+
+Copy references: [product-marketing](https://github.com/coreyhaines31/marketingskills/tree/main/skills/product-marketing), [copywriting](https://github.com/coreyhaines31/marketingskills/tree/main/skills/copywriting) and [cro](https://github.com/coreyhaines31/marketingskills/tree/main/skills/cro).

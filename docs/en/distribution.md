@@ -8,7 +8,7 @@ End users open the DMG and drag TingSub to Applications. They do not install Pyt
 
 Download the [macOS app (DMG)](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg) and [browser extension](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip), or open [all Release assets and notes](https://github.com/yeshan333/tingsub/releases/latest). Public Release downloads need no GitHub login and are not subject to the 30-day Actions artifact retention period.
 
-The app requires **Apple Silicon / macOS 15+** and includes its runtime: no Python, uv or Homebrew setup. Open the DMG and drag TingSub to Applications, or use the App ZIP. This is an early release **without Apple Developer ID signing or notarization**; macOS may show an unverified-developer prompt. Download models through the app on first use.
+The standalone app runs on Apple Silicon Macs with a bundled runtime—no Python, uv, or Homebrew setup required. Check the downloaded Release notes or App metadata for the minimum macOS version. Local builds may require a newer system; see [build locally](#build-locally). Open the DMG and drag TingSub to Applications, or extract the App ZIP. This is an early release. Current builds are **ad-hoc signed, without Apple Developer ID signing or Apple notarization**; macOS may display an unverified developer prompt on first launch. Download models through the desktop UI on first run.
 
 Extract the extension ZIP to a stable folder. In `chrome://extensions`, enable Developer mode and load the folder containing `manifest.json`. Alternatively, use **Open extension folder** in the app. Keep the same folder and reload on updates to preserve pairing. There is no Chrome Web Store listing yet.
 

@@ -36,6 +36,8 @@ npm run test:site
 
 ## 文案与定位
 
-`.agents/product-marketing.md` 记录了受众、事实依据和当前限制。本次采用了 [product-marketing](https://github.com/coreyhaines31/marketingskills/tree/main/skills/product-marketing)、[copywriting](https://github.com/coreyhaines31/marketingskills/tree/main/skills/copywriting) 和 [cro](https://github.com/coreyhaines31/marketingskills/tree/main/skills/cro) 的指导。
+官网首先说明：为浏览器中的英语和日语视频生成实时中英双语字幕，在 Apple Silicon Mac 本地完成语音识别与翻译，通过 Chrome 扩展为选定标签页开启字幕。`.agents/product-marketing.md` 记录了目标受众、事实边界与已知限制。
 
-主按钮直接下载最新 Release 的 macOS DMG，旁边提供 Chrome 插件下载。安装指南、完整版本说明及未公证提示继续保留。发布时保持固定附件名；最低系统要求发生变化时，同时更新两种语言和 FAQ。代码的 MIT 许可不涵盖模型权重，不添加虚构用户数、评价、准确率或通用延迟承诺。
+页面主要操作为直接下载最新 Release 的 macOS DMG，并提供配套 Chrome 扩展下载。保留安装指南、版本说明和未经 Apple 公证的提示。发布附件保持固定名称；当系统最低要求变动时，同步更新中英文文案与 FAQ。MIT 许可仅覆盖项目代码，不含模型权重；文案绝不虚构用户数、评价或未经实测的准确率或通用延迟承诺。
+
+文案参考：[product-marketing](https://github.com/coreyhaines31/marketingskills/tree/main/skills/product-marketing)、[copywriting](https://github.com/coreyhaines31/marketingskills/tree/main/skills/copywriting) 和 [cro](https://github.com/coreyhaines31/marketingskills/tree/main/skills/cro)。

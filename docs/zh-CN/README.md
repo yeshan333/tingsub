@@ -2,7 +2,9 @@
 
 # 文档索引
 
-建议从[安装指南](installation.md)开始，遇到问题时查看[故障排查](troubleshooting.md)。
+TingSub 为浏览器中的英语和日语视频提供中英双语字幕，在 Apple Silicon Mac 本地完成语音识别与翻译，通过 Chrome 扩展为当前标签页开启字幕。
+
+建议从[安装指南](installation.md)开始，通常选择独立桌面应用即可，无需配置 Python。遇到问题时查阅[故障排查](troubleshooting.md)。
 
 | 主题 | 内容 |
 | --- | --- |

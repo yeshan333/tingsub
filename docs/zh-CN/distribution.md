@@ -8,7 +8,7 @@
 
 直接下载 [macOS 应用（DMG）](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg)、[浏览器插件](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip)，或查看 [Release 全部附件和版本说明](https://github.com/yeshan333/tingsub/releases/latest)。公开 Release 附件无需登录 GitHub，不受 Actions 制品 30 天保留期限制。
 
-应用支持 **Apple Silicon / macOS 15+**，内嵌运行环境，无需安装 Python、uv 或 Homebrew。打开 DMG，将 TingSub 拖入 Applications；也可选择 `.app.zip`。当前为早期版本，**未经 Apple Developer ID 签名或公证**，系统可能提示无法验证开发者。首次使用通过界面下载模型。
+应用支持 Apple Silicon Mac，内嵌完整运行时，无需安装 Python、uv 或 Homebrew。最低 macOS 版本以所下载 Release 的版本说明或应用元数据为准。本机构建包可能要求更高系统版本，见[本地构建](#本地构建)。打开 DMG 将 TingSub 拖入 Applications，或直接解压 `.app.zip`。当前为早期版本，采用 **ad-hoc 签名，尚未经 Apple Developer ID 签名或公证**，首次打开系统可能提示无法验证开发者。首次启动后通过桌面界面下载模型即可。
 
 插件 ZIP 解压到固定目录，在 `chrome://extensions` 开启开发者模式并「加载已解压的扩展程序」，选择含 `manifest.json` 的目录；也可使用 App 内「打开插件文件夹」。更新时替换原目录文件并重新加载，保留配对设置。尚未上架 Chrome 商店。
 

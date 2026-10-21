@@ -13,11 +13,11 @@
 
 [Product homepage](https://shansan.top/tingsub/en/) · [Website maintenance](docs/en/website.md)
 
-Turn English and Japanese browser audio into **Chinese + English live captions**, with speech recognition and translation running on your Mac. Choose **Chinese + original** to keep Japanese speech in Japanese.
+Generate **Chinese + English live captions** for English and Japanese browser videos, with speech recognition and translation running locally on your Apple Silicon Mac. Choose **Chinese + original** to keep Japanese speech in Japanese transcripts.
 
-TingSub is an early-stage Chrome extension and local MLX service for Apple Silicon. It captures the tab you select, preserves audio playback, and displays draggable captions over the page, including YouTube fullscreen. It does not require existing YouTube captions.
+TingSub is an early-stage app that combines a local MLX service with a Chrome extension to capture selected video tabs, preserve audio playback, and overlay draggable captions across web pages (including YouTube fullscreen). It does not require existing player captions.
 
-**Local inference after setup.** No cloud API, account, audio upload, telemetry, or automatic recording. Installation and the first model download need network access; the video website still uses its own network connection.
+**Fully local inference after initial setup.** No cloud API keys, accounts, audio uploads, telemetry, or automatic recording. Internet access is only required during installation and initial model downloads; video playback continues using the browser's own network connection.
 
 > **License scope:** TingSub code is MIT. The default Qwen2.5-3B translation weights use the **Qwen Research License**, with separate usage restrictions. They are not covered by MIT. Read [model licenses](docs/en/models.md) before using or distributing the models.
 
@@ -35,9 +35,15 @@ The desktop UI supports English and Simplified Chinese. The extension UI and mos
 
 ## Desktop window
 
-Download the [macOS app](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg) · [Chrome extension](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip) · [Release notes](https://github.com/yeshan333/tingsub/releases/latest). No GitHub login needed. Apple Silicon / macOS 15+, runtime included, not Apple-notarized. See [download and installation](docs/en/distribution.md#download-a-release).
+Download the [macOS app](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-macos-arm64.dmg) · [Chrome extension](https://github.com/yeshan333/tingsub/releases/latest/download/TingSub-extension.zip) · [Release notes](https://github.com/yeshan333/tingsub/releases/latest). No GitHub login needed. Requires Apple Silicon; check the release notes for the minimum macOS version. The runtime is included. Current builds are not Apple-notarized. See [download and installation](docs/en/distribution.md#download-a-release).
 
-The standalone App/DMG includes its runtime and browser extension: no Python or uv installation needed. Choose and download models, then pair Chrome in the [desktop guide](docs/en/desktop.md). Current builds are not Apple-notarized; maintainers can follow the [distribution guide](docs/en/distribution.md).
+The standalone App/DMG includes its runtime and browser extension: no Python or uv installation needed. First-time setup follows three steps:
+
+1. **Install the app**: Download the DMG, drag `TingSub.app` to `/Applications`, and launch it.
+2. **Download models and start the service**: In the Local models tab, choose a download source, download a model pair, and click **Start service**. Copy your pairing code from Browser connection.
+3. **Pair the extension and start captions**: In Chrome (`chrome://extensions` Developer mode), load the unpacked extension, enter the pairing code, and play a video, and click **为当前标签页开启字幕** (start captions for this tab).
+
+See the [desktop guide](docs/en/desktop.md) for full interface details. Maintainers building from source can follow the [distribution guide](docs/en/distribution.md).
 
 ### Product screenshots
 
@@ -98,9 +104,9 @@ Speech is submitted after a pause, or split at about 3 seconds during continuous
 
 ## Performance and limitations
 
-Latency depends on speech length, drafts, language, GPU load and the machine. End-of-speech latency is **not** the wait from the beginning of speech. Long Japanese sentences, overlapping speakers and background music can reduce accuracy; forced segment boundaries can cut words. Rejected or overloaded segments are visible but have no translated caption.
+Latency depends on speech length, draft mode, spoken language, GPU load, and machine hardware. End-of-speech latency is **not** the wait time from the start of an utterance. Long Japanese sentences, overlapping speakers, and background music can reduce accuracy; forced segment boundaries can split words. Rejected or overloaded segments remain visible in diagnostics but produce no translated caption.
 
-The repository includes deterministic logic tests, isolated browser checks and separate **real-model smoke tests**. Passing synthetic speech fixtures does not establish natural-livestream accuracy. We do not advertise a universal latency number or WER score. See [measurement methods and current limits](docs/en/benchmarks.md).
+The repository includes deterministic logic tests, isolated browser checks, and separate **real-model smoke tests**. Passing synthetic speech fixtures does not establish natural-livestream accuracy. A short test in signed-in Chrome confirmed continuous bilingual captions and drafts on the DW News YouTube livestream. The isolated YouTube browser test remains blocked by sign-in verification. Long-term stream stability and natural-speech accuracy remain unverified, and English-to-Chinese translation may add an unsupported AM/PM qualifier. One startup hang recovered only after reloading the extension, with the root cause undetermined. We do not advertise a universal latency figure or WER score. See [measurement methods and current limits](docs/en/benchmarks.md).
 
 ## Documentation
 
