@@ -53,8 +53,10 @@ TingSub 是面向 Apple Silicon 的早期 Chrome 扩展与本地 MLX 服务。�
 
 下面是开发者从源码启动的方式：
 
+源码桌面开发需要 **Go 1.27.1+** 和 uv。MyGo 外壳内嵌界面，将 Python／MLX 作为私有子进程运行；独立 App 不需要安装 Go 或 Python。
+
 ```sh
-uv run --frozen --extra desktop tingsub gui
+uv run --frozen tingsub gui
 ```
 
 也可双击 `gui.command`。首次使用、Dock 启动器及服务关闭行为见[桌面指南](docs/zh-CN/desktop.md)。

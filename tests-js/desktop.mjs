@@ -7,7 +7,7 @@ const root = 'src/live_subs/desktop_ui';
 const version = JSON.parse(await readFile('extension/manifest.json', 'utf8')).version;
 const server = createServer(async (request, response) => {
   const name = request.url === '/' ? 'index.html' : request.url.slice(1);
-  if (!['index.html', 'style.css', 'app.js', 'brand.svg'].includes(name)) { response.writeHead(404).end(); return; }
+  if (!['index.html', 'style.css', 'app.js', 'bridge.js', 'brand.svg'].includes(name)) { response.writeHead(404).end(); return; }
   response.setHeader('Content-Type', name.endsWith('.js') ? 'text/javascript' : name.endsWith('.css') ? 'text/css' : name.endsWith('.svg') ? 'image/svg+xml' : 'text/html');
   response.end(await readFile(`${root}/${name}`));
 });
@@ -34,7 +34,7 @@ try {
       { kind: 'translation', repo: 'mlx-community/Qwen2.5-1.5B-Instruct-4bit', name: 'Qwen 1.5B', description: {} },
     ];
     window.calls = [];
-    window.pywebview = { api: {
+    const api = {
       snapshot: async () => structuredClone(window.fixture),
       get_interface: async () => ({ locale: 'zh-CN', theme: 'dark' }),
       save_interface: async value => { await new Promise(resolve => setTimeout(resolve, 150)); window.calls.push(['interface', value]); },
@@ -44,6 +44,11 @@ try {
       prepare_models: async (selection, download) => { window.calls.push(['prepare', selection, download]); window.fixture.state = 'preparing'; window.fixture.owned = true; },
       copy_pairing: async () => { window.calls.push(['copy']); return { ok: true }; },
       open_resource: async name => window.calls.push(['resource', name]),
+    };
+    window.mygo = { call: async (method, ...args) => {
+      const name = method.replace(/^Desktop\./, "").replace(/[A-Z]/g, (c, i) => (i ? "_" : "") + c.toLowerCase());
+      if (!Object.hasOwn(api, name)) throw new Error(`Unknown desktop method: ${method}`);
+      return api[name](...args);
     } };
   });
   await page.goto(`http://127.0.0.1:${server.address().port}`);

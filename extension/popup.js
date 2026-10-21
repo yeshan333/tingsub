@@ -58,6 +58,7 @@ keys.forEach(key => $(key).addEventListener('input', () => {
 }));
 $('token').addEventListener('change', loadShared);
 let pending = false;
+let startError = '';
 function status(message, error = false) {
   $('status').textContent = message;
   $('status').classList.toggle('error', error);
@@ -69,10 +70,16 @@ async function refresh() {
   $('start').disabled = active;
   $('stop').disabled = !active || current.state === 'stopping';
   if (active || current.state === 'error') {
+    if (active) startError = '';
     const message = current.state === 'running' && current.audio
       ? `正在聆听 · ${current.audio.rms > 100 ? '已收到直播声音' : '等待直播声音'}`
       : current.message || '正在聆听…';
     status(message, current.state === 'error');
+    return;
+  }
+  if (startError) { status(startError, true); return; }
+  if (current.state === 'idle' && current.tabId !== undefined) {
+    status('字幕已停止 · 点击「为当前标签页开启字幕」重新开始');
     return;
   }
   try {
@@ -82,11 +89,12 @@ async function refresh() {
     if (health.service !== 'tingqiao' || health.protocol !== 1) {
       status('端口被其他服务占用，无法连接听桥', true); return;
     }
-    status(health.busy ? '本机模型正在处理另一个连接' : '本机模型已就绪，打开直播后即可开始');
+    status(health.busy ? '本机模型正在处理另一个连接' : '本机模型已就绪 · 尚未开启字幕，请点击下方按钮');
   } catch { status('本机服务未就绪。请在 TingSub 桌面窗口启动服务，或运行 start.command。', true); }
 }
 $('start').addEventListener('click', async () => {
   pending = true;
+  startError = '';
   $('start').disabled = true;
   try {
     await save();
@@ -98,7 +106,7 @@ $('start').addEventListener('click', async () => {
     if (result?.error) throw new Error(result.error);
     pending = false;
     await refresh();
-  } catch (error) { status(error.message, true); $('start').disabled = false; }
+  } catch (error) { startError = error.message; status(startError, true); $('start').disabled = false; }
   finally { pending = false; }
 });
 $('stop').addEventListener('click', async () => {

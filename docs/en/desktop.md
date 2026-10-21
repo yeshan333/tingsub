@@ -4,7 +4,7 @@
 
 Download the App/DMG from [GitHub Releases](https://github.com/yeshan333/tingsub/releases/latest) without signing in: see [Release download instructions](distribution.md#download-a-release).
 
-TingSub offers a lightweight macOS window using the system WebKit renderer. The Python/MLX service still performs inference in a separate process. The desktop interface is available in English and Simplified Chinese, with dark, light and system appearance.
+TingSub offers a lightweight macOS window using MyGo and the system WebKit renderer. The Python/MLX service still performs inference in a separate process. The desktop interface is available in English and Simplified Chinese, with dark, light and system appearance.
 
 ![TingSub desktop interface, showing sample captions](../assets/screenshots/captions-en.png)
 
@@ -30,12 +30,14 @@ A downloaded model is cached separately from the active configuration. The old p
 
 ### Run from source
 
+Install Go 1.27.1+ and uv. The launcher builds the MyGo host with Go’s build cache, then starts the selected Python environment as its private controller. The App/DMG includes both executables and does not require Go.
+
 ```sh
-uv sync --frozen --extra desktop --python 3.12
-uv run --frozen --extra desktop tingsub gui
+uv sync --frozen --python 3.12
+uv run --frozen tingsub gui
 ```
 
-`gui.command` and `scripts/create_desktop_app.py` remain development launchers that depend on the checkout. They are different from the standalone bundle. See [distribution](distribution.md) to build an App/DMG.
+`gui.command` and `scripts/create_desktop_app.py` remain development launchers that depend on the checkout. The Dock launcher compiles Go when it is created, so Finder does not need Go on PATH. After editing Go or embedded UI files, rerun the creation script or the source launch command to refresh its executable. They are different from the standalone bundle. See [distribution](distribution.md) to build an App/DMG.
 
 ## Controls and lifecycle
 

@@ -1,4 +1,4 @@
-# Build on Apple Silicon with the locked desktop + bundle environment.
+# Build the Python sidecar on Apple Silicon with the locked bundle environment.
 import os
 import tomllib
 from importlib.metadata import distributions
@@ -9,7 +9,7 @@ from PyInstaller.utils.hooks import collect_all, collect_data_files, collect_sub
 root = Path(SPECPATH).parent
 version = tomllib.loads((root / 'pyproject.toml').read_text())['project']['version']
 binaries, datas, hidden = [], [], []
-for package in ('mlx', 'mlx_whisper', 'mlx_lm', 'tiktoken', 'tokenizers', 'webview'):
+for package in ('mlx', 'mlx_whisper', 'mlx_lm', 'tiktoken', 'tokenizers'):
     data, binary, modules = collect_all(package)
     datas += data
     binaries += binary
@@ -22,16 +22,15 @@ for distribution in distributions():
         datas += copy_metadata(distribution.metadata['Name'])
 hidden += collect_submodules('mlx_lm.models')
 hidden += ['uvicorn.logging', 'uvicorn.loops.auto', 'uvicorn.protocols.http.auto',
-           'uvicorn.protocols.websockets.auto', 'uvicorn.lifespan.on', 'webview.platforms.cocoa']
-datas += [(str(root / 'src/live_subs/desktop_ui'), 'live_subs/desktop_ui'),
-          (str(root / 'extension'), 'extension'), (str(root / 'LICENSE'), 'notices'),
+           'uvicorn.protocols.websockets.auto', 'uvicorn.lifespan.on']
+datas += [(str(root / 'extension'), 'extension'), (str(root / 'LICENSE'), 'notices'),
           (str(root / 'docs/en/models.md'), 'notices')]
 a = Analysis([str(root / 'packaging/desktop_entry.py')], pathex=[str(root / 'src')],
              binaries=binaries, datas=datas, hiddenimports=hidden,
              hookspath=[str(root / "packaging/hooks")],
-             excludes=['tkinter', 'PyQt5', 'PyQt6', 'PySide2', 'PySide6', 'matplotlib', 'IPython', 'pytest'])
+             excludes=['tkinter', 'PyQt5', 'PyQt6', 'PySide2', 'PySide6', 'matplotlib', 'IPython', 'pytest', 'webview', 'AppKit', 'Foundation', 'objc'])
 pyz = PYZ(a.pure)
-exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='TingSub', console=False,
+exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='TingSub-worker', console=True,
           target_arch='arm64', codesign_identity=os.environ.get('TINGSUB_CODESIGN_IDENTITY'))
 collection = COLLECT(exe, a.binaries, a.datas, name='TingSub')
 # Wheel selection varies with the build host. Declare the actual native floor,

@@ -18,7 +18,7 @@
 
 ## 使用桌面窗口
 
-推荐通过 `uv run --frozen --extra desktop tingsub gui` 或 `gui.command` 打开桌面工作空间，在界面中准备模型、启动服务并复制配对码。完整说明见[桌面指南](desktop.md)。下方保留原有终端操作方式。
+推荐通过 `uv run --frozen tingsub gui` 或 `gui.command` 打开桌面工作空间，在界面中准备模型、启动服务并复制配对码。完整说明见[桌面指南](desktop.md)。下方保留原有终端操作方式。
 
 ## 安装与启动
 
@@ -85,4 +85,4 @@ uv run --frozen tingsub serve
 
 Ctrl+C 停止服务，在 `chrome://extensions` 移除扩展。不再需要时删除仓库及其中的 `.venv`、`.local`。新下载的模型位于 `.local/model-cache`，删除 `.local` 会同时删除它们。旧配置可能仍指向共享的 Hugging Face 缓存，请检查 `models.json`，只删除确认不再使用的快照。独立应用另见[卸载说明](distribution.md)。项目不安装后台常驻守护进程或登录启动项。
 
-桌面依赖更新请使用 `uv sync --frozen --extra desktop`。字幕设置共享与离线编辑行为见[桌面指南](desktop.md)。
+桌面依赖更新请使用 `uv sync --frozen`。字幕设置共享与离线编辑行为见[桌面指南](desktop.md)。

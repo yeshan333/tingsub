@@ -4,11 +4,13 @@
 
 ## 复现工作区
 
-完整开发环境使用 uv 管理的 Python 3.12、Node.js 22+ 与 Apple Silicon macOS。依赖分别固定在 `uv.lock` 和 `package-lock.json`。
+完整开发环境使用 Go 1.27.1+、uv 管理的 Python 3.12、Node.js 22+ 与 Apple Silicon macOS。依赖分别固定在 `go.mod`／`go.sum`、`uv.lock` 和 `package-lock.json`。
 
 ```sh
 uv sync --frozen --python 3.12
 npm ci
+go test -race ./...
+go vet ./...
 uv run --frozen ruff check src tests scripts
 uv run --frozen pytest -v
 python3 scripts/check_docs.py
@@ -51,12 +53,14 @@ GitHub Actions 在 macOS ARM64 执行 Python 静态检查、单元测试与包�
 
 `npm run test:desktop` 使用明确的桌面桥接夹具验证控件调用、共享参数、外部服务保护、双语主题及最小窗口布局，不代表真实模型推理。截图保存在 `.local/desktop-*.png`。
 
-原生 WebKit 冒烟检查需先安装桌面依赖、准备模型，并停止已有服务：
+原生 WebKit 冒烟检查需先安装 Go 和 Python 依赖、准备模型，并停止已有服务：
 
 ```sh
-uv run --frozen --extra desktop python scripts/check_desktop_native.py
+uv run --frozen python scripts/check_desktop_native.py
 ```
 
-该检查打开独立原生窗口，点击真实界面的启动／停止控件，等待模型预热，验证本机接口可用并确认停止后端口释放。退出会清理其启动的服务，不采集浏览器音频。此项不在 CI 下载模型运行。
+该检查打开独立的 MyGo 窗口，通过真实桥接启动／停止服务并等待模型就绪。退出会清理其启动的服务，不采集浏览器音频。此项不在 CI 下载模型运行。
 
 原生检查也验证外部 URL 导航被拒绝。仅检查 WebKit 界面和导航边界、不加载模型时，可追加 `--no-inference`。
+
+桌面开发还需要 Go 1.27.1+，依赖固定在 `go.mod`／`go.sum`。MyGo 入口位于 `cmd/tingsub`，管道管理和绑定服务位于 `internal/desktop`，Python 分派器位于 `src/live_subs/desktop_rpc.py`。Go 内嵌 `src/live_subs/desktop_ui`，不需要前端打包器。`npm run dev:desktop`、`npm run test:native`、`npm run build:desktop` 分别封装源码启动、无模型原生检查和构建。原生检查还覆盖未知方法拒绝、菜单语言切换及窗口关闭／恢复。更新 MyGo 时执行 `go get` 和 `go mod tidy`，检查两个 Go 依赖文件，再运行 Go 与原生检查。

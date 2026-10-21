@@ -21,7 +21,7 @@ const fixture = {
 };
 const server = createServer(async (request, response) => {
   const name = request.url === '/' ? 'index.html' : request.url.slice(1);
-  if (!['index.html', 'style.css', 'app.js', 'brand.svg'].includes(name)) { response.writeHead(404).end(); return; }
+  if (!['index.html', 'style.css', 'app.js', 'bridge.js', 'brand.svg'].includes(name)) { response.writeHead(404).end(); return; }
   response.setHeader('Content-Type', name.endsWith('.js') ? 'text/javascript' : name.endsWith('.css') ? 'text/css' : name.endsWith('.svg') ? 'image/svg+xml' : 'text/html');
   response.end(await readFile(`src/live_subs/desktop_ui/${name}`));
 });
@@ -32,9 +32,14 @@ try {
   for (const locale of ['en', 'zh-CN']) {
     const page = await browser.newPage({ viewport: { width: 1200, height: 960 }, deviceScaleFactor: 1 });
     await page.addInitScript(({ fixture, locale }) => {
-      window.pywebview = { api: {
+      const api = {
         snapshot: async () => structuredClone(fixture),
         get_interface: async () => ({ locale, theme: 'dark' }),
+      };
+      window.mygo = { call: async (method, ...args) => {
+        const name = method.replace(/^Desktop\./, "").replace(/[A-Z]/g, (c, i) => (i ? "_" : "") + c.toLowerCase());
+        if (!Object.hasOwn(api, name)) throw new Error(`Unknown desktop method: ${method}`);
+        return api[name](...args);
       } };
     }, { fixture, locale });
     await page.goto(`http://127.0.0.1:${server.address().port}`);

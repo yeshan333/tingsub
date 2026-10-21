@@ -1,9 +1,8 @@
-"""Small native WebKit host. Inference remains in an owned, isolated subprocess."""
+"""Desktop application services, hosted by the private MyGo Python sidecar."""
 
 import http.client
 import json
 import os
-import platform
 import socket
 import subprocess
 import threading
@@ -328,52 +327,7 @@ class DesktopAPI:
         return {"ok": True}
 
 
-def launch(directory):
-    if platform.system() != "Darwin" or platform.machine() != "arm64":
-        raise SystemExit("TingSub desktop requires an Apple Silicon Mac")
-    try:
-        import webview
-    except ImportError as exc:
-        raise SystemExit("Install desktop support: uv sync --extra desktop") from exc
-    controller = DesktopController(directory)
-    window = webview.create_window(
-        "TingSub",
-        str(Path(__file__).with_name("desktop_ui") / "index.html"),
-        width=1060,
-        height=780,
-        min_size=(880, 660),
-        background_color="#151719",
-        text_select=False,
-    )
-    api = DesktopAPI(controller)
-    from .menubar import MenuBar
+def launch(directory, *arguments):
+    from .desktop_launcher import launch as launch_mygo
 
-    menubar = MenuBar(window, controller, api)
-    window._tingsub_menubar = menubar
-
-    def secure_window():
-        from .desktop_security import install_cocoa_guards
-
-        # Event handlers swallow ordinary exceptions. Expose capabilities only after
-        # successful policy installation, so any failure leaves an inert window.
-        install_cocoa_guards(window)
-        window.expose(
-            api.snapshot,
-            api.start_service,
-            api.stop_service,
-            api.prepare_models,
-            api.save_preferences,
-            api.get_interface,
-            api.save_interface,
-            api.copy_pairing,
-            api.open_resource,
-        )
-        menubar.install()
-
-    window.events.before_show += secure_window
-    window.events.closed += controller.close
-    try:
-        webview.start(gui="cocoa", debug=False)
-    finally:
-        menubar.dispose()
-        controller.close()
+    launch_mygo(directory, *arguments)

@@ -47,14 +47,14 @@ shasum -a 256 -c *.sha256
 
 ### 本地构建
 
-维护者需要 Apple Silicon Mac 和 uv，构建依赖由锁文件固定。
+维护者需要 Apple Silicon Mac、Go 1.27.1+ 和 uv，构建依赖由锁文件固定。
 
 ```sh
-uv sync --frozen --extra desktop --group bundle --python 3.12
-uv run --frozen --extra desktop --group bundle python scripts/build_desktop.py
+uv sync --frozen --group bundle --python 3.12
+uv run --frozen --group bundle python scripts/build_desktop.py
 ```
 
-输出为 `.local/bundle/TingSub.app`、`TingSub-<version>-macos-<minimum>-arm64.dmg`、对应的 `.app.zip` 和各自的 SHA-256 文件。应用版本读取 `pyproject.toml`，插件包版本读取 `extension/manifest.json`，两者应保持一致。PyInstaller 包含解释器、MLX 原生库、Metal 资源、推理依赖、桌面资源和 Chrome 插件。后台进程调用内置可执行文件，不依赖 PATH 或系统 Python。`--no-dmg` 只构建 App 和 App ZIP。
+输出为 `.local/bundle/TingSub.app`、`TingSub-<version>-macos-<minimum>-arm64.dmg`、对应的 `.app.zip` 和各自的 SHA-256 文件。应用版本读取 `pyproject.toml`，插件包版本读取 `extension/manifest.json`，两者应保持一致。Go 生成内嵌桌面资源的 `Contents/MacOS/TingSub` 外壳；PyInstaller 生成 `Contents/MacOS/TingSub-worker`，包含解释器、MLX 原生库、Metal 资源、推理依赖和 Chrome 插件。外壳与推理任务通过固定路径调用内置 Python 可执行文件，不依赖 PATH 或系统 Python。两个程序组装完成后重新签名应用。`--no-dmg` 只构建 App 和 App ZIP。
 
 打包浏览器插件不需要 macOS 依赖：
 
@@ -87,3 +87,5 @@ CI 校验两个压缩包的 SHA-256 和 DMG 完整性，将 App ZIP 解压到源
 模型权重单独下载并遵循上游许可。第三方发行元数据及许可文件包含在 App 资源中，另见[模型与依赖说明](models.md)。构建成功不等于许可审核或准确率评测通过。
 
 构建脚本读取所有打包的 Mach-O 依赖，以最高最低版本要求设置 `LSMinimumSystemVersion`，并写入 DMG 文件名。新系统可能选择要求更高的 MLX wheel，因此不能笼统宣称本机产物支持 macOS 14。若要分发低版本兼容包，应在目标最低系统构建并实测；仅 CI 构建通过不代表推理验证。
+
+构建原生外壳需要 Go 1.27.1+。Go 生成内嵌界面资源的 `Contents/MacOS/TingSub`；PyInstaller 生成 `Contents/MacOS/TingSub-worker`，包含 Python、MLX 和推理依赖。外壳通过同目录路径启动该程序，推理任务也复用它，不依赖系统 Python 或 PATH。组装完成后重新签名整个应用。MyGo 和其他 Go 依赖的许可复制到 `Contents/Resources/notices`，运行时不再依赖 pywebview 或 PyObjC。桌面 CI 构建前执行 `go test -race ./...` 和 `go vet ./...`。

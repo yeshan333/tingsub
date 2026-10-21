@@ -33,6 +33,22 @@ npm run test:live
 
 `test:live` requires those generated fixtures and a running service using the same `.local/token`. It plays them in isolated Chromium and exercises actual tabCapture → AudioWorklet → WebSocket → MLX → overlay. It uses browser debugging flags only in its disposable test profile. Results are in `.local/benchmark/browser-capture.json`.
 
+## YouTube livestream end-to-end check
+
+Start the service from the TingSub desktop window and wait for model readiness, then run:
+
+```sh
+TINGSUB_DATA_DIR="/path/to/data-dir" \
+YOUTUBE_LIVE_URL="https://www.youtube.com/@dwnews/live" \
+npm run test:youtube
+```
+
+The check uses an isolated Chromium profile and verifies an ongoing broadcast, advancing playback, actual tab audio capture, rendered bilingual captions, and cleanup after stopping. It captures 180 seconds by default; set `YOUTUBE_TEST_SECONDS` to change this or `HEADED=1` to show the browser. Set `YOUTUBE_TEST_PROXY` when needed; localhost bypasses the proxy. Reports and screenshots go to `.local/youtube-live/`, configurable with `YOUTUBE_TEST_OUTPUT`. The pairing token is read from `TINGSUB_DATA_DIR/token` and is not written to reports. The synthetic-audio `test:live` also supports `TINGSUB_DATA_DIR`.
+
+Login requirements, an ended or unplayable broadcast, insufficient captions, or capture failure fail the check. It never substitutes recorded or synthesized audio to claim livestream success. Login checks require a browser environment where playback works. Nonempty captions do not establish semantic accuracy. Latency distributions include successful translations only; read them alongside rejection, drop, and error counts.
+
+On 2026-10-22, the packaged MyGo app successfully started its models through the actual desktop window, but both DW News and France 24 YouTube players returned `LOGIN_REQUIRED`. That automated check remains incomplete. A later short manual check in the user’s signed-in Chrome profile showed continuous Chinese/English captions and drafts on the actual DW News livestream. A stale startup request initially blocked capture; reloading the extension restored it, but the root cause is not fully identified. **This is short-session evidence, not a passing 180-second automated run or long-session reliability result.** Against the same packaged service, both Japanese synthesized-speech segments passed. English recognition was correct, but Chinese translation added “afternoon” to an unspecified three o'clock, failing the overall browser check. This translation issue remains unresolved; earlier unit tests and text translation regressions do not supersede this result. The test script was also corrected to synchronize the source language with the service instead of changing browser storage alone; the Japanese result comes from the corrected rerun. Local details are in `.local/benchmark/browser-capture.json`.
+
 For direct model checks, **stop the service first**:
 
 ```sh

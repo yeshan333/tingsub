@@ -47,14 +47,14 @@ Every PR, main push and manual CI run checks and packages the extension, then bu
 
 ### Build locally
 
-Maintainers need an Apple Silicon Mac and uv. The lockfile pins the build dependencies.
+Maintainers need an Apple Silicon Mac, Go 1.27.1+ and uv. The lockfile pins the build dependencies.
 
 ```sh
-uv sync --frozen --extra desktop --group bundle --python 3.12
-uv run --frozen --extra desktop --group bundle python scripts/build_desktop.py
+uv sync --frozen --group bundle --python 3.12
+uv run --frozen --group bundle python scripts/build_desktop.py
 ```
 
-Output: `.local/bundle/TingSub.app`, `TingSub-<version>-macos-<minimum>-arm64.dmg`, a matching `.app.zip`, and SHA-256 files. The app version comes from `pyproject.toml`; the extension package uses `extension/manifest.json`. Keep these versions aligned. PyInstaller includes the interpreter, native MLX libraries, Metal resources, inference dependencies, desktop assets and Chrome extension. Workers use the embedded executable, not PATH or a system Python. `--no-dmg` builds the App and App ZIP only.
+Output: `.local/bundle/TingSub.app`, `TingSub-<version>-macos-<minimum>-arm64.dmg`, a matching `.app.zip`, and SHA-256 files. The app version comes from `pyproject.toml`; the extension package uses `extension/manifest.json`. Keep these versions aligned. Go builds the MyGo `Contents/MacOS/TingSub` host with embedded desktop assets. PyInstaller builds `Contents/MacOS/TingSub-worker`, including Python, native MLX libraries, Metal resources, inference dependencies and the Chrome extension. The host uses this sibling executable, and inference workers reuse it; neither relies on PATH or a system Python. The assembled app is signed after both executables are installed. `--no-dmg` builds the App and App ZIP only.
 
 Package the browser extension without macOS dependencies:
 
@@ -87,3 +87,5 @@ To uninstall, quit TingSub, remove it from Applications and remove its Chrome ex
 Model weights retain upstream licenses and are downloaded separately. Third-party distribution metadata/license files are included under the App's resources; see [model and dependency notices](models.md). A successful build is not a licensing review or a quality benchmark.
 
 The builder reads every bundled Mach-O dependency and sets `LSMinimumSystemVersion` to their highest minimum. The DMG filename includes this value. A build on a newer host can select newer MLX wheels and therefore cannot claim macOS 14 compatibility. Build and test on the oldest intended system to provide a compatible artifact; CI results alone are not inference validation.
+
+The native host requires Go 1.27.1+ at build time. MyGo and other Go dependency licenses are copied into `Contents/Resources/notices`; the runtime has no pywebview or PyObjC dependency. `go test -race ./...` and `go vet ./...` run before the desktop CI build.

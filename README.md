@@ -53,8 +53,10 @@ These screenshots render the current desktop interface with example model availa
 
 For development, run from source:
 
+Source desktop development requires **Go 1.27.1+** and uv. The MyGo host embeds the UI and runs Python/MLX as a private child process. The standalone App requires neither Go nor Python.
+
 ```sh
-uv run --frozen --extra desktop tingsub gui
+uv run --frozen tingsub gui
 ```
 
 You can also double-click `gui.command`. See the [desktop guide](docs/en/desktop.md) for first-time setup, the Dock launcher and shutdown behavior.

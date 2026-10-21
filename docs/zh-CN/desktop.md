@@ -4,7 +4,7 @@
 
 从 [GitHub Release](https://github.com/yeshan333/tingsub/releases/latest) 下载 App/DMG，无需登录，见 [Release 下载说明](distribution.md#下载-release)。
 
-TingSub 提供使用系统 WebKit 渲染的轻量 macOS 窗口，推理仍由独立的 Python／MLX 服务进程完成。桌面界面支持简体中文、英文，以及深色、浅色和跟随系统的外观。
+TingSub 提供使用 MyGo 和系统 WebKit 渲染的轻量 macOS 窗口，推理仍由独立的 Python／MLX 服务进程完成。桌面界面支持简体中文、英文，以及深色、浅色和跟随系统的外观。
 
 ![TingSub 桌面界面，字幕为示例文字](../assets/screenshots/captions-zh-CN.png)
 
@@ -30,12 +30,14 @@ Chrome 要求用户主动安装插件、开启标签页采集，这两步不能�
 
 ### 从源码启动
 
+先安装 Go 1.27.1+ 和 uv。启动器通过 Go 构建缓存编译 MyGo 外壳，再将当前 Python 环境作为私有控制器启动。App／DMG 已包含两个可执行文件，使用时不需要 Go。
+
 ```sh
-uv sync --frozen --extra desktop --python 3.12
-uv run --frozen --extra desktop tingsub gui
+uv sync --frozen --python 3.12
+uv run --frozen tingsub gui
 ```
 
-`gui.command` 和 `scripts/create_desktop_app.py` 仍保留为依赖源码目录的开发启动器，与独立安装包不同。构建 App/DMG 见[分发指南](distribution.md)。
+`gui.command` 和 `scripts/create_desktop_app.py` 仍保留为依赖源码目录的开发启动器，与独立安装包不同。Dock 启动器在创建时编译 Go，因此 Finder 启动时不需要在 PATH 中找到 Go。修改 Go 或内嵌界面资源后，重新运行创建脚本或源码启动命令以更新可执行文件。构建 App/DMG 见[分发指南](distribution.md)。
 
 ## 控件与服务生命周期
 

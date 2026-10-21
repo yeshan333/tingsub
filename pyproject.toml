@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tingsub"
-version = "0.2.1"
+version = "0.3.0"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -28,11 +28,6 @@ Issues = "https://github.com/yeshan333/tingsub/issues"
 [project.scripts]
 tingsub = "live_subs.cli:main"
 live-subs = "live_subs.cli:main"
-
-[project.optional-dependencies]
-desktop = [
-    "pywebview==6.2.1",
-]
 
 [dependency-groups]
 bundle = [

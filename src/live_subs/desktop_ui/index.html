@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
     />
     <title>TingSub</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="bridge.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -85,7 +86,7 @@
             ><span data-i18n="localNote">声音留在你的电脑</span>
           </div>
           <button class="repo-link" data-resource="github">
-            TingSub <span>v0.2.1</span><svg><use href="#i-arrow" /></svg>
+            TingSub <span>v0.3.0</span><svg><use href="#i-arrow" /></svg>
           </button>
         </div>
       </aside>
@@ -338,7 +339,7 @@
               </div>
             </div>
             <div class="about-footer">
-              <img class="brand-mark" src="brand.svg" alt="" width="34" height="34" /><strong>TingSub</strong><span>0.2.1 · MIT</span
+              <img class="brand-mark" src="brand.svg" alt="" width="34" height="34" /><strong>TingSub</strong><span>0.3.0 · MIT</span
               ><button class="text-button" data-resource="github">
                 GitHub ↗
               </button>

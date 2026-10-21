@@ -13,7 +13,7 @@ Search existing issues. For a bug, provide steps, expected/actual behavior, comm
 1. Fork the repository and branch from `main`.
 2. Follow the [development guide](docs/en/development.md) to install locked dependencies.
 3. Keep a PR focused. Add regression coverage for changed behavior; tests must assert meaningful outcomes, not just non-empty output or implementation details.
-4. Run the relevant Python, JavaScript, browser and documentation checks. State which were run and which require hardware/models you did not have.
+4. Run the relevant Go, Python, JavaScript, browser and documentation checks. State which were run and which require hardware/models you did not have.
 5. Update both documentation languages and changelogs when user-visible behavior changes.
 6. Open a PR with a concrete before/after description and verification evidence.
 

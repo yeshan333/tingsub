@@ -33,6 +33,22 @@ npm run test:live
 
 `test:live` 需要已生成的测试音频和使用同一 `.local/token` 的运行中服务。它在独立 Chromium 播放音频，真实经过 tabCapture → AudioWorklet → WebSocket → MLX → 浮层。浏览器调试参数只用于可丢弃的测试配置，结果保存在 `.local/benchmark/browser-capture.json`。
 
+## YouTube 直播端到端检查
+
+先在 TingSub 桌面窗口启动服务并等待模型就绪，然后运行：
+
+```sh
+TINGSUB_DATA_DIR="/path/to/data-dir" \
+YOUTUBE_LIVE_URL="https://www.youtube.com/@dwnews/live" \
+npm run test:youtube
+```
+
+测试使用独立 Chromium 配置，检查直播正在播出、播放器持续前进、真实标签页音频采集、双语浮层及停止后的清理。默认采集 180 秒，可用 `YOUTUBE_TEST_SECONDS` 调整；`HEADED=1` 显示浏览器。需要代理时设置 `YOUTUBE_TEST_PROXY`，本机服务不经过代理。结果与截图写入 `.local/youtube-live/`，可用 `YOUTUBE_TEST_OUTPUT` 更改。配对码仅从 `TINGSUB_DATA_DIR/token` 读取，不写入报告。合成音频的 `test:live` 也支持 `TINGSUB_DATA_DIR`。
+
+YouTube 要求登录、直播结束、无法播放、字幕不足或采集失败都会使检查失败；不会换成录播或合成音频冒充直播通过。登录校验需要在能够正常播放的浏览器环境中解决。非空字幕断言不能评估语义准确率，延迟分布也只统计成功翻译片段，必须结合报告中的拒绝、跳过及错误计数阅读。
+
+2026-10-22 的 MyGo 打包应用补测中，从真实桌面窗口启动模型成功，但 DW News 与 France 24 的 YouTube 播放器均返回 `LOGIN_REQUIRED`，因此该自动化检查未完成。随后在用户已登录的 Chrome 中短时观察到 DW News 真实直播持续生成中文、英文字幕与下一句草稿；启动时曾卡在旧请求，重新加载扩展后恢复，根因尚未完全确认。这是现场短时验证，**不是 180 秒自动化检查通过或长期稳定性结论**。同一打包服务的合成语音浏览器检查中，日语两个片段通过；英语识别正确，但中文翻译把未指明时段的“三点”补成“下午三点”，导致整套检查失败。英语翻译问题尚未解决，不能用此前的单元测试或文本翻译回归通过结果代替。本次也修正了测试脚本仅修改浏览器设置、未同步服务端原声语言的问题，日语结果来自修正后的重跑。本地明细保存在 `.local/benchmark/browser-capture.json`。
+
 直接模型检查需要**先停止服务**：
 
 ```sh

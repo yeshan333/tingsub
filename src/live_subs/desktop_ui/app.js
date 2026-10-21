@@ -529,7 +529,7 @@ async function poll() {
 }
 async function connect() {
   if (api) return;
-  api = window.pywebview?.api;
+  api = window.tingsubDesktop;
   if (!api) return;
   try {
     const appearance = await api.get_interface();
@@ -543,7 +543,6 @@ async function connect() {
     error(t("bridgeError"));
   }
 }
-window.addEventListener("pywebviewready", connect);
 window.addEventListener("beforeunload", () => clearTimeout(pollTimer));
 translate();
 connect();

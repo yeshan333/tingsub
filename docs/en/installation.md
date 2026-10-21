@@ -18,7 +18,7 @@ There is no supported CPU, CUDA, Windows, Linux, Intel Mac or Firefox runtime ye
 
 ## Use the desktop window
 
-Run `uv run --frozen --extra desktop tingsub gui` or open `gui.command` to prepare models, start the service and copy the pairing code in a desktop window. See the [desktop guide](desktop.md). The terminal workflow remains available below.
+Run `uv run --frozen tingsub gui` or open `gui.command` to prepare models, start the service and copy the pairing code in a desktop window. See the [desktop guide](desktop.md). The terminal workflow remains available below.
 
 ## Install and start
 
@@ -85,4 +85,4 @@ Click **Reload** for TingSub in `chrome://extensions`, then refresh the video pa
 
 Stop the service with Ctrl+C, then remove the extension in `chrome://extensions`. Remove the checkout and its `.venv`/`.local` directories when no longer needed. New model downloads live in `.local/model-cache`, so deleting `.local` deletes those downloads too. Older configurations may still reference a shared Hugging Face cache: inspect `models.json` and only remove snapshots you no longer use. For the standalone App, follow the separate [uninstall steps](distribution.md). There is no installed background daemon or login item.
 
-Use `uv sync --frozen --extra desktop` when updating desktop dependencies. See the [desktop guide](desktop.md) for shared preferences and offline editing behavior.
+Use `uv sync --frozen` when updating desktop dependencies. See the [desktop guide](desktop.md) for shared preferences and offline editing behavior.

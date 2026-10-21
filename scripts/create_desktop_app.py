@@ -3,9 +3,10 @@
 import plistlib
 import shlex
 import shutil
-import sys
 import tomllib
 from pathlib import Path
+
+from live_subs.desktop_launcher import desktop_command
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -31,7 +32,9 @@ def main():
         "NSHighResolutionCapable": True,
     }
     (contents / "Info.plist").write_bytes(plistlib.dumps(info))
-    command = [sys.executable, "-m", "live_subs.cli", "--data-dir", str(ROOT / ".local"), "gui"]
+    # Build now, while the developer's Go toolchain is on PATH. Finder launches
+    # the native host directly and only needs the absolute Python path in it.
+    command = desktop_command(ROOT / ".local")
     binary.write_text("#!/bin/sh\nexec " + shlex.join(command) + "\n")
     binary.chmod(0o755)
     print(app)

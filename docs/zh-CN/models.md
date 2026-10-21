@@ -30,7 +30,7 @@ TingSub 的 [MIT 许可](../../LICENSE)只覆盖项目自身源码，不重新�
 
 ## 依赖与致谢
 
-Python 与 JavaScript 依赖分别采用各自许可，具体解析版本和下载来源记录在 `uv.lock` 与 `package-lock.json`。主要上游项目：
+Go、Python 与 JavaScript 依赖分别采用各自许可，具体解析版本和下载来源记录在 `go.mod`／`go.sum`、`uv.lock` 与 `package-lock.json`。主要上游项目：
 
 - [MLX](https://github.com/ml-explore/mlx)、[MLX LM](https://github.com/ml-explore/mlx-lm)、[MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper)。
 - [OpenAI Whisper](https://github.com/openai/whisper)、[Qwen2.5](https://github.com/QwenLM/Qwen2.5)。
@@ -52,3 +52,5 @@ Python 与 JavaScript 依赖分别采用各自许可，具体解析版本和下�
 2026-10-04 在 M4 Pro 上，1.5B 通过了 28 项人工编写翻译检查中的 19 项；失败包括擅自补充上午／下午、遗漏信息。这不是普遍准确率评测，因此仍保留 3B 为默认。Small + 1.5B 能正常加载并生成字幕，但兼容性通过不代表翻译质量相同。切换时下载固定 revision 并在激活前验证；缓存版本保持不变，只有显式执行 CLI `prepare --force` 才刷新上游版本。
 
 上游许可：[Whisper](https://github.com/openai/whisper/blob/main/LICENSE)、[Qwen 1.5B](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/blob/main/LICENSE)、[Qwen 3B](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE)。PyInstaller 引导程序使用附带打包例外的 GPL，各项依赖仍遵循各自许可。
+
+- [MyGo](https://github.com/egoist/mygo): MIT.

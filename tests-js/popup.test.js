@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 
-async function popup({ migrationFails = false } = {}) {
+async function popup({ migrationFails = false, session = { state: 'idle' }, startResult = { ok: true } } = {}) {
+  let interval;
   const elements = {};
   const requests = [];
   const saved = [];
@@ -15,13 +16,18 @@ async function popup({ migrationFails = false } = {}) {
     };
   }
   const chrome = {
+    tabs: { query: async () => [{ id: 12, url: 'https://www.youtube.com/watch?v=test' }] },
     storage: { local: { get: async () => defaults, set: async value => saved.push({ ...value }) } },
-    runtime: { sendMessage: async message => message.type === 'migratePreferences' && migrationFails ? { error: 'migration unavailable' } : ({ state: 'idle' }) },
+    runtime: { sendMessage: async message => {
+      if (message.type === 'migratePreferences' && migrationFails) return { error: 'migration unavailable' };
+      if (message.type === 'start') return startResult;
+      return session;
+    } },
   };
   const context = vm.createContext({
     chrome, AbortSignal,
     document: { getElementById: element, querySelector: () => ({ open: false }) },
-    setInterval() {},
+    setInterval(callback) { interval = callback; },
     fetch: async (url, options) => {
       if (url.endsWith('/health')) return { ok: true, json: async () => ({ service: 'tingqiao', protocol: 1 }) };
       if (options.method === 'PATCH') return { ok: true };
@@ -32,7 +38,7 @@ async function popup({ migrationFails = false } = {}) {
   let finished = false;
   loaded.finally(() => { finished = true; });
   while (!requests.length && !finished) await new Promise(resolve => setImmediate(resolve));
-  return { elements, requests, saved, loaded, edit: async (id, value) => {
+  return { elements, requests, saved, loaded, refresh: () => interval(), edit: async (id, value) => {
     elements[id].value = value;
     await elements[id].listeners.input();
   } };
@@ -73,4 +79,44 @@ test('旧设置迁移失败时弹窗保留本地值且不读取服务默认值',
   assert.equal(ui.elements.language.value, 'en');
   assert.equal(ui.elements.fontSize.value, 26);
   assert.equal(ui.saved.length, 0);
+});
+
+
+test('字幕启动被拒绝后，定时刷新仍显示失败原因而不是模型就绪', async () => {
+  const ui = await popup({ startResult: { error: '无法采集当前标签页音频' } });
+  ui.requests[0].resolve({});
+  await ui.loaded;
+  await ui.elements.start.listeners.click();
+  await ui.refresh();
+  await ui.refresh();
+  assert.equal(ui.elements.status.textContent, '无法采集当前标签页音频');
+  assert.equal(ui.elements.start.disabled, false);
+});
+
+test('字幕启动失败后重试成功，弹窗恢复正在聆听状态', async () => {
+  const session = { state: 'idle' };
+  const startResult = { error: '无法采集当前标签页音频' };
+  const ui = await popup({ session, startResult });
+  ui.requests[0].resolve({});
+  await ui.loaded;
+  await ui.elements.start.listeners.click();
+  delete startResult.error;
+  startResult.ok = true;
+  session.state = 'running';
+  session.audio = { rms: 200 };
+  await ui.elements.start.listeners.click();
+  await ui.refresh();
+  assert.match(ui.elements.status.textContent, /正在聆听.*已收到直播声音/);
+  assert.equal(ui.elements.start.disabled, true);
+  assert.equal(ui.elements.stop.disabled, false);
+});
+
+test('已有字幕会话停止后，重新打开弹窗明确提示需要再次开启字幕', async () => {
+  const ui = await popup({ session: { state: 'idle', tabId: 12, message: '字幕已停止' } });
+  ui.requests[0].resolve({});
+  await ui.loaded;
+  await ui.refresh();
+  assert.match(ui.elements.status.textContent, /字幕已停止.*重新开始/);
+  assert.equal(ui.elements.start.disabled, false);
+  assert.equal(ui.elements.stop.disabled, true);
 });

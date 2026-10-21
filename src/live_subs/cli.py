@@ -11,7 +11,9 @@ from .runtime import default_data_directory
 def main():
     parser = argparse.ArgumentParser(description="TingSub · 听桥：完全本地的直播双语字幕")
     parser.add_argument("--data-dir", type=Path, default=default_data_directory())
-    sub = parser.add_subparsers(dest="command", required=True)
+    sub = parser.add_subparsers(
+        dest="command", required=True, metavar="{prepare,serve,gui,pair}"
+    )
     prepare = sub.add_parser("prepare", help="首次联网下载模型；运行时不联网")
     prepare.add_argument(
         "--download-source", choices=("official", "mirror", "custom"), default="official"
@@ -26,6 +28,7 @@ def main():
     serve = sub.add_parser("serve", help="预热本地模型并启动服务")
     serve.add_argument("--port", type=int, default=18765)
     sub.add_parser("gui", help="打开 TingSub 桌面窗口")
+    sub.add_parser("desktop-rpc")
     sub.add_parser("pair", help="显示浏览器插件配对码")
     args = parser.parse_args()
     directory = args.data_dir.resolve()
@@ -35,6 +38,12 @@ def main():
         from .desktop import launch
 
         launch(directory)
+        return
+
+    if args.command == "desktop-rpc":
+        from .desktop_rpc import serve
+
+        serve(directory)
         return
 
     if args.command == "pair":

@@ -30,7 +30,7 @@ For experiments, `tingsub prepare --asr REPOSITORY --translation REPOSITORY` sel
 
 ## Dependencies and notices
 
-Python and JavaScript packages are separately licensed; exact resolved versions and download sources are in `uv.lock` and `package-lock.json`. Key upstream projects:
+Go, Python and JavaScript packages are separately licensed; exact resolved versions and download sources are in `go.mod`/`go.sum`, `uv.lock` and `package-lock.json`. Key upstream projects:
 
 - [MLX](https://github.com/ml-explore/mlx), [MLX LM](https://github.com/ml-explore/mlx-lm), [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper).
 - [OpenAI Whisper](https://github.com/openai/whisper), [Qwen2.5](https://github.com/QwenLM/Qwen2.5).
@@ -52,3 +52,5 @@ This list is attribution and orientation, not a substitute for every resolved pa
 The 1.5B option passed 19/28 authored translation checks on 2026-10-04 (M4 Pro), with failures including invented time-of-day details and missed content. These checks are not a general quality benchmark; keep 3B as the default. Small + 1.5B successfully loads and produces captions, but compatibility does not imply equal translation quality. Model switching downloads a pinned snapshot and validates before activation; cached versions remain fixed until an explicit CLI `prepare --force` refresh.
 
 Upstream licenses: [Whisper](https://github.com/openai/whisper/blob/main/LICENSE), [Qwen 1.5B](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/blob/main/LICENSE), [Qwen 3B](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE). PyInstaller's bootloader uses a GPL exception permitting bundled applications; dependencies keep their respective licenses.
+
+- [MyGo](https://github.com/egoist/mygo): MIT.

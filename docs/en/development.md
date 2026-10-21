@@ -4,11 +4,13 @@
 
 ## Reproduce the checkout
 
-Use Python 3.12 via uv, Node.js 22+, and macOS on Apple Silicon for the complete development environment. Dependencies are locked in `uv.lock` and `package-lock.json`.
+Use Go 1.27.1+, Python 3.12 via uv, Node.js 22+, and macOS on Apple Silicon for the complete development environment. Dependencies are locked in `go.mod`/`go.sum`, `uv.lock` and `package-lock.json`.
 
 ```sh
 uv sync --frozen --python 3.12
 npm ci
+go test -race ./...
+go vet ./...
 uv run --frozen ruff check src tests scripts
 uv run --frozen pytest -v
 python3 scripts/check_docs.py
@@ -51,12 +53,14 @@ Use `uv lock` for intentional Python changes and `npm install` for JavaScript ch
 
 `npm run test:desktop` uses an explicit bridge fixture to check control calls, shared settings, external-service protection, both interface languages/themes and minimum window layout. It does not claim model inference. Screenshots are saved to `.local/desktop-*.png`.
 
-For the native WebKit smoke check, install desktop dependencies, prepare models and stop any existing service:
+For the native WebKit smoke check, install Go and the Python dependencies, prepare models and stop any existing service:
 
 ```sh
-uv run --frozen --extra desktop python scripts/check_desktop_native.py
+uv run --frozen python scripts/check_desktop_native.py
 ```
 
-This opens its own native window, clicks the real start/stop controls, waits for model warm-up, verifies the loopback API and checks that stopping releases the port. It cleans up its owned service and does not capture browser audio. CI does not download models to run this check.
+This opens its own MyGo window, invokes the real bridge to start/stop the service and waits for model readiness. It cleans up its owned service and does not capture browser audio. CI does not download models to run this check.
 
 The native check also verifies that navigation to a foreign URL is rejected. Add `--no-inference` to check the WebKit interface and navigation boundary without loading models.
+
+MyGo code lives in `cmd/tingsub`, the pipe supervisor and bound service in `internal/desktop`, and the Python dispatcher in `src/live_subs/desktop_rpc.py`. The Go host embeds `src/live_subs/desktop_ui`; no frontend bundler is needed. `npm run dev:desktop`, `npm run test:native`, and `npm run build:desktop` wrap the corresponding source commands. Native smoke checks also cover unknown-method rejection, menu localization, and closing/reopening the window. Update MyGo with `go get` and `go mod tidy`, review both Go lock files, then rerun Go and native checks.

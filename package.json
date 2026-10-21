@@ -9,12 +9,16 @@
     "check": "node scripts/check-extension.mjs",
     "test:desktop": "node tests-js/desktop.mjs",
     "test:overlay": "node tests-js/overlay.mjs",
-    "test:site": "node --test tests-js/site.mjs"
+    "test:site": "node --test tests-js/site.mjs",
+    "dev:desktop": "uv run --frozen tingsub gui",
+    "build:desktop": "uv run --frozen --group bundle python scripts/build_desktop.py",
+    "test:native": "uv run --frozen python scripts/check_desktop_native.py --no-inference",
+    "test:youtube": "node tests-js/youtube-live.mjs"
   },
   "devDependencies": {
     "playwright": "^1.56.0"
   },
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Local bilingual live captions for Chrome",
   "license": "MIT",
   "engines": {

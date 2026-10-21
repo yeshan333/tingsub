@@ -2,6 +2,7 @@
 
 import argparse
 import hashlib
+import json
 import os
 import platform
 import plistlib
@@ -35,11 +36,18 @@ def main():
     if platform.system() != "Darwin" or platform.machine() != "arm64":
         raise SystemExit("Build on an Apple Silicon Mac")
     output = ROOT / ".local" / "bundle"
+    output.mkdir(parents=True, exist_ok=True)
+    native = output / "TingSub-native"
+    subprocess.run(
+        ["go", "build", "-trimpath", "-o", str(native), "./cmd/tingsub"],
+        check=True, cwd=ROOT,
+    )
     subprocess.run(
         [
             sys.executable,
             "-m",
             "PyInstaller",
+            "--clean",
             "--noconfirm",
             str(ROOT / "packaging/TingSub.spec"),
             "--distpath",
@@ -51,6 +59,35 @@ def main():
         cwd=ROOT,
     )
     app = output / "TingSub.app"
+    shutil.copy2(native, app / "Contents/MacOS/TingSub")
+    plist = app / "Contents/Info.plist"
+    info = plistlib.loads(plist.read_bytes())
+    info["CFBundleExecutable"] = "TingSub"
+    plist.write_bytes(plistlib.dumps(info))
+    notices = app / "Contents/Resources/notices"
+    notices.mkdir(parents=True, exist_ok=True)
+    # Keep the native host's dependency licenses alongside Python metadata.
+    modules = subprocess.check_output(
+        ["go", "list", "-m", "-json", "all"], cwd=ROOT, text=True,
+    )
+    decoder = json.JSONDecoder()
+    while modules.strip():
+        module, end = decoder.raw_decode(modules.lstrip())
+        modules = modules.lstrip()[end:]
+        if not module.get("Main") and module.get("Dir"):
+            for license_file in Path(module["Dir"]).glob("LICENSE*"):
+                if license_file.is_file():
+                    target = module["Path"].replace("/", "_") + "-" + license_file.name
+                    shutil.copy2(license_file, notices / target)
+    identity = os.environ.get("TINGSUB_CODESIGN_IDENTITY", "-")
+    sign = ["/usr/bin/codesign", "--force", "--sign", identity]
+    if identity != "-":
+        sign += ["--options", "runtime", "--timestamp"]
+    # PyInstaller originally signed the sidecar as the bundle's main executable,
+    # binding its signature to Info.plist. Re-sign after installing the Go host.
+    subprocess.run([*sign, str(app / "Contents/MacOS/TingSub-worker")], check=True)
+    subprocess.run([*sign, str(app / "Contents/MacOS/TingSub")], check=True)
+    subprocess.run([*sign, str(app)], check=True)
     subprocess.run(["/usr/bin/codesign", "--verify", "--deep", "--strict", str(app)], check=True)
     subprocess.run(
         [str(app / "Contents/MacOS/TingSub"), "--worker", "--help"],

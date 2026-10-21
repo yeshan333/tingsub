@@ -4,6 +4,16 @@
 
 ## Unreleased
 
+## 0.3.0 — 2026-10-22
+
+- Replace the pywebview desktop host with MyGo: embedded UI, native menu bar and a private Python controller, preserving MLX inference and Chrome compatibility. Source desktop builds now require Go 1.27.1+.
+- Stop owned work after host disconnection and remove the desktop page’s `unsafe-eval` requirement.
+
+- Preserve extension startup errors instead of replacing them with a model-ready message; distinguish stopped captions from an unused ready service.
+- Add an opt-in real YouTube livestream check and correct shared-language synchronization in the English/Japanese audio test.
+- Confirmed short-session bilingual captions on a real DW News YouTube livestream in a signed-in Chrome profile. The isolated browser still encountered YouTube login checks.
+- Known limitations: a stale startup request required reloading the extension; its root cause remains unresolved. English translation can add an unstated AM/PM period. No long-session or accuracy certification is claimed.
+
 ## 0.2.1
 
 - Replace generic symbols with a shared ear-and-captions mark across the macOS app, menu bar, extension and homepage.
