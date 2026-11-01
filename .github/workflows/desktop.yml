@@ -26,7 +26,7 @@ jobs:
       - run: go vet ./...
       - name: Check build architecture
         run: test "$(uname -m)" = arm64
-      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           enable-cache: true
       - run: uv sync --frozen --group bundle --python 3.12
